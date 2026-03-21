@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — 一般動詞の疑問文</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --blue: #1A56DB;
+  --blue-dark: #1446B8;
+  --blue-light: #E8F0FE;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --orange: #E65100;
+  --orange-light: #FFF3E0;
+  --wrong: #C62828;
+  --wrong-light: #FFEBEE;
+  --purple: #7C3AED;
+  --purple-light: #F3EEFF;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.embedded {
+  background: transparent;
+  min-height: auto;
+}
+
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; flex-shrink: 0;
+}
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main {
+  flex: 1; display: flex; flex-direction: column;
+  max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px;
+}
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 52px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text  { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--blue); }
+
+/* 語順ボックス */
+.order-row { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; }
+.order-cell {
+  flex: 1; padding: 16px 12px; text-align: center;
+  border-radius: 12px; font-size: 14px; font-weight: 700; line-height: 1.4;
+  min-width: 70px;
+}
+.order-cell .label { font-size: 10px; font-weight: 500; color: var(--sub); display: block; margin-bottom: 6px; }
+.order-cell.do    { background: var(--purple-light); color: var(--purple); }
+.order-cell.subj  { background: #F3F4F6; }
+.order-cell.verb  { background: var(--green-light); color: var(--green); }
+.order-plus { display: flex; align-items: center; color: var(--sub); font-size: 18px; font-weight: 700; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.ex-single .en {
+  padding: 16px 22px;
+  font-size: 19px; font-weight: 700;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.02em;
+}
+.ex-single .en .do   { color: var(--purple); }
+.ex-single .en .subj { color: var(--blue); }
+.ex-single .en .verb { color: var(--green); }
+.ex-single .jp {
+  padding: 12px 22px;
+  font-size: 14px; color: var(--sub);
+  background: var(--bg);
+}
+
+/* 答え方ボックス */
+.answer-box { display: flex; flex-direction: column; gap: 10px; }
+.answer-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; border-radius: 12px;
+  border: 1px solid var(--border);
+  font-size: 15px; font-weight: 700;
+}
+.answer-row.yes { background: var(--green-light); border-color: #A5D6A7; }
+.answer-row.no  { background: var(--wrong-light); border-color: #FFCDD2; }
+.answer-badge {
+  font-size: 12px; font-weight: 700; padding: 4px 10px;
+  border-radius: 20px; flex-shrink: 0;
+}
+.answer-row.yes .answer-badge { background: var(--green); color: white; }
+.answer-row.no  .answer-badge { background: var(--wrong); color: white; }
+.answer-row.yes .answer-text { color: var(--green); }
+.answer-row.no  .answer-text { color: var(--wrong); }
+
+/* ポイントボックス */
+.point-box {
+  background: var(--blue-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 15px; color: var(--blue);
+  font-weight: 600; line-height: 1.7;
+  margin-top: auto;
+}
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 12px;
+}
+.summary-num {
+  width: 26px; height: 26px; background: var(--blue); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* BOTTOM NAV */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { background: var(--blue-dark); }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(26,86,219,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+body.embedded nav,
+body.embedded .bottom-nav {
+  display: none;
+}
+
+body.embedded main {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.embedded .slide {
+  animation: none;
+}
+
+body.embedded .slide-card {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 24px 28px;
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">一般動詞の疑問文</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- ══ スライド 1: Do を使う疑問文 ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">一般動詞の疑問文 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">Do</span> を使う疑問文</div>
+      </div>
+
+      <div class="order-row">
+        <div class="order-cell do">
+          <span class="label">文頭</span>
+          Do
+        </div>
+        <div class="order-plus">＋</div>
+        <div class="order-cell subj">
+          <span class="label">主語</span>
+          I / You / We / They
+        </div>
+        <div class="order-plus">＋</div>
+        <div class="order-cell verb">
+          <span class="label">動詞の原形</span>
+          like / play...
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="do">Do</span> <span class="subj">you</span> <span class="verb">like</span> music?</div>
+          <div class="jp">あなたは音楽が好きですか？</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="do">Do</span> <span class="subj">they</span> <span class="verb">play</span> soccer?</div>
+          <div class="jp">彼らはサッカーをしますか？</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 主語が I / You / We / They のとき → 文頭に <strong>Do</strong> を置く</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ スライド 2: Does を使う疑問文 ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">一般動詞の疑問文 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">Does</span> を使う疑問文</div>
+      </div>
+
+      <div class="order-row">
+        <div class="order-cell do">
+          <span class="label">文頭</span>
+          Does
+        </div>
+        <div class="order-plus">＋</div>
+        <div class="order-cell subj">
+          <span class="label">主語</span>
+          He / She / It など
+        </div>
+        <div class="order-plus">＋</div>
+        <div class="order-cell verb">
+          <span class="label">動詞の原形</span>
+          like / play...
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="do">Does</span> <span class="subj">he</span> <span class="verb">like</span> music?</div>
+          <div class="jp">彼は音楽が好きですか？</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="do">Does</span> <span class="subj">she</span> <span class="verb">have</span> a dog?</div>
+          <div class="jp">彼女は犬を飼っていますか？</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 主語が He / She / It など のとき → 文頭に <strong>Does</strong> を置く。動詞は s なしの原形！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ スライド 3: 答え方 ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">一般動詞の疑問文 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">Yes / No の<span class="accent">答え方</span></div>
+      </div>
+
+      <div class="ex-single">
+        <div class="en"><span class="do">Do</span> <span class="subj">you</span> <span class="verb">like</span> music?</div>
+        <div class="jp">あなたは音楽が好きですか？</div>
+      </div>
+
+      <div class="answer-box">
+        <div class="answer-row yes">
+          <span class="answer-badge">YES</span>
+          <span class="answer-text">Yes, I do.</span>
+        </div>
+        <div class="answer-row no">
+          <span class="answer-badge">NO</span>
+          <span class="answer-text">No, I don't.</span>
+        </div>
+      </div>
+
+      <div class="ex-single">
+        <div class="en"><span class="do">Does</span> <span class="subj">he</span> <span class="verb">like</span> music?</div>
+        <div class="jp">彼は音楽が好きですか？</div>
+      </div>
+
+      <div class="answer-box">
+        <div class="answer-row yes">
+          <span class="answer-badge">YES</span>
+          <span class="answer-text">Yes, he does.</span>
+        </div>
+        <div class="answer-row no">
+          <span class="answer-badge">NO</span>
+          <span class="answer-text">No, he doesn't.</span>
+        </div>
+      </div>
+
+      <div class="point-box">💡 Do で聞かれたら do / don't、Does で聞かれたら does / doesn't で答える！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ まとめ ══ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">一般動詞の疑問文 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">主語が <strong style="color:var(--blue)">I / You / We / They</strong> のとき → 文頭に <strong style="color:var(--purple)">Do</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">主語が <strong style="color:var(--orange)">He / She / It など</strong> のとき → 文頭に <strong style="color:var(--purple)">Does</strong>。動詞は s なしの原形</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">答え方：Do → <strong style="color:var(--green)">Yes, I do.</strong> / <strong style="color:var(--wrong)">No, I don't.</strong>　Does → <strong style="color:var(--green)">Yes, he does.</strong> / <strong style="color:var(--wrong)">No, he doesn't.</strong></div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 この3つが頭に入ったら演習に進もう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  const requestedPage = Number(params.get('page') || 1);
+
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    const target = Math.max(0, Math.min(TOTAL - 1, idx));
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = target;
+    document.getElementById('s' + cur).classList.add('active');
+    const navFill = document.getElementById('nav-fill');
+    const navCount = document.getElementById('nav-count');
+    if (navFill) navFill.style.width = ((cur + 1) / TOTAL * 100) + '%';
+    if (navCount) navCount.textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  if (!isEmbedded) {
+    document.getElementById('n0').addEventListener('click', function() { go(1); });
+    document.getElementById('n1').addEventListener('click', function() { go(2); });
+    document.getElementById('n2').addEventListener('click', function() { go(3); });
+    document.getElementById('n3').addEventListener('click', function() { location.href = 'exercise.html?lesson=lesson9'; });
+    document.getElementById('back1').addEventListener('click', function() { go(0); });
+    document.getElementById('back2').addEventListener('click', function() { go(1); });
+    document.getElementById('back3').addEventListener('click', function() { go(2); });
+  }
+
+  const initialPage = Number.isFinite(requestedPage) ? requestedPage : 1;
+  go(initialPage - 1);
+</script>
+
+</body>
+</html>

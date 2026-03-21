@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — 一般動詞の過去形（不規則変化）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --blue: #1A56DB;
+  --blue-dark: #1446B8;
+  --blue-light: #E8F0FE;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --orange: #E65100;
+  --orange-light: #FFF3E0;
+  --brown: #5D4037;
+  --brown-light: #EFEBE9;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; flex-shrink: 0;
+}
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main {
+  flex: 1; display: flex; flex-direction: column;
+  max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px;
+}
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 52px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text  { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--brown); }
+
+/* 不規則変化テーブル */
+.irreg-table { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.irreg-header { display: grid; grid-template-columns: 1fr 1fr 1fr; background: var(--bg); border-bottom: 1px solid var(--border); }
+.irreg-header div { padding: 10px 16px; font-size: 11px; font-weight: 700; color: var(--sub); letter-spacing: 0.05em; }
+.irreg-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+.irreg-row:last-child { border-bottom: none; }
+.irreg-row div { padding: 12px 16px; font-size: 15px; font-weight: 700; }
+.irreg-row .base { color: var(--text); }
+.irreg-row .past { color: var(--brown); }
+.irreg-row .mean { color: var(--sub); font-size: 13px; font-weight: 500; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.ex-single .en {
+  padding: 16px 22px;
+  font-size: 19px; font-weight: 700;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.02em;
+}
+.ex-single .en .subj { color: var(--orange); }
+.ex-single .en .verb { color: var(--brown); }
+.ex-single .jp {
+  padding: 12px 22px;
+  font-size: 14px; color: var(--sub);
+  background: var(--bg);
+}
+
+/* ポイントボックス */
+.point-box {
+  background: var(--brown-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 15px; color: var(--brown);
+  font-weight: 600; line-height: 1.7;
+  margin-top: auto;
+}
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 12px;
+}
+.summary-num {
+  width: 26px; height: 26px; background: var(--blue); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* BOTTOM NAV */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { background: var(--blue-dark); }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(26,86,219,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">一般動詞の過去形（不規則変化）</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:33%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 3</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- ══ スライド 1: 不規則変化とは？ ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">一般動詞の過去形（不規則変化） · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">不規則変化とは？</div>
+      </div>
+
+      <div style="font-size:14px; color:var(--sub); line-height:1.8;">
+        不規則変化は <strong style="color:var(--text)">+ed のルールが当てはまらない</strong> 動詞。<br>
+        形が全く変わるものが多いので、<strong style="color:var(--brown)">1つずつ丸ごと覚える</strong> 必要がある。
+      </div>
+
+      <div class="irreg-table">
+        <div class="irreg-header">
+          <div>原形</div>
+          <div>過去形</div>
+          <div>意味</div>
+        </div>
+        <div class="irreg-row">
+          <div class="base">go</div>
+          <div class="past">went</div>
+          <div class="mean">行く</div>
+        </div>
+        <div class="irreg-row">
+          <div class="base">come</div>
+          <div class="past">came</div>
+          <div class="mean">来る</div>
+        </div>
+        <div class="irreg-row">
+          <div class="base">see</div>
+          <div class="past">saw</div>
+          <div class="mean">見る</div>
+        </div>
+        <div class="irreg-row">
+          <div class="base">have</div>
+          <div class="past">had</div>
+          <div class="mean">持つ・食べる</div>
+        </div>
+        <div class="irreg-row">
+          <div class="base">get</div>
+          <div class="past">got</div>
+          <div class="mean">得る・なる</div>
+        </div>
+        <div class="irreg-row">
+          <div class="base">eat</div>
+          <div class="past">ate</div>
+          <div class="mean">食べる</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 不規則変化はルールがない。よく使う動詞から1つずつ覚えよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ スライド 2: 例文で確認 ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">一般動詞の過去形（不規則変化） · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">例文で<span class="accent">確認</span>しよう</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="subj">I</span> <span class="verb">went</span> to school yesterday.</div>
+          <div class="jp">私は昨日、学校に行きました。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="subj">She</span> <span class="verb">saw</span> a movie last night.</div>
+          <div class="jp">彼女は昨夜、映画を見ました。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="subj">We</span> <span class="verb">ate</span> pizza for dinner.</div>
+          <div class="jp">私たちは夕食にピザを食べました。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 主語が何であっても過去形の形は変わらない！He went / She went / They went すべて同じ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ まとめ ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">一般動詞の過去形（不規則変化） · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">不規則変化は <strong style="color:var(--brown)">+ed のルールが当てはまらない</strong> 動詞</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">形が全く変わるので <strong style="color:var(--brown)">1つずつ丸ごと覚える</strong>（go→went、see→saw、eat→ate）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">主語が何であっても <strong style="color:var(--brown)">過去形の形は変わらない</strong></div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 この3つが頭に入ったら演習に進もう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 3;
+  let cur = 0;
+  const LESSON_ID = 'lesson16';
+  const PROGRESS_KEY = 'nexeliaLessonProgress';
+
+  function saveLessonProgress(value) {
+    try {
+      const raw = localStorage.getItem(PROGRESS_KEY) || '{}';
+      const progressMap = JSON.parse(raw);
+      const nextValue = Math.max(Number(progressMap[LESSON_ID]) || 0, value);
+      progressMap[LESSON_ID] = nextValue;
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+      localStorage.setItem('nexeliaLastLesson', LESSON_ID);
+    } catch (_) {}
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() {
+    saveLessonProgress(60);
+    location.href = 'nexelia-exercise16.html';
+  });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+
+  saveLessonProgress(30);
+  renderDots(0);
+</script>
+
+  <script src="ai-chat.js"></script>
+</body>
+</html>

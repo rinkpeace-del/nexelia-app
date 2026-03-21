@@ -1,0 +1,101 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+* { -webkit-font-smoothing: antialiased; }
+:root {
+  --blue: #1A56DB;
+  --blue-light: #E8F0FE;
+  --orange: #E65100;
+  --orange-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --wrong: #C62828;
+  --wrong-light: #FFEBEE;
+  --sub: #888;
+  --text: #1A1A1A;
+}
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fff;
+  color: var(--text);
+  padding: 40px 48px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow: auto;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar { display: none; }
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--blue); }
+.compare {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.compare.ng { background: var(--wrong-light); border: 1.5px solid #FFCDD2; }
+.compare.ok { background: var(--green-light); border: 1.5px solid #A5D6A7; }
+.badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.compare.ng .badge { background: var(--wrong); }
+.compare.ok .badge { background: var(--green); }
+.compare.ng .sentence { color: var(--wrong); }
+.compare.ok .sentence { color: var(--green); }
+.be { color: var(--blue); }
+.not { color: var(--orange); }
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.point-box {
+  margin-top: auto;
+  background: var(--blue-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 15px;
+  color: var(--blue);
+  font-weight: 600;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+<div class="slide-label">be動詞の否定文 · スライド 2</div>
+
+<div>
+  <div class="concept-title">このスライドで学ぶこと</div>
+  <div class="concept-text"><span class="accent">よくある間違い</span>に注意しよう</div>
+</div>
+
+<div class="stack">
+  <div class="compare ng">
+    <span class="badge">❌ NG</span>
+    <span class="sentence">He not is happy.</span>
+  </div>
+  <div class="compare ok">
+    <span class="badge">✓ OK</span>
+    <span class="sentence">He <span class="be">is</span> <span class="not">not</span> happy.</span>
+  </div>
+</div>
+
+<div class="point-box">💡 not は be動詞の後ろ。前には置かない！</div>
+</body>
+</html>

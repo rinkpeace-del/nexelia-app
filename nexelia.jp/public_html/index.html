@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — 次世代の英語学習体験</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --blue: #1A56DB;
+  --blue-dark: #1446B8;
+  --text: #1A1A1A;
+  --sub: #888888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.nav-logo {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--red);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.btn-blue {
+  padding: 12px 26px;
+  background: var(--blue);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: background 0.15s, transform 0.1s;
+  display: inline-block;
+}
+.btn-blue:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  background: var(--white);
+}
+
+.hero-name {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+  font-size: clamp(52px, 9vw, 100px);
+  color: var(--red);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin-bottom: 28px;
+  animation: fadeUp 0.5s ease both;
+}
+
+.hero-tagline {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s 0.1s ease both;
+}
+
+.hero-beta-note {
+  font-size: 13px;
+  color: #AAAAAA;
+  margin-bottom: 24px;
+  font-weight: 400;
+  animation: fadeUp 0.5s 0.25s ease both;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.5s 0.3s ease both;
+}
+
+/* ── FEATURES ── */
+.features {
+  padding: 80px 40px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+.features-grid {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.feat-card {
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 32px;
+  background: var(--white);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.feat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+}
+
+.feat-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.feat-card p {
+  font-size: 14px;
+  color: var(--sub);
+  line-height: 1.75;
+}
+
+.feat-card-split {
+  display: block;
+}
+
+.feat-copy {
+  flex: 1;
+}
+
+.feat-card-split .feat-copy h3 {
+  margin-top: 0;
+}
+
+/* ── CTA ── */
+.cta {
+  padding: 100px 40px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: var(--text);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 40px;
+}
+
+.footer-copy { font-size: 13px; color: var(--sub); }
+
+/* ── ANIM ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  nav { padding: 0 20px; }
+  .features { padding: 60px 20px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feat-card-split { display: block; }
+  .cta { padding: 72px 20px; }
+  footer { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">NEXELIA</a>
+  <div class="nav-right">
+    <a href="lessons.html" class="btn-blue">無料で学習を始める</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-name">NEXELIA</div>
+  <div class="hero-tagline">短く学ぶ。すぐ解く。<br>中学生向け英語学習</div>
+  <p class="hero-beta-note">＊現在ベータ版です。英語教材を順次追加しています。</p>
+  <div class="hero-btns">
+    <a href="lessons.html" class="btn-blue">無料で学習を始める</a>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-grid">
+    <div class="feat-card reveal feat-card-split">
+      <div class="feat-copy">
+        <h3>わかりやすいスライドで解説</h3>
+        <p>要点だけを短時間で理解。情報を詰め込みすぎず、1スライドに1つの学習ポイントを凝縮しています。</p>
+      </div>
+    </div>
+    <div class="feat-card reveal">
+      <h3>すぐに確認</h3>
+      <p>学んだ直後に演習で定着。インプット直後に小問で確認することで、記憶の定着率が大幅に上がります。</p>
+    </div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="signup">
+  <h2 class="reveal">英語レッスンを今すぐ始める</h2>
+  <a href="lessons.html" class="btn-blue reveal" style="font-size:16px;padding:16px 48px;">はじめる</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy">© 2026 NEXELIA</span>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <script src="ai-chat.js"></script>
+</body>
+</html>
+

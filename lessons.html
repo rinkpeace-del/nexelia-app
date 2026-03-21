@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NEXELIA レッスン一覧" />
+  <title>レッスン一覧 | NEXELIA</title>
+  <link rel="stylesheet" href="stylesheet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand: #1A56DB;
+      --brand-dark: #1446B8;
+      --brand-light: #EBF1FC;
+      --surface: #ffffff;
+      --bg: #ffffff;
+      --line: #E8E8E8;
+      --ink: #1A1A1A;
+      --ink-2: #555555;
+      --ink-3: #888888;
+      --ink-4: #AAAAAA;
+      --ink-5: #BBBBBB;
+      --ink-6: #CCCCCC;
+      --warn-bg: #FEF3C7;
+      --warn: #F59E0B;
+      --neutral-bg: #F0F0F0;
+    }
+
+    * { -webkit-font-smoothing: antialiased; }
+
+    body {
+      background: #ffffff;
+      color: var(--ink);
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── Page ── */
+    .lessons-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 56px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 0 32px;
+    }
+
+    .logo {
+      text-decoration: none;
+      color: #D32F2F;
+      font-weight: 800;
+      font-size: 1.7rem;
+      letter-spacing: 0.03em;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .btn-primary {
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 10px 18px;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    .mypage-area {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink-2);
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .mypage-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      margin-bottom: 36px;
+      background: #ffffff;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .hero-beta-note {
+      margin: 10px 0 0;
+      color: var(--ink-4);
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* ── Overall progress ── */
+    .overall {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-bottom: 56px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+
+    .overall-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .overall-label {
+      color: var(--ink-2);
+      font-weight: 500;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .progress-rail {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: #F0F0F0;
+      overflow: hidden;
+      min-width: 80px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--brand);
+      width: 0;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+    }
+
+    .overall-percent {
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .overall-text {
+      color: var(--ink-3);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    /* ── Units ── */
+    .units-list {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    .unit-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .unit-label {
+      color: #999;
+      font-size: 11px;
+      letter-spacing: .1em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .unit-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .unit-mini {
+      max-width: 140px;
+      flex: 1;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .unit-mini .progress-fill {
+      height: 100%;
+    }
+
+    .unit-count {
+      color: var(--ink-3);
+      font-size: 13px;
+    }
+
+    /* ── Grid ── */
+    .lesson-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    /* ── Card ── */
+    .lesson-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .lesson-card.is-clickable {
+      cursor: pointer;
+    }
+
+    .lesson-card.is-clickable:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    .lesson-card.is-clickable:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    .lesson-card.is-locked {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+
+    /* ── Card icon ── */
+    .icon-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .icon-dot.complete { background: var(--brand-light); }
+    .icon-dot.locked   { background: var(--warn-bg); }
+    .icon-dot.default  { background: var(--neutral-bg); }
+
+    .icon-dot svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2.5;
+    }
+    .icon-dot.complete svg { stroke: var(--brand); fill: none; }
+    .icon-dot.locked svg   { stroke: var(--warn); fill: none; }
+
+    .icon-dot .dot-inner {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #CCC;
+    }
+
+    /* ── Card title ── */
+    .card-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--ink);
+      flex: 1;
+    }
+
+    .lesson-card.is-locked .card-title { color: var(--ink-4); }
+
+    /* ── Card foot ── */
+    .card-foot {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-bar {
+      height: 3px;
+      border-radius: 999px;
+      background: #F0F0F0;
+      overflow: hidden;
+    }
+
+    .card-bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--brand);
+      transition: width .3s;
+    }
+
+    .card-status {
+      font-size: 12px;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .card-status.complete { color: var(--brand); }
+    .card-status.locked   { color: var(--ink-5); }
+    .card-status.none     { color: var(--ink-6); }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .lessons-page { padding: 40px 20px; }
+      .topbar { padding: 0 20px; }
+      .lesson-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav topbar">
+      <a href="index.html" class="logo">NEXELIA</a>
+      <div class="mypage-area">
+        <button
+          id="userNameBtn"
+          type="button"
+          title="クリックして名前を変更"
+          style="background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;font-weight:700;font-size:0.96rem;"
+          aria-label="ユーザー名を変更"
+        >
+          <span id="userNameDisplay"></span>
+          <span style="margin-left:4px;font-size:0.75rem;color:#9ca3af;" aria-hidden="true">✏️</span>
+        </button>
+        <a class="btn-primary mypage-btn" href="register.html">マイページ</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="lessons-page">
+    <section class="hero">
+      <h1>レッスン一覧</h1>
+      <p class="hero-beta-note">＊現在ベータ版です。英語教材を順次追加しています。</p>
+    </section>
+
+    <section class="overall" aria-label="全体進捗">
+      <div class="overall-row">
+        <div class="overall-label">全体の進捗</div>
+        <div class="progress-rail" aria-hidden="true"><div id="overallFill" class="progress-fill"></div></div>
+        <div id="overallPercent" class="overall-percent">0%</div>
+      </div>
+      <div id="overallText" class="overall-text">0 / 0 レッスン完了</div>
+    </section>
+
+    <div class="units-list" id="unitsContainer" aria-label="ユニット一覧"></div>
+  </main>
+
+  <script>
+    const progressMap = JSON.parse(localStorage.getItem("nexeliaLessonProgress") || "{}");
+
+    const units = [
+      {
+        label: "UNIT 1",
+        title: "be動詞",
+        lessons: [
+          { id: "lesson1", title: "be動詞の基本", desc: "主語によって変わるbe動詞の基本ルールを学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 5, href: "learning.html?lesson=lesson1&step=1" },
+          { id: "lesson2", title: "be動詞の種類", desc: "「〜ではありません」の形を作る方法を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 5, href: "learning.html?lesson=lesson2" },
+          { id: "lesson5", title: "be\u52d5\u8a5e\u306e\u77ed\u7e2e\u5f62", desc: "I'm / you're などの短縮形ルールを学ぼう。", difficulty: "normal", difficultyLabel: "\u3075\u3064\u3046", minutes: 6, href: "learning.html?lesson=lesson5" },
+          { id: "lesson3", title: "be動詞の否定文", desc: "be動詞の後ろに not を置く否定文の作り方を練習しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson3" },
+          { id: "lesson6", title: "be\u52d5\u8a5e\u306e\u7591\u554f\u6587", desc: "be\u52d5\u8a5e\u3092\u6587\u306e\u5148\u982d\u306b\u51fa\u3059\u7591\u554f\u6587\u306e\u4f5c\u308a\u65b9\u3092\u5b66\u307c\u3046\u3002", difficulty: "normal", difficultyLabel: "\u3075\u3064\u3046", minutes: 7, href: "learning.html?lesson=lesson6" }
+        ]
+      },
+      {
+        label: "UNIT 2",
+        title: "一般動詞",
+        lessons: [
+          { id: "lesson4", title: "一般動詞の基本", desc: "「食べる・走る・好き」などの動作を表す動詞を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson4" },
+          { id: "lesson7", title: "\u4e09\u5358\u73fe\u306e\uff53", desc: "I / You / We / They \u3092\u4e3b\u8a9e\u306b\u3057\u305f\u4e00\u822c\u52d5\u8a5e\u306e\u57fa\u672c\u30eb\u30fc\u30eb\u3002", difficulty: "normal", difficultyLabel: "\u3075\u3064\u3046", minutes: 7, href: "learning.html?lesson=lesson7" },
+          { id: "lesson8", title: "一般動詞の否定文", desc: "do / does を使った否定文・疑問文の作り方。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson8" },
+          { id: "lesson9", title: "一般動詞の疑問文", desc: "do / does を使った疑問文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson9" }
+        ]
+      },
+      {
+        label: "UNIT 3",
+        title: "現在進行形",
+        lessons: [
+          { id: "lesson10", title: "現在進行形とは？", desc: "「今、〜している」を表す be動詞 + 動詞ing の形を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson10" },
+          { id: "lesson11", title: "ing形の作り方", desc: "ing形の3つの基本ルール（そのまま+ing / eを取る / 子音を重ねる）を学ぼう。", difficulty: "hard", difficultyLabel: "むずかしい", minutes: 10, href: "learning.html?lesson=lesson11" },
+          { id: "lesson12", title: "現在進行形の否定文", desc: "be動詞 + not + 動詞ing の形で否定文を作るルールを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson12" },
+          { id: "lesson13", title: "現在進行形の疑問文", desc: "be動詞を主語の前に出して疑問文を作るルールを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson13" }
+        ]
+      },
+      {
+        label: "UNIT 4",
+        title: "過去形",
+        lessons: [
+          { id: "lesson14", title: "be動詞の過去形", desc: "am / is / are が was / were に変わる過去形のルールを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 9, href: "learning.html?lesson=lesson14" },
+          { id: "lesson15", title: "一般動詞の過去形（規則変化）", desc: "否定文・疑問文・過去形を横断で確認しよう。", difficulty: "hard", difficultyLabel: "むずかしい", minutes: 10, href: "nexelia-study15.html" },
+          { id: "lesson16", title: "一般動詞の過去形（不規則変化）", desc: "不規則動詞の過去形の形と使い方を学ぼう。", difficulty: "hard", difficultyLabel: "むずかしい", minutes: 10, href: "nexelia-study16.html" },
+          { id: "lesson17", title: "過去形の否定文", desc: "did not を使った過去形の否定文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "nexelia-study17.html" },
+          { id: "lesson18", title: "過去形の疑問文", desc: "did を使った過去形の疑問文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "nexelia-study18.html" }
+        ]
+      }
+    ];
+
+    const clamp = (v) => Math.max(0, Math.min(100, Number(v) || 0));
+
+    const lessonsFlat = units.flatMap((unit) => unit.lessons.map((lesson) => ({ unit, lesson })));
+    const liveLessons = lessonsFlat.filter((x) => !x.lesson.locked);
+
+    const currentInProgress = liveLessons.find((x) => {
+      const p = clamp(progressMap[x.lesson.id]);
+      return p > 0 && p < 100;
+    });
+
+    const firstNotStarted = liveLessons.find((x) => clamp(progressMap[x.lesson.id]) === 0);
+    const currentLessonId = (currentInProgress || firstNotStarted || {}).lesson?.id || null;
+
+    const unitsContainer = document.getElementById("unitsContainer");
+
+    const CHECK_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+    function createLessonCard(lesson) {
+      const progress = clamp(progressMap[lesson.id]);
+      const isComplete = progress >= 100;
+
+      const card = document.createElement("article");
+      card.className = "lesson-card";
+
+      const iconClass = isComplete ? "complete" : "default";
+      const iconContent = isComplete ? CHECK_SVG : `<span class="dot-inner"></span>`;
+
+      const statusClass = isComplete ? "complete" : "none";
+      const statusLabel = isComplete ? "\u5b8c\u4e86" : "\u672a\u5b66\u7fd2";
+      const barWidth = isComplete ? "100" : "0";
+
+      card.innerHTML = `
+        <div class="icon-dot ${iconClass}" aria-hidden="true">${iconContent}</div>
+        <p class="card-title">${lesson.title}</p>
+        <div class="card-foot">
+          <div class="card-bar"><div class="card-bar-fill" style="width:${barWidth}%"></div></div>
+          <span class="card-status ${statusClass}">${statusLabel}</span>
+        </div>
+      `;
+
+      card.classList.add("is-clickable");
+      card.setAttribute("role", "link");
+      card.tabIndex = 0;
+      card.setAttribute("aria-label", `Open ${lesson.title}`);
+
+      const goToLesson = () => {
+        const targetHref = lesson.href || "learning.html?lesson=lesson4";
+        try {
+          localStorage.setItem("nexeliaLastLesson", lesson.id);
+        } catch (_) {}
+        window.location.href = targetHref;
+      };
+
+      card.addEventListener("click", goToLesson);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          goToLesson();
+        }
+      });
+
+      return { card, progress, isComplete };
+    }
+
+    let totalLessons = 0;
+    let completedLessons = 0;
+
+    units.forEach((unit) => {
+      const section = document.createElement("section");
+
+      const grid = document.createElement("div");
+      grid.className = "lesson-grid";
+
+      let unitComplete = 0;
+      const unitTotal = unit.lessons.length;
+
+      unit.lessons.forEach((lesson) => {
+        const { card, isComplete } = createLessonCard(lesson);
+        grid.appendChild(card);
+        totalLessons += 1;
+        if (isComplete) {
+          completedLessons += 1;
+          unitComplete += 1;
+        }
+      });
+
+      const unitPercent = unitTotal ? Math.round((unitComplete / unitTotal) * 100) : 0;
+
+      const head = document.createElement("header");
+      head.className = "unit-head";
+      head.innerHTML = `
+        <span class="unit-label">${unit.label}</span>
+        <h2 class="unit-title">${unit.title}</h2>
+        <div class="unit-mini" aria-hidden="true"><div class="progress-fill" style="width:${unitPercent}%"></div></div>
+        <span class="unit-count">${unitComplete} / ${unitTotal}</span>
+      `;
+
+      section.append(head, grid);
+      unitsContainer.appendChild(section);
+    });
+
+    const overallPercent = totalLessons ? Math.round((completedLessons / totalLessons) * 100) : 0;
+    document.getElementById("overallFill").style.width = `${overallPercent}%`;
+    document.getElementById("overallPercent").textContent = `${overallPercent}%`;
+    document.getElementById("overallText").textContent = `${completedLessons} / ${totalLessons} レッスン完了`;
+
+    // ===== ユーザー名 =====
+    const USER_NAME_KEY = "nexeliaUserName";
+    const DEFAULT_NAME = "ゲスト";
+
+    const userNameDisplay = document.getElementById("userNameDisplay");
+    const userNameBtn = document.getElementById("userNameBtn");
+
+    function loadUserName() {
+      return localStorage.getItem(USER_NAME_KEY) || DEFAULT_NAME;
+    }
+
+    function saveUserName(name) {
+      const trimmed = name.trim();
+      if (trimmed) localStorage.setItem(USER_NAME_KEY, trimmed);
+      return trimmed || DEFAULT_NAME;
+    }
+
+    function renderUserName() {
+      userNameDisplay.textContent = loadUserName();
+    }
+
+    function startEditUserName() {
+      const current = loadUserName();
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = current === DEFAULT_NAME ? "" : current;
+      input.placeholder = "名前を入力";
+      input.maxLength = 30;
+      input.style.cssText = [
+        "width:120px", "padding:2px 6px", "border:1px solid #93c5fd",
+        "border-radius:6px", "font:inherit", "font-size:0.9rem",
+        "outline:none", "color:#0f172a", "background:#fff"
+      ].join(";");
+
+      userNameBtn.replaceChildren(input);
+      input.focus();
+      input.select();
+
+      const commit = () => {
+        const saved = saveUserName(input.value);
+        userNameDisplay.textContent = saved;
+        userNameBtn.replaceChildren(
+          userNameDisplay,
+          Object.assign(document.createElement("span"), {
+            textContent: " ✏️",
+            ariaHidden: "true",
+            style: "margin-left:4px;font-size:0.75rem;color:#9ca3af;"
+          })
+        );
+      };
+
+      input.addEventListener("blur", commit);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); input.blur(); }
+        if (e.key === "Escape") { input.value = current; input.blur(); }
+      });
+    }
+
+    renderUserName();
+    userNameBtn.addEventListener("click", startEditUserName);
+  </script>
+  <script src="ai-chat.js"></script>
+</body>
+</html>

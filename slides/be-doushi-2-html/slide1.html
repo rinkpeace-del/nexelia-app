@@ -1,0 +1,120 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+* { -webkit-font-smoothing: antialiased; }
+:root {
+  --blue: #1A56DB;
+  --blue-light: #E8F0FE;
+  --orange: #E65100;
+  --orange-light: #FFF3E0;
+  --sub: #888;
+  --border: #E8E8E8;
+  --bg: #F9F9F9;
+  --text: #1A1A1A;
+  --gray-light: #F3F4F6;
+}
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fff;
+  color: var(--text);
+  padding: 40px 48px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow: auto;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar { display: none; }
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--blue); }
+.order-row { display: flex; align-items: stretch; gap: 8px; }
+.order-cell {
+  flex: 1;
+  padding: 18px 12px;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.order-cell .label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--sub);
+  display: block;
+  margin-bottom: 6px;
+}
+.order-cell.subj, .order-cell.rest { background: var(--gray-light); }
+.order-cell.be { background: var(--blue-light); color: var(--blue); }
+.order-cell.not { background: var(--orange-light); color: var(--orange); }
+.order-plus {
+  display: flex;
+  align-items: center;
+  color: var(--sub);
+  font-size: 18px;
+  font-weight: 700;
+}
+.example {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.example-en {
+  padding: 18px 24px;
+  font-size: 20px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.example-jp {
+  padding: 14px 24px;
+  font-size: 15px;
+  color: var(--sub);
+  background: var(--bg);
+}
+.be { color: var(--blue); }
+.not { color: var(--orange); }
+.point-box {
+  margin-top: auto;
+  background: var(--blue-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 15px;
+  color: var(--blue);
+  font-weight: 600;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+<div class="slide-label">be動詞の否定文 · スライド 1</div>
+
+<div>
+  <div class="concept-title">このスライドで学ぶこと</div>
+  <div class="concept-text">否定文の<span class="accent">作り方</span></div>
+</div>
+
+<div class="order-row">
+  <div class="order-cell subj"><span class="label">主語</span>I / He…</div>
+  <div class="order-plus">+</div>
+  <div class="order-cell be"><span class="label">be動詞</span>am / is / are</div>
+  <div class="order-plus">+</div>
+  <div class="order-cell not"><span class="label">否定</span>not</div>
+  <div class="order-plus">+</div>
+  <div class="order-cell rest"><span class="label">残り</span>〜</div>
+</div>
+
+<div class="example">
+  <div class="example-en">He <span class="be">is</span> <span class="not">not</span> happy.</div>
+  <div class="example-jp">彼は幸せではない。</div>
+</div>
+
+<div class="point-box">💡 be動詞の後ろに not を置くだけ。</div>
+</body>
+</html>

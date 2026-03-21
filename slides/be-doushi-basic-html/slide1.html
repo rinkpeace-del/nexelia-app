@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue: #1A56DB;
+  --blue-light: #E8F0FE;
+  --sub: #888;
+  --border: #E8E8E8;
+  --bg: #F9F9F9;
+  --text: #1A1A1A;
+  --white: #FFFFFF;
+}
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fff;
+  color: var(--text);
+  padding: 40px 48px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow: auto;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar { display: none; }
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-block { display: flex; flex-direction: column; gap: 10px; }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); }
+.concept-text { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.diagram {
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.diagram-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sub);
+  margin-bottom: 4px;
+}
+.eq-row {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--white);
+  font-size: 17px;
+  font-weight: 600;
+}
+.eq-cell {
+  flex: 1;
+  padding: 14px 16px;
+  text-align: center;
+}
+.eq-cell + .eq-cell { border-left: 1px solid var(--border); }
+.eq-cell.be { color: var(--blue); font-size: 20px; line-height: 1.7; }
+.eq-label { font-size: 11px; color: var(--sub); text-align: center; margin-top: 4px; }
+.examples { display: flex; flex-direction: column; gap: 10px; }
+.ex-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 15px;
+}
+.ex-en {
+  padding: 13px 18px;
+  font-weight: 600;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  line-height: 1.5;
+}
+.ex-en .be { color: var(--blue); }
+.ex-jp {
+  padding: 13px 18px;
+  color: var(--sub);
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.point-box {
+  background: var(--blue-light);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--blue);
+  font-weight: 600;
+  line-height: 1.65;
+}
+@media (max-width: 600px) {
+  body { padding: 24px 20px 36px; gap: 20px; }
+  .concept-text { font-size: 24px; }
+  .ex-row { grid-template-columns: 1fr; }
+  .ex-en { border-right: none; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<div class="slide-label">be動詞の基本 · スライド 1</div>
+
+<div class="concept-block">
+  <div class="concept-title">このスライドで学ぶこと</div>
+  <div class="concept-text">be動詞って何？</div>
+  <div style="font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px;">
+    ※ このレッスンでは「＝（イコール）」の意味に絞って学びます。「いる・ある」の意味は別のレッスンで扱います。
+  </div>
+</div>
+
+<div class="diagram">
+  <div class="diagram-title">be動詞の役割</div>
+  <div style="font-size:15px;color:var(--sub);line-height:1.8;margin-bottom:8px;">
+    英語で <strong style="color:var(--text)">「A は B だ」</strong> と言いたいとき、A と B をつなぐのが <strong style="color:var(--blue)">be動詞</strong> です。
+  </div>
+
+  <div class="eq-row">
+    <div class="eq-cell">A<br><span style="font-size:11px;color:var(--sub);font-weight:400;">（主語）</span></div>
+    <div class="eq-cell be">am<br>is<br>are</div>
+    <div class="eq-cell">B<br><span style="font-size:11px;color:var(--sub);font-weight:400;">（説明）</span></div>
+  </div>
+  <div class="eq-label">「A は B です」という文の形</div>
+</div>
+
+<div class="examples">
+  <div class="diagram-title">例文で確認</div>
+  <div class="ex-row">
+    <div class="ex-en">I <span class="be">am</span> Yuki.</div>
+    <div class="ex-jp">私はゆきです。</div>
+  </div>
+  <div class="ex-row">
+    <div class="ex-en">She <span class="be">is</span> a student.</div>
+    <div class="ex-jp">彼女は学生です。</div>
+  </div>
+  <div class="ex-row">
+    <div class="ex-en">They <span class="be">are</span> friends.</div>
+    <div class="ex-jp">彼らは友達です。</div>
+  </div>
+</div>
+
+<div class="point-box">💡 be動詞は「つなぎ役」。主語と説明をイコールで結びます。</div>
+
+</body>
+</html>
