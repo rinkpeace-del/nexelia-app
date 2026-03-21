@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 17 レッスン4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --indigo: #283593;
+  --indigo-light: #E8EAF6;
+  --indigo-mid: #C5CAE9;
+  --accent: #283593;
+  --accent-light: #E8EAF6;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --wrong: #C62828;
+  --wrong-light: #FFEBEE;
+  --orange: #E65100;
+  --orange-light: #FFF8E1;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--indigo); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--indigo); }
+
+/* 使い分け一覧（3色） */
+.three-compare { display: flex; flex-direction: column; gap: 10px; }
+.cmp-row { border-radius: 14px; padding: 14px 18px; display: flex; gap: 16px; align-items: flex-start; }
+.cmp-row.who   { background: #E8EAF6; border: 1px solid #9FA8DA; }
+.cmp-row.which { background: #E0F2F1; border: 1px solid #80CBC4; }
+.cmp-row.that  { background: #FFF8E1; border: 1px solid #FFE082; }
+.cmp-kw { font-size: 18px; font-weight: 700; min-width: 60px; flex-shrink: 0; margin-top: 2px; }
+.cmp-row.who   .cmp-kw { color: #283593; }
+.cmp-row.which .cmp-kw { color: #00695C; }
+.cmp-row.that  .cmp-kw { color: #E65100; }
+.cmp-body { display: flex; flex-direction: column; gap: 4px; }
+.cmp-rule { font-size: 14px; font-weight: 700; color: var(--text); }
+.cmp-sub  { font-size: 12px; font-weight: 600; color: var(--indigo); margin-top: 1px; }
+.cmp-ex   { font-size: 12px; color: var(--sub); font-weight: 500; }
+
+/* NG/OK パターン */
+.trap-list { display: flex; flex-direction: column; gap: 9px; }
+.trap-row { border-radius: 12px; padding: 12px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.trap-row.ng  { background: var(--wrong-light); border: 1px solid #EF9A9A; }
+.trap-row.ok  { background: var(--green-light); border: 1px solid #A5D6A7; }
+.trap-row.tri { background: var(--orange-light); border: 1px solid #FFE082; }
+.trap-badge { font-size: 11px; font-weight: 700; border-radius: 6px; padding: 3px 8px; flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+.trap-row.ng  .trap-badge { background: var(--wrong);  color: white; }
+.trap-row.ok  .trap-badge { background: var(--green);  color: white; }
+.trap-row.tri .trap-badge { background: var(--orange); color: white; }
+.trap-text   { font-size: 14px; font-weight: 700; line-height: 1.6; }
+.trap-reason { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 2px; }
+
+/* 2文→1文（総合） */
+.merge-set { display: flex; flex-direction: column; gap: 11px; }
+.merge-card { background: var(--indigo-light); border-radius: 14px; padding: 15px 20px; display: flex; flex-direction: column; gap: 7px; }
+.merge-header { display: flex; align-items: center; gap: 8px; }
+.merge-badge { font-size: 12px; font-weight: 700; border-radius: 6px; padding: 3px 12px; color: white; }
+.merge-badge.who-b   { background: #283593; }
+.merge-badge.which-b { background: #00695C; }
+.merge-badge.that-b  { background: #E65100; }
+.merge-q   { font-size: 12px; color: var(--sub); font-weight: 500; }
+.merge-ans { font-size: 14px; font-weight: 700; line-height: 1.6; }
+.merge-alt { font-size: 12px; font-weight: 600; color: var(--orange); margin-top: 2px; }
+.hl-who   { color: #283593; }
+.hl-which { color: #00695C; }
+.hl-that  { color: #E65100; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 13px 17px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.6; }
+
+/* 使い分けチップ */
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { border-radius: 10px; padding: 9px 12px; font-size: 12px; font-weight: 700; text-align: center; flex: 1; min-width: 90px; }
+.chip.who   { background: #E8EAF6; color: #283593; border: 1.5px solid #9FA8DA; }
+.chip.which { background: #E0F2F1; color: #00695C; border: 1.5px solid #80CBC4; }
+.chip.that  { background: #FFF8E1; color: #E65100; border: 1.5px solid #FFE082; }
+
+/* コンマ注意バッジ */
+.comma-caution { background: var(--wrong-light); border: 1px solid #EF9A9A; border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 600; color: var(--wrong); }
+
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 15px 18px; font-size: 14px; color: var(--indigo); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(40,53,147,0.3); }
+.dot.active { background: var(--indigo); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 17 · 関係代名詞まとめ</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：使い分け一覧 ＋ ① コンマ注意 ＋ ② which にコンマ補足 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン4 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">who / which / that の<span class="accent">使い分け</span>を整理しよう</div>
+      </div>
+
+      <div class="three-compare">
+        <div class="cmp-row who">
+          <div class="cmp-kw">who</div>
+          <div class="cmp-body">
+            <div class="cmp-rule">先行詞が「人」のとき</div>
+            <div class="cmp-sub">コンマ（,）の後ろでも使える</div>
+            <div class="cmp-ex">a teacher who knows a lot ／ My sister, who lives in Osaka, is kind.</div>
+          </div>
+        </div>
+        <div class="cmp-row which">
+          <div class="cmp-kw">which</div>
+          <div class="cmp-body">
+            <div class="cmp-rule">先行詞が「もの・動物」のとき</div>
+            <div class="cmp-sub">コンマ（,）の後ろでも使える</div>
+            <div class="cmp-ex">a book which is interesting ／ My cat, which is cute, sleeps all day.</div>
+          </div>
+        </div>
+        <div class="cmp-row that">
+          <div class="cmp-kw">that</div>
+          <div class="cmp-body">
+            <div class="cmp-rule">人にも、もの・動物にも使える</div>
+            <div class="cmp-sub">ただしコンマ（,）の後ろでは使えない</div>
+            <div class="cmp-ex">first / best / only のあとや、人＋動物が混ざるときに特に使う</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ① コンマ注意を明示 -->
+      <div class="point-box">💡 先行詞が「人」→ who　「もの・動物」→ which　迷ったら → that！<br>※ that はコンマ（,）の後ろでは使えないよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：よく間違えるパターン ＋ ③ only 系を追加 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン4 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">よく<span class="accent">間違えるパターン</span>をチェックしよう</div>
+      </div>
+
+      <div class="trap-list">
+        <div class="trap-row ng">
+          <div class="trap-badge">✗ NG</div>
+          <div>
+            <div class="trap-text">I have a cat <span style="color:var(--wrong);">who</span> runs fast.</div>
+            <div class="trap-reason">猫は「人」ではない → who は使えない。which / that を使おう</div>
+          </div>
+        </div>
+        <div class="trap-row ng">
+          <div class="trap-badge">✗ NG</div>
+          <div>
+            <div class="trap-text">My sister, <span style="color:var(--wrong);">that</span> lives in Osaka, is kind.</div>
+            <div class="trap-reason">コンマ（,）のあとは that を使えない → who を使おう</div>
+          </div>
+        </div>
+        <div class="trap-row ng">
+          <div class="trap-badge">✗ NG</div>
+          <div>
+            <div class="trap-text">She is the best singer <span style="color:var(--wrong);">which</span> I know.</div>
+            <div class="trap-reason">人 + 最上級のあとは that が自然 → that を使おう</div>
+          </div>
+        </div>
+        <!-- ③ only 系を追加（△表示） -->
+        <div class="trap-row tri">
+          <div class="trap-badge">△ 弱い</div>
+          <div>
+            <div class="trap-text">This is the only book <span style="color:var(--orange);">which</span> I need.</div>
+            <div class="trap-reason">文法的には正しいが、only / first / best のあとは that がより自然で試験でも正解になりやすい</div>
+          </div>
+        </div>
+        <div class="trap-row ok">
+          <div class="trap-badge">✓ OK</div>
+          <div>
+            <div class="trap-text">This is the only book <span style="color:var(--green);">that</span> I need. ／ She is the best singer <span style="color:var(--green);">that</span> I know.</div>
+            <div class="trap-reason">only / first / best のあとは that が自然！</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：2文→1文の総合練習 ＋ ④ that でも OK を明示 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン4 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">3つを使って<span class="accent">2文を1文に</span>まとめよう</div>
+      </div>
+
+      <div class="merge-set">
+        <div class="merge-card">
+          <div class="merge-header">
+            <div class="merge-badge who-b">who</div>
+            <div class="merge-q">I know a woman. + She speaks three languages.</div>
+          </div>
+          <div class="merge-ans">→ I know a woman <span class="hl-who"><strong>who</strong></span> speaks three languages.</div>
+          <!-- ④ that でも OK を追記 -->
+          <div class="merge-alt">💡 that でも OK → I know a woman <strong>that</strong> speaks three languages.</div>
+        </div>
+
+        <div class="merge-card">
+          <div class="merge-header">
+            <div class="merge-badge which-b">which</div>
+            <div class="merge-q">I have a bike. + It goes very fast.</div>
+          </div>
+          <div class="merge-ans">→ I have a bike <span class="hl-which"><strong>which</strong></span> goes very fast.</div>
+          <div class="merge-alt">💡 that でも OK → I have a bike <strong>that</strong> goes very fast.</div>
+        </div>
+
+        <div class="merge-card">
+          <div class="merge-header">
+            <div class="merge-badge that-b">that</div>
+            <div class="merge-q">This is the first movie. + It made me cry.</div>
+          </div>
+          <div class="merge-ans">→ This is the first movie <span class="hl-that"><strong>that</strong></span> made me cry.</div>
+          <div class="merge-alt" style="color:var(--sub);">※ first のあとなので that が最も自然（which より推奨）</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 who / which はそれぞれ that に書き換えられる。ただし first・only・best のあとは that が自然！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ ＋ ⑤ コンマ注意で締める -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン4 · まとめ</div>
+      <div>
+        <div class="concept-title">Unit 17 で学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">関係代名詞は<strong>名詞を後ろから説明して2文を1文にする</strong>言葉</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">先行詞が「人」→ <strong>who</strong>　「もの・動物」→ <strong>which</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text"><strong>that</strong> は who / which どちらの代わりにも使える。first・best・only のあとは that が自然</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">who / which はコンマ（,）の後ろでも使える。<strong>that はコンマの後ろでは使えない</strong></div>
+        </div>
+      </div>
+
+      <div class="chip-row">
+        <div class="chip who">人 → who / that</div>
+        <div class="chip which">もの・動物 → which / that</div>
+        <div class="chip that">どちらにも → that</div>
+      </div>
+
+      <!-- ⑤ コンマ注意で締める -->
+      <div class="comma-caution">⚠️ that は便利だが、<strong>コンマ（,）の後ろでは使えない</strong>ことを忘れずに！</div>
+
+      <div class="point-box">💡 おつかれさま！Unit 17 関係代名詞、全レッスン完了！演習で総仕上げをしよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit17-lesson4-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>
+

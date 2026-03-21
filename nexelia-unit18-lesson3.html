@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 18 レッスン3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --indigo: #283593;
+  --indigo-light: #E8EAF6;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --wrong: #C62828;
+  --wrong-light: #FFEBEE;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--indigo); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--indigo); }
+
+/* 変換ボックス */
+.transform-box { display: flex; flex-direction: column; gap: 10px; }
+.tx-row { border-radius: 12px; padding: 16px 20px; font-size: 15px; font-weight: 600; line-height: 1.6; }
+.tx-row.before { background: #F5F5F5; border: 1px solid #E0E0E0; color: var(--text); }
+.tx-row.after  { background: var(--indigo-light); border: 1px solid #9FA8DA; color: var(--indigo); }
+.tx-row.bad    { background: #FFEBEE; border: 1px solid #EF9A9A; color: var(--wrong); }
+.tx-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--sub); margin-bottom: 6px; }
+.tx-arrow { text-align: center; font-size: 20px; color: var(--indigo); line-height: 1; }
+.tx-arrow.bad { color: var(--wrong); }
+
+/* 例文分解カード */
+.decompose-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.decompose-card .dc-en { padding: 18px 22px; font-size: 18px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.decompose-card .dc-jp { padding: 10px 22px; font-size: 13px; color: var(--sub); background: var(--bg); border-bottom: 1px solid var(--border); }
+.decompose-card .dc-breakdown { padding: 16px 22px; display: flex; flex-direction: column; gap: 8px; background: var(--indigo-light); }
+.dc-row { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; }
+.dc-tag { background: var(--indigo); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+.dc-tag.ok { background: var(--green); }
+.dc-tag.warn { background: #E65100; }
+.dc-val { color: var(--text); }
+.dc-note { font-size: 12px; color: var(--indigo); font-weight: 700; padding-top: 4px; }
+.hl { color: var(--indigo); }
+
+/* NG / OK 対比ボックス */
+.compare-box { display: flex; flex-direction: column; gap: 10px; }
+.cmp-row { border-radius: 12px; padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start; }
+.cmp-row.ok-row  { background: var(--green-light); border: 1px solid #A5D6A7; }
+.cmp-row.bad-row { background: var(--wrong-light); border: 1px solid #EF9A9A; }
+.cmp-badge { font-size: 13px; font-weight: 700; min-width: 36px; padding-top: 2px; }
+.cmp-row.ok-row  .cmp-badge { color: var(--green); }
+.cmp-row.bad-row .cmp-badge { color: var(--wrong); }
+.cmp-detail { font-size: 14px; font-weight: 600; line-height: 1.75; color: var(--text); }
+.cmp-detail small { font-size: 12px; color: var(--sub); font-weight: 500; display: block; margin-top: 3px; }
+
+/* まとめアンカー */
+.summary-anchor { background: var(--indigo); border-radius: 16px; padding: 24px 28px; color: white; text-align: center; }
+.summary-anchor .sa-label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; opacity: 0.7; margin-bottom: 10px; }
+.summary-anchor .sa-formula { font-size: 20px; font-weight: 700; line-height: 1.6; margin-bottom: 6px; }
+.summary-anchor .sa-note { font-size: 13px; opacity: 0.8; line-height: 1.6; }
+
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.6; }
+
+.point-box { background: var(--indigo-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--indigo); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ミニ問題 */
+.mini-quiz { border: 2px solid var(--indigo); border-radius: 16px; overflow: hidden; }
+.mq-header { background: var(--indigo); padding: 10px 18px; }
+.mq-header span { font-size: 11px; font-weight: 700; color: white; letter-spacing: 0.08em; }
+.mq-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+.mq-q { font-size: 16px; font-weight: 700; line-height: 1.6; }
+.mq-opts { display: flex; gap: 10px; flex-wrap: wrap; }
+.mq-btn { padding: 10px 22px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--white); font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; color: var(--text); transition: border-color 0.12s, background 0.12s; }
+.mq-btn:hover:not(:disabled) { border-color: var(--indigo); background: var(--indigo-light); }
+.mq-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.mq-btn.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.mq-btn:disabled { cursor: default; }
+.mq-feedback { font-size: 13px; font-weight: 600; display: none; padding: 10px 14px; border-radius: 8px; }
+.mq-feedback.show { display: block; }
+.mq-feedback.ok { background: var(--green-light); color: var(--green); }
+.mq-feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(40,53,147,0.3); }
+.dot.active { background: var(--indigo); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .mq-opts { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 18 · 関係副詞 how</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+<a href="nexelia-unit18-lesson2_1.html" class="btn-exit">← Lesson 2</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：how とは？ — the way のかわり -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 18 · レッスン3 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">関係副詞 <span class="accent">how</span> とは？</div>
+      </div>
+
+      <div class="transform-box">
+        <div class="tx-label">2つの文を1つにまとめる</div>
+        <div class="tx-row before">I know the way. She solved the problem <strong>in that way</strong>.</div>
+        <div class="tx-arrow">↓ the way か how のどちらか1つでつなぐ</div>
+        <div class="tx-row after">✅ I know <strong>how</strong> she solved the problem.</div>
+        <div class="tx-row after" style="margin-top:-4px;">✅ I know the <strong>way</strong> she solved the problem.</div>
+        <div class="tx-row after" style="margin-top:-4px;">✅ I know the <strong>way that</strong> she solved the problem.</div>
+      </div>
+
+      <div class="point-box">💡 <strong>how</strong> は "the way" を1語でまとめた関係副詞。だから "the way how" と重ねて使うのは基本 NG — どちらか1つを選ぼう！<br><span style="font-size:13px;opacity:0.85;">※ the way のあとは that を使うか、何もつけないで文を続けてもOKだよ。</span></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：how を分解 ＋ ミニ問題① -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 18 · レッスン3 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">how</span> を分解しよう</div>
+      </div>
+
+      <div class="decompose-card">
+        <div class="dc-en">This is <strong class="hl">how</strong> he learned English.</div>
+        <div class="dc-jp">これが彼が英語を学んだ方法です。</div>
+        <div class="dc-breakdown">
+          <div class="dc-row">
+            <span class="dc-tag warn">先行詞なし</span>
+            <span class="dc-val">how が "the way" を1語で表している！</span>
+          </div>
+          <div class="dc-row">
+            <span class="dc-tag">how</span>
+            <span class="dc-val">関係副詞（「方法・やり方」を意味する）</span>
+          </div>
+          <div class="dc-row">
+            <span class="dc-tag ok">主語＋動詞</span>
+            <span class="dc-val"><strong>he</strong> ＋ <strong>learned</strong> ← 完全な文！</span>
+          </div>
+          <div class="dc-note">✅ how のあとも where / when / why と同じく「主語＋動詞」の完全な文が来る</div>
+        </div>
+      </div>
+
+      <div class="mini-quiz" id="mq1">
+        <div class="mq-header"><span>✏️ ミニ問題 — 正しいのはどっち？</span></div>
+        <div class="mq-body">
+          <div class="mq-q">「彼女が料理を作る方法」を英語で表すと？</div>
+          <div class="mq-opts">
+            <button class="mq-btn" data-correct="false" onclick="answerMQ(1,this)">the way how she cooks</button>
+            <button class="mq-btn" data-correct="true"  onclick="answerMQ(1,this)">how she cooks</button>
+          </div>
+          <div class="mq-feedback" id="mq1-fb"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：the way how NG の理由 ＋ 4語の整理 ＋ ミニ問題② -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 18 · レッスン3 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">"the way how" が<span class="accent">ダメな理由</span></div>
+      </div>
+
+      <div class="compare-box">
+        <div class="cmp-row bad-row">
+          <span class="cmp-badge">⚠️ 基本NG</span>
+          <div class="cmp-detail">
+            the way <strong>how</strong> she did it
+            <small>the way も how も「方法」を意味する → 意味が重複するので基本は使わない</small>
+          </div>
+        </div>
+        <div class="cmp-row ok-row">
+          <span class="cmp-badge">✓ OK</span>
+          <div class="cmp-detail">
+            <strong>how</strong> she did it
+            <small>how 1語で「the way ＋ 関係副詞」の両方を表せる</small>
+          </div>
+        </div>
+        <div class="cmp-row ok-row">
+          <span class="cmp-badge">✓ OK</span>
+          <div class="cmp-detail">
+            the <strong>way</strong> she did it　／　the <strong>way that</strong> she did it
+            <small>the way のあとは that を使うか、何もつけないで文を続けてもOK</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="mini-quiz" id="mq2">
+        <div class="mq-header"><span>✏️ ミニ問題 — 正しい文はどれ？</span></div>
+        <div class="mq-body">
+          <div class="mq-q">「私は彼が問題を解いた方法を知っている。」</div>
+          <div class="mq-opts">
+            <button class="mq-btn" data-correct="false" onclick="answerMQ(2,this)">I know the way how he solved it.</button>
+            <button class="mq-btn" data-correct="true"  onclick="answerMQ(2,this)">I know how he solved it.</button>
+            <button class="mq-btn" data-correct="false" onclick="answerMQ(2,this)">I know the way which he solved it.</button>
+          </div>
+          <div class="mq-feedback" id="mq2-fb"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 18 · レッスン3 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-anchor">
+        <div class="sa-label">これだけ覚えれば勝ち</div>
+        <div class="sa-formula">how ＝ "the way" を1語で表した関係副詞<br>"the way how" は基本 NG — どちらか1つ！</div>
+        <div class="sa-note">how のあとも「主語＋動詞」の完全な文が続く</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text"><strong>how</strong> は "the way" を1語で表す関係副詞 — だから先行詞なしで使う</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">"<strong>the way how</strong>" は基本 NG — <strong>how</strong> だけ、または <strong>the way / the way that</strong> を使う</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">how のあとも<strong>主語＋動詞の完全な文</strong>が来る（where / when / why と同じ！）</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！関係副詞 4語コンプリートまであと1レッスン！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+  const mqAnswered = {};
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function answerMQ(id, btn) {
+    if (mqAnswered[id]) return;
+    mqAnswered[id] = true;
+    const container = document.getElementById('mq' + id);
+    const btns = container.querySelectorAll('.mq-btn');
+    btns.forEach(function(b) {
+      b.disabled = true;
+      if (b.dataset.correct === 'true') b.classList.add('correct');
+    });
+    const isCorrect = btn.dataset.correct === 'true';
+    if (!isCorrect) btn.classList.add('wrong');
+    const fb = document.getElementById('mq' + id + '-fb');
+    fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+    if (id === 1) {
+      fb.textContent = isCorrect
+        ? '✓ 正解！how だけで「方法」の意味を含んでいるから、the way how とまとめて使うのは✗ なんだ！'
+        : '✗ 惜しい！"the way how" は the way も how も「方法」を意味するから重複してしまうよ。how だけ、か the way だけを使おう！';
+    } else {
+      fb.textContent = isCorrect
+        ? '✓ 正解！"the way how" は意味が重複するから基本 NG。"how he solved it" か "the way he solved it" か "the way that he solved it" が正解だよ！'
+        : '✗ 惜しい！"the way how" は意味が重複するから基本 NG だよ。"how he solved it" が正解。which のあとは目的語か主語が抜けた文が来るパターンで、ここでは使えないよ！';
+    }
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit18-lesson3-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>

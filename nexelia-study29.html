@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA | There is / There are の疑問文</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F; --blue: #1A56DB; --blue-dark: #1446B8; --blue-light: #E8F0FE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --green: #1B873B; --green-light: #E6F4EA; --orange: #E65100;
+  --teal: #00796B; --teal-light: #E0F2F1;
+  --purple: #7C3AED; --purple-light: #F3EEFF;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 420px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--purple); }
+
+.transform-list { display: flex; flex-direction: column; gap: 10px; }
+.transform-item { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--white); font-size: 15px; font-weight: 700; }
+.transform-item .before { color: var(--teal); }
+.transform-item .arrow  { color: var(--sub); font-size: 18px; }
+.transform-item .after  { color: var(--purple); }
+
+.answer-box { display: flex; flex-direction: column; gap: 8px; }
+.answer-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; font-weight: 700; }
+.answer-row.yes { background: var(--green-light); border-color: #A5D6A7; }
+.answer-row.no  { background: var(--wrong-light); border-color: #FFCDD2; }
+.answer-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+.answer-row.yes .answer-badge { background: var(--green); color: white; }
+.answer-row.no  .answer-badge { background: var(--wrong); color: white; }
+.answer-row.yes .answer-text { color: var(--green); }
+.answer-row.no  .answer-text { color: var(--wrong); }
+
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 18px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); letter-spacing: 0.02em; }
+.ex-single .en .q    { color: var(--purple); }
+.ex-single .en .noun { color: var(--orange); }
+.ex-single .jp { padding: 11px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+
+.point-box { background: var(--purple-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--purple); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { background: var(--blue-dark); }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(26,86,219,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) { nav { padding: 0 16px; } .nav-center { display: none; } main { padding: 20px 16px; } .slide-card { padding: 28px 20px; gap: 20px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">There is / There are の疑問文</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:33%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 3</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">There is / There are の疑問文 ・ スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">疑問文の<span class="accent">作り方</span></div>
+      </div>
+
+      <div style="font-size:14px; color:var(--sub); line-height:1.8;">
+        There is / There are の疑問文は、<br>
+        <strong style="color:var(--teal)">is / are</strong> を <strong style="color:var(--purple)">There</strong> の前に出します。
+      </div>
+
+      <div class="transform-list">
+        <div class="transform-item">
+          <span class="before">There is ...</span>
+          <span class="arrow">→</span>
+          <span class="after">Is there ...?</span>
+        </div>
+        <div class="transform-item">
+          <span class="before">There are ...</span>
+          <span class="arrow">→</span>
+          <span class="after">Are there ...?</span>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <div class="answer-row yes">
+          <span class="answer-badge">YES</span>
+          <span class="answer-text">Yes, there is. / Yes, there are.</span>
+        </div>
+        <div class="answer-row no">
+          <span class="answer-badge">NO</span>
+          <span class="answer-text">No, there isn't. / No, there aren't.</span>
+        </div>
+      </div>
+
+      <div class="point-box">ポイント: is / are を There の前に出すだけ。be動詞の疑問文と同じ並びです。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">前へ</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">次へ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">There is / There are の疑問文 ・ スライド 2</div>
+      <div>
+        <div class="concept-title">例文で確認</div>
+        <div class="concept-text">例文で練習しよう</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="q">Is there</span> a <span class="noun">cat</span> on the desk?</div>
+          <div class="jp">机の上に猫はいますか？</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="q">Are there</span> any <span class="noun">books</span> on the shelf?</div>
+          <div class="jp">棚に本はありますか？</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="q">Is there</span> a <span class="noun">park</span> near your house?</div>
+          <div class="jp">あなたの家の近くに公園はありますか？</div>
+        </div>
+      </div>
+
+      <div class="point-box">疑問文では any をよく使う。Are there any ...? の形を覚えよう。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">次へ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">There is / There are の疑問文 ・ まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">is / are を There の前に出す: <strong style="color:var(--purple)">Is there ...?</strong> / <strong style="color:var(--purple)">Are there ...?</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">答え方: <strong style="color:var(--green)">Yes, there is/are.</strong> / <strong style="color:var(--wrong)">No, there isn't/aren't.</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">疑問文では <strong style="color:var(--purple)">any</strong> をよく使う（Are there any ...?）。</div>
+        </div>
+      </div>
+
+      <div class="point-box">3つのポイントを押さえたら演習に進もう。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 3;
+  let cur = 0;
+  const LESSON_ID = 'lesson29';
+  const PROGRESS_KEY = 'nexeliaLessonProgress';
+
+  function saveLessonProgress(value) {
+    try {
+      const raw = localStorage.getItem(PROGRESS_KEY) || '{}';
+      const progressMap = JSON.parse(raw);
+      const nextValue = Math.max(Number(progressMap[LESSON_ID]) || 0, value);
+      progressMap[LESSON_ID] = nextValue;
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+      localStorage.setItem('nexeliaLastLesson', LESSON_ID);
+    } catch (_) {}
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() {
+    saveLessonProgress(60);
+    location.href = 'nexelia-exercise28.html';
+  });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+
+  saveLessonProgress(30);
+  renderDots(0);
+</script>
+</body>
+</html>
+

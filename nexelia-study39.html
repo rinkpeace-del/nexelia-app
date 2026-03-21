@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 11 レッスン1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --indigo: #3949AB;
+  --indigo-light: #E8EAF6;
+  --accent: #3949AB;
+  --accent-light: #E8EAF6;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--indigo); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--accent); }
+
+/* 能動 vs 受動 比較 */
+.compare-row { display: flex; gap: 12px; }
+.compare-cell { flex: 1; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.compare-cell.active-v  { background: #FFF8E1; border: 1px solid #FFE082; }
+.compare-cell.passive-v { background: var(--indigo-light); border: 1px solid #9FA8DA; }
+.compare-cell .c-badge { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-block; width: fit-content; }
+.compare-cell.active-v  .c-badge { background: #F9A825; color: white; }
+.compare-cell.passive-v .c-badge { background: var(--indigo); color: white; }
+.compare-cell .c-en { font-size: 15px; font-weight: 700; line-height: 1.5; }
+.compare-cell.active-v  .c-en { color: #7B5E00; }
+.compare-cell.passive-v .c-en { color: var(--indigo); }
+.compare-cell .c-jp { font-size: 13px; color: var(--sub); font-weight: 500; }
+
+/* 形の分解図 */
+.formula-box { background: var(--indigo-light); border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.formula-box .f-part { background: var(--white); border: 1.5px solid #9FA8DA; border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; color: var(--indigo); }
+.formula-box .f-plus { font-size: 20px; font-weight: 700; color: var(--indigo); }
+.formula-box .f-label { font-size: 11px; color: var(--sub); font-weight: 600; text-align: center; display: block; margin-top: 4px; }
+
+/* 例文 */
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 18px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); }
+.ex-single .jp { padding: 11px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--indigo); }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--indigo); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(57,73,171,0.3); }
+.dot.active { background: var(--indigo); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .compare-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 11 · 受動態とは？</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：受動態とは？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン1 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">受動態</span>とは？</div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell active-v">
+          <div class="c-badge">能動態（ふつうの文）</div>
+          <div class="c-en">Ken <strong>cleaned</strong> the room.</div>
+          <div class="c-jp">ケンがその部屋を掃除した。</div>
+        </div>
+        <div class="compare-cell passive-v">
+          <div class="c-badge">受動態</div>
+          <div class="c-en">The room <strong>was cleaned</strong> by Ken.</div>
+          <div class="c-jp">その部屋はケンによって掃除された。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 受動態は「〜される・〜された」という意味。主語が「される側」になるよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：基本の形 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン1 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">受動態の<span class="accent">基本の形</span></div>
+      </div>
+
+      <div class="formula-box">
+        <div style="text-align:center">
+          <div class="f-part">be 動詞</div>
+          <span class="f-label">is / are / was / were</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part">過去分詞</div>
+          <span class="f-label">動詞の「過去分詞形」</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="ex-single">
+          <div class="en">English <span class="hl">is spoken</span> here.</div>
+          <div class="jp">ここでは英語が話されている。（現在：is ＋ 過去分詞）</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">This song <span class="hl">was sung</span> <span style="color:var(--green)">by her</span>.</div>
+          <div class="jp">この歌は彼女によって歌われた。（過去：was ＋ 過去分詞）</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 be 動詞は現在なら is / are、過去なら was / were を使うよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：過去分詞とは？ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン1 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">過去分詞</span>とは？</div>
+      </div>
+
+      <div style="background:var(--indigo-light);border-radius:16px;padding:22px 26px;">
+        <div style="font-size:15px;font-weight:700;color:var(--indigo);line-height:1.8;">
+          動詞を変化させた形のひとつ。<br>
+          「〜された」「〜されている」という<br>受け身の意味を表すときに使う。
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="ex-single">
+          <div class="en" style="font-size:15px;">
+            <span style="color:var(--sub);font-weight:600;">原形：</span> write　
+            <span style="color:var(--sub);">→</span>　
+            <span style="color:var(--sub);font-weight:600;">過去分詞：</span> <span class="hl">written</span>
+          </div>
+          <div class="jp">This letter was <span style="color:var(--indigo);font-weight:700;">written</span> by him.　／　この手紙は彼によって書かれた。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en" style="font-size:15px;">
+            <span style="color:var(--sub);font-weight:600;">原形：</span> use　
+            <span style="color:var(--sub);">→</span>　
+            <span style="color:var(--sub);font-weight:600;">過去分詞：</span> <span class="hl">used</span>
+          </div>
+          <div class="jp">English is <span style="color:var(--indigo);font-weight:700;">used</span> here.　／　ここでは英語が使われている。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 過去分詞は動詞が変化した形。受動態では be 動詞とセットで使うよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン1 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">受動態 ＝「〜される・〜された」を表す文</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text"><strong>be 動詞 ＋ 過去分詞</strong> が基本の形</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">過去分詞 ＝ 動詞が変化した形。受け身の意味を表す</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text"><strong>by ～</strong> で「〜によって」を表す（省略可）</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 形と意味が頭に入ったら演習に進もう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-exercise39.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+</body>
+</html>
+

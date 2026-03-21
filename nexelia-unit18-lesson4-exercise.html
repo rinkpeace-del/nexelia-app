@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 18 レッスン4 · 演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --indigo: #283593; --indigo-light: #E8EAF6;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--indigo); }
+.q-text  { font-size: 19px; font-weight: 700; line-height: 1.5; }
+.q-focus { font-size: 17px; color: var(--indigo); font-weight: 700; display: block; background: var(--indigo-light); padding: 12px 16px; border-radius: 10px; line-height: 1.6; margin-top: 4px; }
+.q-sub   { font-size: 14px; color: var(--sub); line-height: 1.7; }
+.tx-box { display: flex; flex-direction: column; gap: 8px; }
+.tx-row { border-radius: 10px; padding: 13px 18px; font-size: 15px; font-weight: 600; line-height: 1.6; }
+.tx-row.before { background: #F5F5F5; border: 1px solid #E0E0E0; color: var(--text); }
+.tx-label-sm { font-size: 11px; font-weight: 700; color: var(--sub); letter-spacing: 0.06em; }
+.options { display: grid; grid-template-columns: 1fr; gap: 11px; margin-top: auto; }
+.opt { padding: 15px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--indigo); background: var(--indigo-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt:disabled { cursor: default; transform: none; }
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; display: none; line-height: 1.8; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+.dots { display: flex; gap: 7px; align-items: center; }
+.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(40,53,147,0.3); }
+.dot.active { background: var(--indigo); width: 22px; }
+
+/* 結果画面 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 52px; margin-bottom: 14px; }
+.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+.score-badge { font-size: 44px; font-weight: 700; color: var(--indigo); margin-bottom: 4px; }
+.score-sub { font-size: 13px; color: var(--sub); font-weight: 600; margin-bottom: 10px; }
+.rank-badge { display: inline-block; font-size: 28px; font-weight: 700; padding: 6px 28px; border-radius: 40px; margin-bottom: 18px; }
+.rank-S { background: #FFF8E1; color: #F57F17; border: 2px solid #FFB300; }
+.rank-A { background: var(--green-light); color: var(--green); border: 2px solid #66BB6A; }
+.rank-B { background: var(--indigo-light); color: var(--indigo); border: 2px solid #7986CB; }
+.rank-C { background: var(--wrong-light); color: var(--wrong); border: 2px solid #EF9A9A; }
+.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.9; margin-bottom: 20px; }
+.recap-box { background: var(--indigo-light); border: 1.5px solid #9FA8DA; border-radius: 14px; padding: 16px 24px; margin-bottom: 28px; text-align: left; font-size: 13px; font-weight: 600; color: var(--indigo); line-height: 1.9; width: 100%; max-width: 440px; }
+.recap-box .rb-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--sub); margin-bottom: 8px; }
+.complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cbtn { padding: 13px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; border: none; }
+.cbtn.primary { background: var(--indigo); color: white; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+@media (max-width: 600px) { nav { padding: 0 16px; } .nav-center { display: none; } main { padding: 20px 16px; } .quiz-card { padding: 24px 18px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 18 · 関係副詞 総合演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:10%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 10</span>
+  </div>
+  <a href="nexelia-unit18-lesson4_2.html" class="btn-exit">← スライドへ</a>
+</nav>
+
+<main>
+
+  <!-- Q1：where — 先行詞＋完全文（which を強いひっかけに） -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-label">問題 1 / 10　🟢 基本</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <span class="q-focus">This is the <strong>town</strong> （　　） I grew up.</span>
+      <div class="q-sub">① 先行詞「town」は何を表している？ ② あとの「I grew up」の文の形は？</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="false">when</button>
+        <button class="opt" data-correct="true">where</button>
+        <button class="opt" data-correct="false">which</button>
+        <button class="opt" data-correct="false">how</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：when — 先行詞＋完全文 -->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-label">問題 2 / 10　🟢 基本</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <span class="q-focus">I remember the <strong>day</strong> （　　） we first met.</span>
+      <div class="q-sub">① 先行詞「day」は何を表している？ ② あとの文は完全？</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">where</button>
+        <button class="opt" data-correct="true">when</button>
+        <button class="opt" data-correct="false">why</button>
+        <button class="opt" data-correct="false">which</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：why — the reason -->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-label">問題 3 / 10　🟢 基本</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <span class="q-focus">Do you know the <strong>reason</strong> （　　） she cried?</span>
+      <div class="q-sub">① 先行詞「the reason」は何を表している？ ② あとの文は完全？</div>
+      <div class="options" id="o2">
+        <button class="opt" data-correct="false">where</button>
+        <button class="opt" data-correct="false">when</button>
+        <button class="opt" data-correct="true">why</button>
+        <button class="opt" data-correct="false">which</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：how — "the way how" は基本NG / "the way that" はOK -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">問題 4 / 10　🟢 基本</div>
+      <div class="q-text">正しい英文はどれ？</div>
+      <div class="q-sub">「彼が英語を学んだ方法」— how と the way の使い分けに注意！"the way how" は基本NG。</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false">the way how he learned English</button>
+        <button class="opt" data-correct="true">how he learned English</button>
+        <button class="opt" data-correct="false">the way which he learned English</button>
+        <button class="opt" data-correct="false">how did he learn English</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5（中間）：where — 完全文を確認（基本→標準の橋渡し） -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">問題 5 / 10　🟢 基本＋</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <span class="q-focus">This is the <strong>park</strong> （　　） <span style="text-decoration:underline;text-underline-offset:4px">I play soccer after school</span>.</span>
+      <div class="q-sub">① 先行詞「park」は場所の名詞。 ② 下線部「I play soccer after school」の文の形は？</div>
+      <div class="options" id="o4">
+        <button class="opt" data-correct="true">where</button>
+        <button class="opt" data-correct="false">which</button>
+        <button class="opt" data-correct="false">when</button>
+        <button class="opt" data-correct="false">why</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q6：where vs which — 目的語抜け（旧Q5） -->
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label">問題 6 / 10　🟡 標準</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <span class="q-focus">This is the <strong>museum</strong> （　　） <span style="text-decoration:underline;text-underline-offset:4px">we visited last year</span>.</span>
+      <div class="q-sub">① 先行詞「museum」は場所の名詞。 ② 下線部「we visited last year」— visit の目的語はある？ない？</div>
+      <div class="options" id="o5">
+        <button class="opt" data-correct="false">where</button>
+        <button class="opt" data-correct="true">which</button>
+        <button class="opt" data-correct="false">when</button>
+        <button class="opt" data-correct="false">why</button>
+      </div>
+      <div class="feedback" id="f5"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back5">← もどる</button>
+      <div class="dots" id="d5"></div>
+      <button class="btn-nav primary" id="n5" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q7：when vs which — 主語抜け（旧Q6） -->
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label">問題 7 / 10　🟡 標準</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <span class="q-focus">2020 was the <strong>year</strong> （　　） <span style="text-decoration:underline;text-underline-offset:4px">changed everything</span>.</span>
+      <div class="q-sub">① 先行詞「year」は時の名詞。 ② 下線部「changed everything」— 主語はある？ない？</div>
+      <div class="options" id="o6">
+        <button class="opt" data-correct="false">when</button>
+        <button class="opt" data-correct="true">which</button>
+        <button class="opt" data-correct="false">where</button>
+        <button class="opt" data-correct="false">why</button>
+      </div>
+      <div class="feedback" id="f6"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back6">← もどる</button>
+      <div class="dots" id="d6"></div>
+      <button class="btn-nav primary" id="n6" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q8：how — the way that もOK（旧Q7、選択肢に the way that 追加） -->
+  <div class="slide" id="s7">
+    <div class="quiz-card">
+      <div class="q-label">問題 8 / 10　🟡 標準</div>
+      <div class="q-text">正しい英文はどれ？</div>
+      <div class="q-sub">「私は彼が問題を解いた方法に驚いた。」— "the way how" は基本NG。"the way that" はOKだよ。</div>
+      <div class="options" id="o7">
+        <button class="opt" data-correct="false">I was amazed at the way how he solved the problem.</button>
+        <button class="opt" data-correct="false">I was amazed at the way that how he solved the problem.</button>
+        <button class="opt" data-correct="true">I was amazed at how he solved the problem.</button>
+        <button class="opt" data-correct="false">I was amazed at which he solved the problem.</button>
+      </div>
+      <div class="feedback" id="f7"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back7">← もどる</button>
+      <div class="dots" id="d7"></div>
+      <button class="btn-nav primary" id="n7" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q9：2文→1文（where、旧Q8 — 不自然選択肢を修正） -->
+  <div class="slide" id="s8">
+    <div class="quiz-card">
+      <div class="q-label">問題 9 / 10　🔴 応用</div>
+      <div class="q-text">2つの文を1つにまとめると？</div>
+      <div class="tx-box">
+        <div class="tx-label-sm">2つの文</div>
+        <div class="tx-row before">I know the café. She studies <strong>there</strong> every morning.</div>
+      </div>
+      <div class="q-sub">there（そこで）を where に置き換えて先行詞（café）のあとにつなごう。where のあとの語順は？</div>
+      <div class="options" id="o8">
+        <button class="opt" data-correct="false">I know the café which she studies every morning.</button>
+        <button class="opt" data-correct="false">I know the café where studies she every morning.</button>
+        <button class="opt" data-correct="true">I know the café where she studies every morning.</button>
+        <button class="opt" data-correct="false">I know the café there she studies every morning.</button>
+      </div>
+      <div class="feedback" id="f8"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back8">← もどる</button>
+      <div class="dots" id="d8"></div>
+      <button class="btn-nav primary" id="n8" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q10：総合最難 — restaurant（場所）＋ opened（主語抜け）→ which（旧Q10） -->
+  <div class="slide" id="s9">
+    <div class="quiz-card">
+      <div class="q-label">問題 10 / 10　🔴 応用</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <span class="q-focus">The restaurant （　　） <span style="text-decoration:underline;text-underline-offset:4px">opened last month</span> is very popular.</span>
+      <div class="q-sub">① 先行詞「restaurant」は場所の名詞。 ② でも「opened last month」の文の形をよく見よう。2ステップで判断！</div>
+      <div class="options" id="o9">
+        <button class="opt" data-correct="false">where</button>
+        <button class="opt" data-correct="false">when</button>
+        <button class="opt" data-correct="true">which</button>
+        <button class="opt" data-correct="false">why</button>
+      </div>
+      <div class="feedback" id="f9"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back9">← もどる</button>
+      <div class="dots" id="d9"></div>
+      <button class="btn-nav primary" id="n9" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon" id="c-icon"></div>
+    <h1 id="c-title"></h1>
+    <div class="score-badge" id="c-score"></div>
+    <div class="score-sub">/ 10問正解</div>
+    <div class="rank-badge" id="c-rank"></div>
+    <p id="c-msg"></p>
+    <div class="recap-box">
+      <div class="rb-title">🔑 攻略の2ステップ（いつでも使える）</div>
+      ① 先行詞の種類を見る<br>
+      　　場所 → <strong>where</strong>　時 → <strong>when</strong>　理由 → <strong>why</strong>　方法 → <strong>how</strong><br>
+      ② あとの文が完全か確認する<br>
+      　　完全な文 → 関係副詞　／　主語・目的語が抜けた文 → <strong>which</strong>
+    </div>
+    <div class="complete-btns">
+      <button class="cbtn secondary" onclick="retry()">もう一度挑戦</button>
+      <a href="nexelia-unit18-lesson4_2.html" class="cbtn secondary">← スライドへ</a>
+      <a href="lessons.html" class="cbtn primary">レッスン一覧へ →</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 10; let cur = 0; let correct = 0; const answered = {};
+  const LESSON_ID = 'lesson71';
+  const PROGRESS_KEY = 'nexeliaLessonProgress';
+
+  function saveLessonProgress(value) {
+    let progressMap = {};
+    try { progressMap = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; }
+    catch (e) { progressMap = {}; }
+    const nextValue = Math.max(Number(progressMap[LESSON_ID]) || 0, value);
+    progressMap[LESSON_ID] = nextValue;
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+    localStorage.setItem('nexeliaLastLesson', LESSON_ID);
+  }
+
+  const FB = [
+    {
+      ok: '✓ 正解！① 先行詞「town」は場所の名詞 ② 「I grew up」は完全な文（主語＋動詞あり）→ 関係副詞 where！which のあとは目的語（または主語）が抜けた文が来るよ。',
+      ng: '✗ 惜しい！2ステップで確認しよう。① 先行詞「town」は場所の名詞 ② 「I grew up」は完全な文（主語あり）→ 完全な文なら関係副詞 where。which のあとは目的語（または主語）が抜けた文が来るよ！'
+    },
+    {
+      ok: '✓ 正解！① 先行詞「day」は時の名詞 ② 「we first met」は完全な文 → 関係副詞 when！"then"（そのとき）のかわりだよ。',
+      ng: '✗ 惜しい！2ステップで確認しよう。① 先行詞「day」は時の名詞 ② 「we first met」は完全な文 → when。where は場所、why は主に the reason のあとだよ！'
+    },
+    {
+      ok: '✓ 正解！① 先行詞が the reason ② 「she cried」は完全な文 → 関係副詞 why！the reason → why のセットを覚えよう。',
+      ng: '✗ 惜しい！先行詞が the reason のときは why を使うよ。where は場所の名詞、when は時の名詞のあとだよ。the reason → why のセットを覚えよう！'
+    },
+    {
+      ok: '✓ 正解！how は "the way" を1語で表すから "the way how" は意味が重複して基本NG。how のあとは普通の語順（主語＋動詞）のまま — 疑問文の語順にしないよう注意！',
+      ng: '✗ 惜しい！how だけが正解。"the way how" は基本NG（意味が重複）。"the way which" も which のあとは目的語（または主語）が抜けた文になるから使えない。how のあとは普通の語順（主語＋動詞）で続けよう！'
+    },
+    {
+      ok: '✓ 正解！① 先行詞「park」は場所の名詞 ② 「I play soccer after school」は完全な文（主語＋動詞あり）→ 関係副詞 where！which のあとは目的語（または主語）が抜けた文が来るよ。',
+      ng: '✗ 惜しい！2ステップで確認しよう。① 先行詞「park」は場所の名詞 ② 「I play soccer after school」は完全な文 → 関係副詞 where。which のあとは目的語（または主語）が抜けた文が来るよ！'
+    },
+    {
+      ok: '✓ 正解！① 先行詞「museum」は場所の名詞だけど ② 「we visited last year」は visit の目的語（the museum）が抜けている → 目的語が抜けた文 → 関係代名詞 which！先行詞の種類だけで判断しないのがポイント。',
+      ng: '✗ 惜しい！① 先行詞「museum」は場所の名詞だから where を使いたくなるね。でも ② 「we visited last year」は visit の目的語（the museum）が抜けている。目的語（または主語）が抜けた文 → 関係代名詞 which だよ！'
+    },
+    {
+      ok: '✓ 正解！① 先行詞「year」は時の名詞だけど ② 「changed everything」には主語がない（which 自体が主語）→ 主語が抜けた文 → 関係代名詞 which！when のあとは完全な文が来るよ。',
+      ng: '✗ 惜しい！① 先行詞「year」は時の名詞だから when を使いたくなるね。でも ② 「changed everything」には主語がない（which 自体が主語の役割）。主語（または目的語）が抜けた文 → 関係代名詞 which だよ！'
+    },
+    {
+      ok: '✓ 正解！先行詞なし＋方法 → how。"the way how" は基本NG（意味が重複）。"the way that he solved" でもOKだよ。which のあとは目的語（または主語）が抜けた文が来るパターン！',
+      ng: '✗ 惜しい！方法を表す先行詞なしの関係副詞は how だよ。"the way how" は基本NG。"the way that how" も同様にNG。which のあとは目的語（または主語）が抜けた文が来るパターンだよ！'
+    },
+    {
+      ok: '✓ 正解！① 先行詞「café」は場所の名詞 ② 「she studies every morning」は完全な文 → 関係副詞 where！there を where に置き換えて、あとは普通の語順（主語＋動詞）のまま続けるよ。',
+      ng: '✗ 惜しい！there を where に置き換えて café のすぐあとに続けるよ。① 先行詞「café」は場所の名詞 ② 「she studies every morning」は完全な文 → where。which は目的語（または主語）が抜けた文に使うよ！'
+    },
+    {
+      ok: '✓ 正解！① 先行詞「restaurant」は場所の名詞だけど ② 「opened last month」には主語がない（which 自体が主語）→ 主語が抜けた文 → 関係代名詞 which！where のあとは完全な文が来るよ。',
+      ng: '✗ 惜しい！① 先行詞「restaurant」は場所の名詞だから where を使いたくなるね。でも ② 「opened last month」には主語がない（which 自体が主語の役割）。主語（または目的語）が抜けた文 → 関係代名詞 which が正解！'
+    },
+  ];
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id); if (!el) return; el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active'); cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    const pct = Math.round((cur + 1) / TOTAL * 100);
+    document.getElementById('nav-fill').style.width = pct + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s9').classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+    document.getElementById('c-score').textContent = correct;
+
+    let rank, icon, title, msg;
+    if (correct === 10) {
+      rank = 'S'; icon = '🏆'; title = '全問正解！パーフェクト！';
+      msg = '関係副詞 where / when / why / how の使い分けも、関係代名詞 which との違いも完璧だね。ここまで来たら自信を持って！';
+    } else if (correct >= 8) {
+      rank = 'A'; icon = '🎉'; title = 'すばらしい！';
+      msg = 'ほぼ完璧！間違えた問題だけスライドで確認してみよう。どこかで「先行詞の種類」か「あとの文の形」のどちらかを見落としているかも。';
+    } else if (correct >= 6) {
+      rank = 'B'; icon = '👍'; title = 'もう一歩！';
+      msg = '半分以上できてる！where と which、when と which の使い分けが特にポイント。スライドの「判断フロー」をもう一度確認しよう。';
+    } else {
+      rank = 'C'; icon = '📖'; title = 'スライドを見直そう！';
+      msg = '焦らなくてOK！「①先行詞の種類を見る ②あとの文が完全か確認する」この2ステップをスライドで確認してから再チャレンジしよう。';
+    }
+
+    document.getElementById('c-icon').textContent = icon;
+    document.getElementById('c-title').textContent = title;
+    document.getElementById('c-msg').textContent = msg;
+    const rb = document.getElementById('c-rank');
+    rb.textContent = 'ランク ' + rank;
+    rb.className = 'rank-badge rank-' + rank;
+    if (correct === 10) saveLessonProgress(100);
+    else if (correct >= 6) saveLessonProgress(80);
+    else saveLessonProgress(60);
+  }
+
+  function retry() {
+    correct = 0;
+    Object.keys(answered).forEach(k => delete answered[k]);
+    // 全オプションをリセット
+    for (let q = 0; q < TOTAL; q++) {
+      document.querySelectorAll('#o' + q + ' .opt').forEach(b => {
+        b.disabled = false;
+        b.classList.remove('correct', 'wrong');
+      });
+      const fb = document.getElementById('f' + q);
+      if (fb) { fb.classList.remove('show', 'ok', 'ng'); fb.textContent = ''; }
+      const nb = document.getElementById('n' + q);
+      if (nb) nb.disabled = true;
+    }
+    document.getElementById('complete').classList.remove('active');
+    cur = 0;
+    document.getElementById('s0').classList.add('active');
+    document.getElementById('nav-fill').style.width = '10%';
+    document.getElementById('nav-count').textContent = '1 / ' + TOTAL;
+    renderDots(0);
+  }
+
+  for (var q = 0; q < TOTAL; q++) {
+    (function(qIdx) {
+      document.querySelectorAll('#o' + qIdx + ' .opt').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (answered[qIdx]) return; answered[qIdx] = true;
+          const isCorrect = btn.dataset.correct === 'true';
+          if (isCorrect) correct++;
+          document.querySelectorAll('#o' + qIdx + ' .opt').forEach(function(b) {
+            b.disabled = true;
+            if (b.dataset.correct === 'true') b.classList.add('correct');
+          });
+          if (!isCorrect) btn.classList.add('wrong');
+          const fb = document.getElementById('f' + qIdx);
+          fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+          fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
+          document.getElementById('n' + qIdx).disabled = false;
+        });
+      });
+    })(q);
+  }
+
+  // ナビゲーション
+  for (var i = 0; i < TOTAL - 1; i++) {
+    (function(idx) {
+      document.getElementById('n' + idx).addEventListener('click', function() { go(idx + 1); });
+    })(i);
+  }
+  document.getElementById('n9').addEventListener('click', function() { finish(); });
+  for (var i = 1; i < TOTAL; i++) {
+    (function(idx) {
+      document.getElementById('back' + idx).addEventListener('click', function() { go(idx - 1); });
+    })(i);
+  }
+
+  renderDots(0);
+</script>
+</body>
+</html>

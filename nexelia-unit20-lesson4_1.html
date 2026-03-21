@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 20 レッスン4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --purple: #4527A0;
+  --purple-light: #EDE7F6;
+  --in-color: #4527A0;   --in-bg: #EDE7F6;
+  --on-color: #00695C;   --on-bg: #E0F2F1;
+  --at-color: #C62828;   --at-bg: #FFEBEE;
+  --to-color: #1565C0;   --to-bg: #E3F2FD;
+  --by-color: #6A1B9A;   --by-bg: #F3E5F5;
+  --for-color: #E65100;  --for-bg: #FFF8E1;
+  --with-color: #2E7D32; --with-bg: #E8F5E9;
+  --during-color: #00838F; --during-bg: #E0F7FA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 18px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--purple); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--purple); }
+
+/* 共通ルールバナー */
+.rule-banner { background: var(--purple); border-radius: 12px; padding: 13px 20px; }
+.rb-top { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.08em; margin-bottom: 8px; }
+.rb-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.rb-chip { border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.rb-chip.in    { background: var(--in-bg);  color: var(--in-color); }
+.rb-chip.on    { background: var(--on-bg);  color: var(--on-color); }
+.rb-chip.at    { background: var(--at-bg);  color: var(--at-color); }
+.rb-chip .rk   { font-size: 11px; font-weight: 500; opacity: 0.8; }
+
+/* 3カテゴリ整理テーブル */
+.master-table { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+.mt-section { border-top: 1px solid var(--border); }
+.mt-section:first-child { border-top: none; }
+.mt-sec-head { padding: 8px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px; }
+.mt-sec-head.place  { background: #E8EAF6; color: var(--purple); }
+.mt-sec-head.time   { background: var(--to-bg); color: var(--to-color); }
+.mt-sec-head.move   { background: var(--with-bg); color: var(--with-color); }
+.mt-row { display: grid; grid-template-columns: 54px 1fr 1fr; border-top: 1px solid var(--border); }
+.mt-word { padding: 9px 11px; font-size: 13px; font-weight: 700; display: flex; align-items: center; }
+.mt-cell { padding: 8px 11px; font-size: 12px; font-weight: 600; background: var(--white); border-left: 1px solid var(--border); line-height: 1.45; display: flex; align-items: center; color: var(--sub); }
+.mt-row.p-in   .mt-word { background: var(--in-bg);  color: var(--in-color); }
+.mt-row.p-on   .mt-word { background: var(--on-bg);  color: var(--on-color); }
+.mt-row.p-at   .mt-word { background: var(--at-bg);  color: var(--at-color); }
+.mt-row.t-in   .mt-word { background: var(--in-bg);  color: var(--in-color); }
+.mt-row.t-on   .mt-word { background: var(--on-bg);  color: var(--on-color); }
+.mt-row.t-at   .mt-word { background: var(--at-bg);  color: var(--at-color); }
+.mt-row.d-to   .mt-word { background: var(--to-bg);  color: var(--to-color); }
+.mt-row.d-into .mt-word { background: var(--on-bg);  color: var(--on-color); }
+.mt-row.d-thr  .mt-word { background: var(--by-bg);  color: var(--by-color); font-size: 11px; line-height: 1.5; }
+
+/* 完全共通ルール対比 */
+.common-banner { background: var(--purple); border-radius: 12px; padding: 13px 20px; }
+.cb-top { font-size: 12px; font-weight: 700; color: white; margin-bottom: 10px; }
+.cb-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.cb-cell { border-radius: 9px; padding: 9px 10px; text-align: center; }
+.cb-cell.in { background: var(--in-bg); }
+.cb-cell.on { background: var(--on-bg); }
+.cb-cell.at { background: var(--at-bg); }
+.cb-word { font-size: 18px; font-weight: 700; display: block; margin-bottom: 3px; }
+.cb-cell.in .cb-word { color: var(--in-color); }
+.cb-cell.on .cb-word { color: var(--on-color); }
+.cb-cell.at .cb-word { color: var(--at-color); }
+.cb-place { font-size: 10px; font-weight: 700; color: var(--sub); display: block; }
+.cb-time  { font-size: 10px; font-weight: 600; color: var(--sub); display: block; margin-top: 2px; }
+
+/* なぜ共通か説明バー */
+.why-bar { background: #FFF8E1; border: 1px solid #FFE082; border-radius: 10px; padding: 11px 16px; font-size: 13px; font-weight: 700; color: #5D4037; line-height: 1.65; }
+
+/* 例文ペア */
+.ex-pair { display: flex; flex-direction: column; gap: 8px; }
+.ex-single { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.ex-single .en { padding: 11px 18px; font-size: 15px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 8px 18px; font-size: 12px; color: var(--sub); background: var(--bg); }
+
+/* 混ざりやすいペア */
+.confuse-list { display: flex; flex-direction: column; gap: 10px; }
+.conf-card { border-radius: 13px; overflow: hidden; border: 1px solid var(--border); }
+.conf-head { padding: 9px 16px; font-size: 11px; font-weight: 700; color: white; letter-spacing: 0.04em; display: flex; align-items: center; justify-content: space-between; }
+.conf-head.by-until  { background: var(--by-color); }
+.conf-head.by-with   { background: var(--with-color); }
+.conf-head.for-during{ background: var(--for-color); }
+.conf-onerule { font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 10px; }
+.conf-body { display: grid; grid-template-columns: 1fr 1fr; }
+.conf-cell { padding: 12px 14px; font-size: 13px; font-weight: 600; line-height: 1.6; }
+.conf-cell:nth-child(2) { border-left: 1px solid var(--border); }
+.conf-word { font-size: 16px; font-weight: 700; display: block; margin-bottom: 3px; }
+.conf-cell.by-c    .conf-word { color: var(--by-color); }
+.conf-cell.until-c .conf-word { color: var(--at-color); }
+.conf-cell.with-c  .conf-word { color: var(--with-color); }
+.conf-cell.for-c   .conf-word { color: var(--for-color); }
+.conf-cell.dur-c   .conf-word { color: var(--during-color); }
+.conf-eg { font-size: 11px; color: var(--sub); font-weight: 500; margin-top: 3px; display: block; }
+.conf-key { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; display: inline-block; margin-bottom: 4px; }
+.conf-cell.by-c    .conf-key { background: var(--by-bg);      color: var(--by-color); }
+.conf-cell.until-c .conf-key { background: var(--at-bg);      color: var(--at-color); }
+.conf-cell.with-c  .conf-key { background: var(--with-bg);    color: var(--with-color); }
+.conf-cell.for-c   .conf-key { background: var(--for-bg);     color: var(--for-color); }
+.conf-cell.dur-c   .conf-key { background: var(--during-bg);  color: var(--during-color); }
+/* for/during 数字vs名詞強調 */
+.num-badge { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 6px; display: inline-block; margin-bottom: 4px; }
+.num-badge.num { background: var(--for-bg); color: var(--for-color); border: 1.5px solid #FFCC80; }
+.num-badge.noun { background: var(--during-bg); color: var(--during-color); border: 1.5px solid #80DEEA; }
+
+/* 最終フロー（フル） */
+.final-flow { display: flex; flex-direction: column; gap: 5px; }
+.ff-row { display: flex; align-items: center; gap: 8px; border-radius: 9px; padding: 8px 12px; border: 1px solid var(--border); }
+.ff-cat { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 8px; flex-shrink: 0; min-width: 40px; text-align: center; }
+.ff-cat.place   { background: var(--purple);    color: white; }
+.ff-cat.time    { background: var(--to-color);  color: white; }
+.ff-cat.move    { background: var(--with-color);color: white; }
+.ff-cat.confuse { background: var(--for-color); color: white; }
+.ff-q  { font-size: 12px; font-weight: 700; flex: 1; }
+.ff-sep{ font-size: 12px; color: var(--sub); flex-shrink: 0; }
+.ff-ans{ font-size: 12px; font-weight: 700; flex-shrink: 0; min-width: 72px; text-align: right; }
+.ff-row:nth-child(1)  .ff-ans { color: var(--in-color); }
+.ff-row:nth-child(2)  .ff-ans { color: var(--on-color); }
+.ff-row:nth-child(3)  .ff-ans { color: var(--at-color); }
+.ff-row:nth-child(4)  .ff-ans { color: var(--in-color); }
+.ff-row:nth-child(5)  .ff-ans { color: var(--on-color); }
+.ff-row:nth-child(6)  .ff-ans { color: var(--at-color); }
+.ff-row:nth-child(7)  .ff-ans { color: var(--to-color); }
+.ff-row:nth-child(8)  .ff-ans { color: var(--on-color); }
+.ff-row:nth-child(9)  .ff-ans { color: var(--by-color); }
+.ff-row:nth-child(10) .ff-ans { color: var(--for-color); }
+.ff-row:nth-child(11) .ff-ans { color: var(--with-color); }
+
+/* 最短圧縮ルール */
+.short-rule { background: var(--purple); border-radius: 14px; padding: 16px 20px; }
+.sr-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.08em; margin-bottom: 10px; }
+.sr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.sr-row { background: rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
+.sr-arrow { font-size: 11px; color: rgba(255,255,255,0.5); flex-shrink: 0; }
+.sr-cond { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.85); flex: 1; }
+.sr-ans  { font-size: 14px; font-weight: 700; color: white; flex-shrink: 0; min-width: 56px; text-align: right; }
+.sr-dim  { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 8px; font-weight: 500; }
+
+/* 締めボックス */
+.finish-box { background: var(--purple); border-radius: 14px; padding: 16px 22px; text-align: center; }
+.finish-box .fb-title { font-size: 13px; font-weight: 700; color: white; margin-bottom: 6px; }
+.finish-box .fb-rule  { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.85); line-height: 1.8; }
+.finish-box .fb-dim   { font-size: 11px; opacity: 0.6; display: block; margin-top: 6px; color: white; font-weight: 500; }
+
+.point-box { background: var(--purple-light); border-radius: 12px; padding: 14px 20px; font-size: 14px; color: var(--purple); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--purple); border-color: var(--purple); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(69,39,160,0.3); }
+.dot.active { background: var(--purple); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 14px; }
+  .cb-grid { grid-template-columns: 1fr; }
+  .conf-body { grid-template-columns: 1fr; }
+  .conf-cell:nth-child(2) { border-left: none; border-top: 1px solid var(--border); }
+  .mt-row { grid-template-columns: 44px 1fr 1fr; }
+  .sr-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 20 · まとめ＋よく混ざる前置詞</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+<a href="nexelia-unit20-lesson3_1.html" class="btn-exit">← Lesson 3</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：3カテゴリ総整理 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">Unit 20 全体を<span class="accent">一気に整理</span></div>
+      </div>
+
+      <!-- 共通ルールを最初に強調 -->
+      <div class="rule-banner">
+        <div class="rb-top">🔑 全体の骨格：in / on / at は場所にも時にも使う！</div>
+        <div class="rb-chips">
+          <div class="rb-chip in"><strong>in</strong><span class="rk">広い・ぼんやり</span></div>
+          <div class="rb-chip on"><strong>on</strong><span class="rk">特定・接触</span></div>
+          <div class="rb-chip at"><strong>at</strong><span class="rk">1点・ピンポイント</span></div>
+        </div>
+      </div>
+
+      <div class="master-table">
+        <div class="mt-section">
+          <div class="mt-sec-head place">📍 場所（Lesson 1）</div>
+          <div class="mt-row p-in">
+            <div class="mt-word">in</div>
+            <div class="mt-cell">空間の中に（広い）</div>
+            <div class="mt-cell">in the box / in Tokyo</div>
+          </div>
+          <div class="mt-row p-on">
+            <div class="mt-word">on</div>
+            <div class="mt-cell">表面に接触（乗り物も on）</div>
+            <div class="mt-cell">on the desk / on the bus</div>
+          </div>
+          <div class="mt-row p-at">
+            <div class="mt-word">at</div>
+            <div class="mt-cell">1地点をピンポイント</div>
+            <div class="mt-cell">at the station / at home</div>
+          </div>
+        </div>
+        <div class="mt-section">
+          <div class="mt-sec-head time">🕐 時（Lesson 2）</div>
+          <div class="mt-row t-in">
+            <div class="mt-word">in</div>
+            <div class="mt-cell">年・月・季節（ぼんやり）</div>
+            <div class="mt-cell">in 2024 / in summer</div>
+          </div>
+          <div class="mt-row t-on">
+            <div class="mt-word">on</div>
+            <div class="mt-cell">特定の曜日・日付</div>
+            <div class="mt-cell">on Monday / on July 3rd</div>
+          </div>
+          <div class="mt-row t-at">
+            <div class="mt-word">at</div>
+            <div class="mt-cell">時刻・ピンポイントの瞬間</div>
+            <div class="mt-cell">at 7:00 / at noon</div>
+          </div>
+        </div>
+        <div class="mt-section">
+          <div class="mt-sec-head move">🧭 移動（Lesson 3）</div>
+          <div class="mt-row d-to">
+            <div class="mt-word">to</div>
+            <div class="mt-cell">〜へ向かう（目的地）</div>
+            <div class="mt-cell">go to school</div>
+          </div>
+          <div class="mt-row d-into">
+            <div class="mt-word">into</div>
+            <div class="mt-cell">中へ入る（動きあり）</div>
+            <div class="mt-cell">go into the room</div>
+          </div>
+          <div class="mt-row d-thr">
+            <div class="mt-word">through<br>along<br>across</div>
+            <div class="mt-cell">貫く／沿う／横断</div>
+            <div class="mt-cell">through the park<br>along the river<br>across the bridge</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">⚠️ 前置詞には例外もあるよ。まず「in=広い / on=特定・接触 / at=1点」の骨格を体にしみこませよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：完全共通ルール -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">場所と時は<span class="accent">完全共通ルール！</span></div>
+      </div>
+
+      <div class="common-banner">
+        <div class="cb-top">✅ in / on / at のイメージは場所でも時でも全く同じ！</div>
+        <div class="cb-grid">
+          <div class="cb-cell in">
+            <span class="cb-word">in</span>
+            <span class="cb-place">場所：空間の中（広い）</span>
+            <span class="cb-time">時：年・月・季節（長い）</span>
+          </div>
+          <div class="cb-cell on">
+            <span class="cb-word">on</span>
+            <span class="cb-place">場所：表面に接触（特定）</span>
+            <span class="cb-time">時：特定の日・曜日</span>
+          </div>
+          <div class="cb-cell at">
+            <span class="cb-word">at</span>
+            <span class="cb-place">場所：1地点（点）</span>
+            <span class="cb-time">時：時刻・瞬間（点）</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="why-bar">
+        💡 <strong>なぜ場所と時で同じ前置詞？</strong><br>
+        英語では「空間の広さ」と「時間の長さ」を同じ感覚でとらえるから。広い・長い→ in、特定・接触→ on、1点・瞬間→ at。
+      </div>
+
+      <div class="ex-pair">
+        <div class="ex-single">
+          <div class="en">She arrived <span style="color:var(--at-color);font-weight:700;">at</span> the station <span style="color:var(--at-color);font-weight:700;">at</span> 9:00.</div>
+          <div class="jp">彼女は9時に駅に着いた。→ at（地点）＋ at（時刻）どちらも「1点」だから at！</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I was born <span style="color:var(--in-color);font-weight:700;">in</span> 2010 <span style="color:var(--in-color);font-weight:700;">in</span> Tokyo.</div>
+          <div class="jp">私は2010年に東京で生まれた。→ in（年）＋ in（都市）どちらも「広いまとまり」だから in！</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 <strong>場所の in/on/at を完璧にすれば、時の in/on/at は自動的に理解できる！</strong><br>「広い→in / 特定・接触→on / 1点→at」この骨格1つで両方カバーできるよ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：よく混ざるペア3組 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">よく混ざる！<span class="accent">要注意ペア 3組</span></div>
+      </div>
+
+      <div class="confuse-list">
+        <!-- by vs until -->
+        <div class="conf-card">
+          <div class="conf-head by-until">
+            ⚠️ by vs until
+            <span class="conf-onerule">完了 vs 継続</span>
+          </div>
+          <div class="conf-body">
+            <div class="conf-cell by-c">
+              <span class="conf-key">期限・完了</span>
+              <span class="conf-word">by</span>
+              〜までに（その時点で終わる）
+              <span class="conf-eg">Finish it by Friday.（金曜日までに終わらせる）</span>
+            </div>
+            <div class="conf-cell until-c">
+              <span class="conf-key">継続・ずっと</span>
+              <span class="conf-word">until</span>
+              〜まで（ずっと続く）
+              <span class="conf-eg">Wait until Friday.（金曜日まで待ち続ける）</span>
+            </div>
+          </div>
+        </div>
+        <!-- by vs with -->
+        <div class="conf-card">
+          <div class="conf-head by-with">
+            ⚠️ by vs with
+            <span class="conf-onerule">手段 vs 道具</span>
+          </div>
+          <div class="conf-body">
+            <div class="conf-cell by-c">
+              <span class="conf-key">手段・交通・作者</span>
+              <span class="conf-word">by</span>
+              〜によって（行為者・乗り物）
+              <span class="conf-eg">by bus / by car<br>a book by Soseki</span>
+            </div>
+            <div class="conf-cell with-c">
+              <span class="conf-key">道具（手に持つ）</span>
+              <span class="conf-word">with</span>
+              〜を使って（手に持つ道具）
+              <span class="conf-eg">write with a pen<br>cut with scissors</span>
+            </div>
+          </div>
+        </div>
+        <!-- for vs during -->
+        <div class="conf-card">
+          <div class="conf-head for-during">
+            ⚠️ for vs during
+            <span class="conf-onerule">数字 vs 名詞</span>
+          </div>
+          <div class="conf-body">
+            <div class="conf-cell for-c">
+              <span class="num-badge num">数字で表せる長さ</span>
+              <span class="conf-word">for</span>
+              〜の間（期間の長さ）
+              <span class="conf-eg">for <strong>two hours</strong> / for <strong>three days</strong></span>
+            </div>
+            <div class="conf-cell dur-c">
+              <span class="num-badge noun">名詞で表す特定期間</span>
+              <span class="conf-word">during</span>
+              〜の間（特定の期間中）
+              <span class="conf-eg">during <strong>the vacation</strong><br>during <strong>the class</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 <strong>by（完了）vs until（継続）</strong>、<strong>by（手段）vs with（道具）</strong>、<strong>for（数字）vs during（名詞）</strong><br>ペアのキーワードをセットで覚えよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：全体まとめ＋最短圧縮ルール -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · まとめ</div>
+      <div>
+        <div class="concept-title">Unit 20 全体まとめ</div>
+        <div class="concept-text">全前置詞<span class="accent">最終判断フロー</span></div>
+      </div>
+
+      <div class="final-flow">
+        <div class="ff-row"><span class="ff-cat place">場所</span><span class="ff-q">広い空間の中？</span><span class="ff-sep">→</span><span class="ff-ans">in</span></div>
+        <div class="ff-row"><span class="ff-cat place">場所</span><span class="ff-q">表面に接触？乗り物？</span><span class="ff-sep">→</span><span class="ff-ans">on</span></div>
+        <div class="ff-row"><span class="ff-cat place">場所</span><span class="ff-q">1つの地点をピンポイント？</span><span class="ff-sep">→</span><span class="ff-ans">at</span></div>
+        <div class="ff-row"><span class="ff-cat time">時間</span><span class="ff-q">年・月・季節など長い期間？</span><span class="ff-sep">→</span><span class="ff-ans">in</span></div>
+        <div class="ff-row"><span class="ff-cat time">時間</span><span class="ff-q">特定の曜日・日付？</span><span class="ff-sep">→</span><span class="ff-ans">on</span></div>
+        <div class="ff-row"><span class="ff-cat time">時間</span><span class="ff-q">時刻・瞬間？ / this・next・last・every？</span><span class="ff-sep">→</span><span class="ff-ans">at / なし</span></div>
+        <div class="ff-row"><span class="ff-cat move">移動</span><span class="ff-q">目的地へ向かう？</span><span class="ff-sep">→</span><span class="ff-ans">to</span></div>
+        <div class="ff-row"><span class="ff-cat move">移動</span><span class="ff-q">中に入る・空間を貫く？</span><span class="ff-sep">→</span><span class="ff-ans">into / through</span></div>
+        <div class="ff-row"><span class="ff-cat confuse">注意</span><span class="ff-q">期限（完了）vs 継続？</span><span class="ff-sep">→</span><span class="ff-ans">by / until</span></div>
+        <div class="ff-row"><span class="ff-cat confuse">注意</span><span class="ff-q">数字で表せる期間？特定期間中？</span><span class="ff-sep">→</span><span class="ff-ans">for / during</span></div>
+        <div class="ff-row"><span class="ff-cat confuse">注意</span><span class="ff-q">手段・交通手段？手に持つ道具？</span><span class="ff-sep">→</span><span class="ff-ans">by / with</span></div>
+      </div>
+
+      <!-- 超圧縮版 -->
+      <div class="short-rule">
+        <div class="sr-label">⚡ 迷ったときの最短ルール（これだけ覚えればOK！）</div>
+        <div class="sr-grid">
+          <div class="sr-row"><span class="sr-cond">広い・長い</span><span class="sr-arrow">→</span><span class="sr-ans">in</span></div>
+          <div class="sr-row"><span class="sr-cond">特定の日・接触</span><span class="sr-arrow">→</span><span class="sr-ans">on</span></div>
+          <div class="sr-row"><span class="sr-cond">1点・時刻</span><span class="sr-arrow">→</span><span class="sr-ans">at</span></div>
+          <div class="sr-row"><span class="sr-cond">向かう先がある</span><span class="sr-arrow">→</span><span class="sr-ans">to</span></div>
+          <div class="sr-row"><span class="sr-cond">中に入る動き</span><span class="sr-arrow">→</span><span class="sr-ans">into</span></div>
+          <div class="sr-row"><span class="sr-cond">期限・完了</span><span class="sr-arrow">→</span><span class="sr-ans">by</span></div>
+          <div class="sr-row"><span class="sr-cond">数字の期間</span><span class="sr-arrow">→</span><span class="sr-ans">for</span></div>
+          <div class="sr-row"><span class="sr-cond">特定の期間中</span><span class="sr-arrow">→</span><span class="sr-ans">during</span></div>
+        </div>
+        <div class="sr-dim">※ 例外もあるから、慣れたら例文ごとセットで覚えるのが最強！</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit20-lesson4-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>

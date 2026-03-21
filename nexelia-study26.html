@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA | Why / How</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red:#D32F2F; --blue:#1A56DB; --blue-dark:#1446B8; --blue-light:#E8F0FE;
+  --text:#1A1A1A; --sub:#888; --border:#E8E8E8; --white:#FFF; --bg:#F9F9F9;
+  --purple:#7C3AED; --purple-light:#F3EEFF; --amber:#B45309; --amber-light:#FEF3C7;
+}
+body { font-family:'Noto Sans JP',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+nav { background:var(--white); border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 32px; }
+.nav-logo { font-weight:700; font-size:20px; color:var(--red); letter-spacing:.08em; text-decoration:none; }
+.nav-center { flex:1; max-width:430px; margin:0 40px; display:flex; align-items:center; gap:12px; }
+.lesson-name { font-size:13px; font-weight:600; color:var(--sub); white-space:nowrap; }
+.nav-track { flex:1; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.nav-fill { height:100%; background:var(--blue); border-radius:2px; transition:width .4s ease; }
+.nav-count { font-size:12px; font-weight:600; color:var(--sub); white-space:nowrap; }
+.btn-exit { padding:8px 18px; border-radius:8px; border:1.5px solid var(--border); background:#fff; font-size:13px; font-weight:600; color:var(--sub); text-decoration:none; }
+main { flex:1; max-width:720px; width:100%; margin:0 auto; padding:36px 24px 28px; display:flex; flex-direction:column; }
+.slide { display:none; flex-direction:column; flex:1; }
+.slide.active { display:flex; }
+.slide-card { background:#fff; border:1px solid var(--border); border-radius:20px; padding:44px 52px; flex:1; display:flex; flex-direction:column; gap:24px; }
+.slide-label { font-size:11px; font-weight:700; letter-spacing:.05em; color:var(--blue); }
+.concept-title { font-size:13px; font-weight:600; color:var(--sub); margin-bottom:8px; }
+.concept-text { font-size:26px; font-weight:700; line-height:1.4; }
+.accent { color:var(--purple); }
+.meaning-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.meaning-badge { border-radius:14px; padding:18px 20px; text-align:center; font-size:16px; font-weight:700; }
+.meaning-badge.why { background:var(--purple-light); color:var(--purple); }
+.meaning-badge.how { background:var(--amber-light); color:var(--amber); }
+.ex-list { display:flex; flex-direction:column; gap:10px; }
+.ex-single { border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.ex-single .en { padding:16px 22px; font-size:18px; font-weight:700; background:#fff; border-bottom:1px solid var(--border); }
+.ex-single .jp { padding:11px 22px; font-size:13px; color:var(--sub); background:var(--bg); }
+.ex-single .why { color:var(--purple); }
+.ex-single .how { color:var(--amber); }
+.summary-list { display:flex; flex-direction:column; gap:12px; }
+.summary-item { display:flex; align-items:center; gap:14px; padding:16px 20px; background:#fff; border:1px solid var(--border); border-radius:12px; }
+.summary-num { width:26px; height:26px; background:var(--blue); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
+.summary-text { font-size:15px; font-weight:600; line-height:1.6; }
+.point-box { background:var(--blue-light); border-radius:12px; padding:18px 22px; font-size:15px; color:var(--blue); font-weight:600; line-height:1.7; margin-top:auto; }
+.bottom-nav { display:flex; justify-content:space-between; align-items:center; margin-top:20px; }
+.btn-nav { padding:12px 28px; border-radius:10px; font-size:14px; font-weight:700; border:1.5px solid var(--border); background:#fff; color:var(--sub); cursor:pointer; }
+.btn-nav.primary { background:var(--blue); border-color:var(--blue); color:#fff; }
+.dots { display:flex; gap:6px; align-items:center; }
+.dot { width:6px; height:6px; border-radius:3px; background:var(--border); transition:width .2s, background .2s; }
+.dot.done { background:rgba(26,86,219,.3); }
+.dot.active { background:var(--blue); width:20px; }
+@media (max-width: 600px) {
+  nav { padding:0 16px; }
+  .nav-center { display:none; }
+  main { padding:20px 16px; }
+  .slide-card { padding:28px 20px; }
+  .meaning-row { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Why / How</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:33%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 3</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+<main>
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Why / How ・ スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">Why / How</span> とは？</div>
+      </div>
+      <div class="meaning-row">
+        <div class="meaning-badge why"><strong>Why</strong><br>「なぜ？」を聞く</div>
+        <div class="meaning-badge how"><strong>How</strong><br>「どのように？」を聞く</div>
+      </div>
+      <div style="font-size:14px; color:var(--sub); line-height:1.8;">どちらも文の先頭に置いて質問を作る疑問詞です。</div>
+      <div class="point-box">ポイント: Why は理由、How は方法をたずねるときに使います。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">前へ</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">次へ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Why / How ・ スライド 2</div>
+      <div>
+        <div class="concept-title">例文で確認</div>
+        <div class="concept-text">文の先頭で使う</div>
+      </div>
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="why">Why</span> do you study English?</div>
+          <div class="jp">なぜ英語を勉強するのですか？</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="how">How</span> do you go to school?</div>
+          <div class="jp">どのように学校へ行きますか？</div>
+        </div>
+      </div>
+      <div class="point-box">Why の答えは Because ...、How の答えは By bike. などがよく使われます。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">次へ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Why / How ・ まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンのまとめ</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+      <div class="summary-list">
+        <div class="summary-item"><div class="summary-num">1</div><div class="summary-text"><span class="accent">Why</span> は「なぜ」を聞く。</div></div>
+        <div class="summary-item"><div class="summary-num">2</div><div class="summary-text"><span class="accent">How</span> は「どのように」を聞く。</div></div>
+        <div class="summary-item"><div class="summary-num">3</div><div class="summary-text">どちらも文の先頭に置いて質問文を作る。</div></div>
+      </div>
+      <div class="point-box">3つのポイントをおさえたら演習へ進みましょう。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+</main>
+
+<script>
+  const TOTAL = 3;
+  let cur = 0;
+  const LESSON_ID = 'lesson26';
+  const PROGRESS_KEY = 'nexeliaLessonProgress';
+
+  function saveLessonProgress(value) {
+    try {
+      const raw = localStorage.getItem(PROGRESS_KEY) || '{}';
+      const progressMap = JSON.parse(raw);
+      progressMap[LESSON_ID] = Math.max(Number(progressMap[LESSON_ID]) || 0, value);
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+      localStorage.setItem('nexeliaLastLesson', LESSON_ID);
+    } catch (_) {}
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    const current = document.getElementById('s' + cur);
+    const next = document.getElementById('s' + idx);
+    if (!current || !next) return;
+    current.classList.remove('active');
+    cur = idx;
+    next.classList.add('active');
+    const fill = document.getElementById('nav-fill');
+    const count = document.getElementById('nav-count');
+    if (fill) fill.style.width = ((cur + 1) / TOTAL * 100) + '%';
+    if (count) count.textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0')?.addEventListener('click', () => go(1));
+  document.getElementById('n1')?.addEventListener('click', () => go(2));
+  document.getElementById('back1')?.addEventListener('click', () => go(0));
+  document.getElementById('back2')?.addEventListener('click', () => go(1));
+  document.getElementById('n2')?.addEventListener('click', () => {
+    saveLessonProgress(60);
+    location.href = 'nexelia-exercise25.html';
+  });
+
+  saveLessonProgress(30);
+  renderDots(0);
+</script>
+</body>
+</html>
+

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 20 レッスン3 · 演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --purple: #4527A0; --purple-light: #EDE7F6;
+  --to-color: #1565C0;      --to-bg: #E3F2FD;
+  --from-color: #C62828;    --from-bg: #FFEBEE;
+  --into-color: #00695C;    --into-bg: #E0F2F1;
+  --out-color: #E65100;     --out-bg: #FFF8E1;
+  --through-color: #6A1B9A; --through-bg: #F3E5F5;
+  --along-color: #2E7D32;   --along-bg: #E8F5E9;
+  --across-color: #00838F;  --across-bg: #E0F7FA;
+  --orange: #E65100; --orange-light: #FFF8E1;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+
+.q-label-row { display: flex; align-items: center; gap: 10px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--purple); }
+.diff-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.diff-basic { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
+.diff-mid   { background: #FFF8E1; color: #F57F17; border: 1px solid #FFE082; }
+.diff-hard  { background: #FFEBEE; color: #C62828; border: 1px solid #EF9A9A; }
+
+.q-text { font-size: 20px; font-weight: 700; line-height: 1.55; }
+.q-blank { color: var(--purple); }
+.q-sub  { font-size: 14px; color: var(--sub); line-height: 1.7; }
+
+/* 選択肢 */
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; }
+.options.single { grid-template-columns: 1fr; }
+.opt { padding: 15px 18px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--purple); background: var(--purple-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt:disabled { cursor: default; transform: none; }
+
+/* 並び替え */
+.sort-wrap { display: flex; flex-direction: column; gap: 14px; margin-top: auto; }
+.sort-chips { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; padding: 10px 14px; border: 2px dashed var(--border); border-radius: 12px; background: #FAFAFA; }
+.sort-chip { padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--white); font-size: 14px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: border-color 0.12s, background 0.12s, transform 0.1s; user-select: none; }
+.sort-chip:hover:not(.used):not(:disabled) { border-color: var(--purple); background: var(--purple-light); transform: translateY(-2px); }
+.sort-chip.used { opacity: 0.3; cursor: default; transform: none; }
+.sort-chip.placed { background: var(--purple-light); border-color: var(--purple); color: var(--purple); cursor: pointer; }
+.sort-chip.placed:hover { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); }
+.sort-answer { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 10px 14px; border: 2px solid var(--border); border-radius: 12px; min-height: 52px; background: var(--white); }
+.sort-slot { font-size: 15px; font-weight: 700; color: var(--purple); background: var(--purple-light); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.sort-slot:hover { background: var(--wrong-light); color: var(--wrong); }
+.sort-static { font-size: 15px; font-weight: 700; color: var(--sub); }
+.sort-submit { padding: 12px 22px; border-radius: 10px; background: var(--purple); border: none; color: white; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: opacity 0.15s; align-self: flex-start; }
+.sort-submit:hover:not(:disabled) { opacity: 0.88; }
+.sort-submit:disabled { opacity: 0.3; cursor: default; }
+.sort-hint { font-size: 12px; color: var(--sub); font-weight: 600; }
+.sort-answer.correct-ans { border-color: var(--green); background: var(--green-light); }
+.sort-answer.wrong-ans   { border-color: var(--wrong); background: var(--wrong-light); }
+
+/* 記述式 */
+.fill-wrap { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+.fill-input-row { display: flex; align-items: center; gap: 12px; }
+.fill-input { flex: 1; padding: 14px 18px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 18px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; color: var(--text); outline: none; transition: border-color 0.15s; text-align: center; }
+.fill-input:focus { border-color: var(--purple); }
+.fill-input.correct-input { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.fill-input.wrong-input   { border-color: var(--wrong); background: var(--wrong-light); color: var(--wrong); }
+.fill-submit { padding: 14px 22px; border-radius: 12px; background: var(--purple); border: none; color: white; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: opacity 0.15s; flex-shrink: 0; }
+.fill-submit:hover:not(:disabled) { opacity: 0.88; }
+.fill-submit:disabled { opacity: 0.3; cursor: default; }
+
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.75; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--purple); border-color: var(--purple); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(69,39,160,0.3); }
+.dot.active { background: var(--purple); width: 18px; }
+
+/* 結果画面 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 52px; margin-bottom: 14px; }
+.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+.score-badge { font-size: 34px; font-weight: 700; color: var(--purple); margin-bottom: 12px; }
+.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 14px; }
+
+.recap-title { font-size: 11px; font-weight: 700; color: var(--purple); letter-spacing: 0.08em; margin-bottom: 8px; }
+.recap-flow { display: flex; flex-direction: column; gap: 5px; width: 100%; max-width: 420px; margin-bottom: 14px; }
+.rf-row { display: flex; align-items: center; gap: 10px; border-radius: 9px; padding: 9px 14px; }
+.rf-row:nth-child(1) { background: var(--to-bg);      border: 1px solid #90CAF9; }
+.rf-row:nth-child(2) { background: var(--from-bg);    border: 1px solid #EF9A9A; }
+.rf-row:nth-child(3) { background: var(--into-bg);    border: 1px solid #80CBC4; }
+.rf-row:nth-child(4) { background: var(--out-bg);     border: 1px solid #FFE082; }
+.rf-row:nth-child(5) { background: var(--through-bg); border: 1px solid #CE93D8; }
+.rf-row:nth-child(6) { background: var(--along-bg);   border: 1px solid #A5D6A7; }
+.rf-row:nth-child(7) { background: var(--across-bg);  border: 1px solid #80DEEA; }
+.rf-q   { font-size: 12px; font-weight: 700; flex: 1; color: var(--text); }
+.rf-sep { font-size: 13px; color: var(--sub); flex-shrink: 0; }
+.rf-ans { font-size: 13px; font-weight: 700; flex-shrink: 0; min-width: 66px; text-align: right; }
+.rf-row:nth-child(1) .rf-ans { color: var(--to-color); }
+.rf-row:nth-child(2) .rf-ans { color: var(--from-color); }
+.rf-row:nth-child(3) .rf-ans { color: var(--into-color); }
+.rf-row:nth-child(4) .rf-ans { color: var(--out-color); }
+.rf-row:nth-child(5) .rf-ans { color: var(--through-color); }
+.rf-row:nth-child(6) .rf-ans { color: var(--along-color); }
+.rf-row:nth-child(7) .rf-ans { color: var(--across-color); }
+
+.mistakes-box { background: var(--orange-light); border: 1px solid #FFE082; border-radius: 12px; padding: 14px 20px; text-align: left; width: 100%; max-width: 420px; margin-bottom: 18px; }
+.mistakes-box .mk-label { font-size: 11px; font-weight: 700; color: var(--orange); letter-spacing: 0.06em; margin-bottom: 10px; }
+.mk-item { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.75; padding: 4px 0; border-bottom: 1px solid #FFE082; }
+.mk-item:last-child { border-bottom: none; }
+.mk-item .ng { color: var(--wrong); font-weight: 700; }
+.mk-item .ok { color: var(--green); font-weight: 700; }
+
+.complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cbtn { padding: 13px 26px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+.cbtn.primary   { background: var(--purple); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .quiz-card { padding: 24px 18px; }
+  .options { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 20 · 方向・移動の前置詞 · 演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:14.2%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 7</span>
+  </div>
+  <a href="nexelia-unit20-lesson3_1.html" class="btn-exit">← スライドへ</a>
+</nav>
+
+<main>
+
+  <!-- Q1：基本（迷う）— to vs into -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 1 / 7</span>
+        <span class="diff-badge diff-basic">基本</span>
+      </div>
+      <div class="q-text">（　）に入る正しい前置詞はどれ？<br><span class="q-blank">She walked (　　) the classroom.</span></div>
+      <div class="q-sub">「教室へ向かった」？ それとも「教室の中へ入った（動き）」？ 文の意味をイメージしよう。</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="false">to</button>
+        <button class="opt" data-correct="true">into</button>
+        <button class="opt" data-correct="false">from</button>
+        <button class="opt" data-correct="false">along</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：基本 — go home（to不要）-->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 2 / 7</span>
+        <span class="diff-badge diff-basic">基本</span>
+      </div>
+      <div class="q-text">日本語に合う英文はどれ？<br><span class="q-blank">「私は6時に家に帰った。」</span></div>
+      <div class="q-sub">home の前に to は必要？ home は「副詞」として使うときは前置詞なしになるよ。</div>
+      <div class="options single" id="o1">
+        <button class="opt" data-correct="false">I went to home at six.</button>
+        <button class="opt" data-correct="true">I went home at six.</button>
+        <button class="opt" data-correct="false">I went into home at six.</button>
+        <button class="opt" data-correct="false">I went to the home at six.</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：ふつう — in vs into（状態 vs 動き）-->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 3 / 7</span>
+        <span class="diff-badge diff-mid">ふつう</span>
+      </div>
+      <div class="q-text">（　）に入る正しい前置詞はどれ？<br><span class="q-blank">He jumped (　　) the swimming pool.</span></div>
+      <div class="q-sub">in（中にいる状態）vs into（中へ入る動き）— jump という動詞がヒント！</div>
+      <div class="options" id="o2">
+        <button class="opt" data-correct="false">in</button>
+        <button class="opt" data-correct="true">into</button>
+        <button class="opt" data-correct="false">to</button>
+        <button class="opt" data-correct="false">across</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：ふつう — through vs across（判別問題）-->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 4 / 7</span>
+        <span class="diff-badge diff-mid">ふつう</span>
+      </div>
+      <div class="q-text">（　）に入る正しい前置詞はどれ？<br><span class="q-blank">The boy ran (　　) the tunnel.</span></div>
+      <div class="q-sub">トンネルは「面を横断」する場所？ それとも「空間を貫いて」通る場所？</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false">across</button>
+        <button class="opt" data-correct="true">through</button>
+        <button class="opt" data-correct="false">along</button>
+        <button class="opt" data-correct="false">into</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5：ふつう — along（川沿い）-->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 5 / 7</span>
+        <span class="diff-badge diff-mid">ふつう</span>
+      </div>
+      <div class="q-text">日本語に合う英文はどれ？<br><span class="q-blank">「私たちは川沿いを歩いた。」</span></div>
+      <div class="q-sub">「川沿い」の軌跡はどのイメージ？ 貫く・沿う・横断のどれ？</div>
+      <div class="options single" id="o4">
+        <button class="opt" data-correct="false">We walked through the river.</button>
+        <button class="opt" data-correct="true">We walked along the river.</button>
+        <button class="opt" data-correct="false">We walked across the river.</button>
+        <button class="opt" data-correct="false">We walked into the river.</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q6：応用 — 並び替え -->
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 6 / 7</span>
+        <span class="diff-badge diff-hard">応用</span>
+      </div>
+      <div class="q-text">日本語に合うように並び替えよう！<br><span class="q-blank" style="font-size:16px;">「彼らは橋を渡って歩いた。」</span></div>
+      <div class="q-sub">単語をタップして並べよう。正しい順番に並んだら「確認する」を押してね。</div>
+      <div class="sort-wrap" id="sw6">
+        <div class="sort-chips" id="sc6">
+          <span class="sort-chip" data-word="They">They</span>
+          <span class="sort-chip" data-word="walked">walked</span>
+          <span class="sort-chip" data-word="across">across</span>
+          <span class="sort-chip" data-word="the">the</span>
+          <span class="sort-chip" data-word="bridge">bridge</span>
+          <span class="sort-chip" data-word="along">along</span>
+        </div>
+        <div class="sort-answer" id="sa6"></div>
+        <div class="sort-hint">※ 不要な単語が1つ含まれているよ</div>
+        <button class="sort-submit" id="ss6" disabled>確認する</button>
+      </div>
+      <div class="feedback" id="f5"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back5">← もどる</button>
+      <div class="dots" id="d5"></div>
+      <button class="btn-nav primary" id="n5" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q7：応用（記述）-->
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 7 / 7</span>
+        <span class="diff-badge diff-hard">応用</span>
+      </div>
+      <div class="q-text">（　）に入る前置詞を自分で入力しよう！<br>
+        <span class="q-blank">The train goes (　　) the tunnel.</span>
+      </div>
+      <div class="q-sub">電車はトンネルをどのように進む？ 軌跡のイメージで考えよう。</div>
+      <div class="fill-wrap">
+        <div class="fill-input-row">
+          <input class="fill-input" id="fill6" type="text" placeholder="前置詞を入力…" maxlength="10" autocomplete="off" spellcheck="false">
+          <button class="fill-submit" id="fill-submit6">確認する</button>
+        </div>
+      </div>
+      <div class="feedback" id="f6"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back6">← もどる</button>
+      <div class="dots" id="d6"></div>
+      <button class="btn-nav primary" id="n6" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon" id="c-icon"></div>
+    <h1 id="c-title"></h1>
+    <div class="score-badge" id="c-score"></div>
+    <p id="c-msg"></p>
+
+    <div class="recap-title">💡 最短判断フロー</div>
+    <div class="recap-flow">
+      <div class="rf-row"><span class="rf-q">どこかへ向かう先がある？</span><span class="rf-sep">→</span><span class="rf-ans">to</span></div>
+      <div class="rf-row"><span class="rf-q">出発点・出身を言う？</span><span class="rf-sep">→</span><span class="rf-ans">from</span></div>
+      <div class="rf-row"><span class="rf-q">中に入る動きがある？</span><span class="rf-sep">→</span><span class="rf-ans">into</span></div>
+      <div class="rf-row"><span class="rf-q">中から出る動きがある？</span><span class="rf-sep">→</span><span class="rf-ans">out of</span></div>
+      <div class="rf-row"><span class="rf-q">空間を突き抜ける？</span><span class="rf-sep">→</span><span class="rf-ans">through</span></div>
+      <div class="rf-row"><span class="rf-q">道・川に沿って進む？</span><span class="rf-sep">→</span><span class="rf-ans">along</span></div>
+      <div class="rf-row"><span class="rf-q">面を端から端まで渡る？</span><span class="rf-sep">→</span><span class="rf-ans">across</span></div>
+    </div>
+
+    <div class="mistakes-box">
+      <div class="mk-label">⚠️ よくあるミス TOP 3</div>
+      <div class="mk-item">① <span class="ng">go to home</span> → <span class="ok">go home！</span>（home は副詞 → to 不要）</div>
+      <div class="mk-item">② 動きがあるのに <span class="ng">in the pool</span> → <span class="ok">into the pool！</span>（動き → into）</div>
+      <div class="mk-item">③ 「川沿い」を <span class="ng">across the river</span> → <span class="ok">along the river！</span>（沿う → along）</div>
+    </div>
+
+    <div class="complete-btns">
+      <a href="nexelia-unit20-lesson3_1.html" class="cbtn secondary">← スライドへ</a>
+      <button class="cbtn secondary" id="retry-btn">もう一度</button>
+      <a href="lessons.html" class="cbtn primary">レッスン一覧へ →</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 7;
+  const LESSON_ID = 'lesson79';
+  const PROGRESS_KEY = 'nexeliaLessonProgress';
+  let cur = 0, correct = 0;
+  const answered = {};
+
+  function saveLessonProgress(value) {
+    let progressMap = {};
+    try { progressMap = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; }
+    catch (e) { progressMap = {}; }
+    const nextValue = Math.max(Number(progressMap[LESSON_ID]) || 0, value);
+    progressMap[LESSON_ID] = nextValue;
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+    localStorage.setItem('nexeliaLastLesson', LESSON_ID);
+  }
+
+  const FB = [
+    {
+      ok: '✓ 正解！walked into the classroom（教室の中へ歩いて入った）。into は外から中への動きを表すよ。to the classroom だと「教室に向かって歩いた」になるけど、まだ入っていないニュアンスになるよ！',
+      ng: '✗ 惜しい！into が正解。walked into は「中へ入る動き」を表す。to は目的地へ向かうだけで中に入るかどうかは不明、from は出発点、along は沿って進むときに使うよ。'
+    },
+    {
+      ok: '✓ 正解！go home は to なしが正解。home はここでは副詞として使われているため、前置詞 to は不要なんだよ。there・here・abroad も同様に to なしで使うよ！',
+      ng: '✗ 惜しい！正解は went home（to なし）。home は副詞として使うとき前置詞が不要。「went to home」は間違い。there・here・abroad も同じように to はつけないよ！'
+    },
+    {
+      ok: '✓ 正解！jump into（中へ飛び込む動き）が正しいよ。in は「プールの中にいる」状態、into は「プールの中へ入る」動きを表す。動詞が jump のように動作を示すなら into を使うのがポイント！',
+      ng: '✗ 惜しい！jump は動きを表す動詞だから into が正解。in は「状態（プールの中にいる）」、into は「動き（プールの中へ入る）」。動作をともなうなら into！'
+    },
+    {
+      ok: '✓ 正解！run through the tunnel（トンネルの空間を貫いて走る）が正しいよ。through は立体・空間の中を通り抜けるときに使う。across は橋や川のような「面を横断」するときだよ！',
+      ng: '✗ 惜しい！through が正解。トンネルは「空間・立体の中を貫いて」通るから through。across は面を横断（橋や川を渡る）、along は道や川に沿って進むとき、into は中に入るときだよ。'
+    },
+    {
+      ok: '✓ 正解！walk along the river（川に沿って歩く）が正しいよ。along は道や川などに平行して進む軌跡を表す。through は突き抜け、across は横断（川を渡る）のときに使うよ！',
+      ng: '✗ 惜しい！along が正解。「川沿いを歩く＝川に沿って平行に進む」から along。through は空間を突き抜けるとき、across は面を横断（渡る）するとき、into は中に入るときだよ。'
+    },
+    {
+      ok: '✓ 正解！They walked across the bridge. が正しい並び順。「橋を渡る」は面を横断するから across。along（沿って）は不要な単語だよ！',
+      ng: '✗ 惜しい！正解は They walked across the bridge.「橋を渡る」は面を横断するから across を使う。along は不要な単語だよ。across と along の違いをスライドで確認しよう！'
+    },
+    {
+      ok: '✓ 正解！through が正しいよ。電車はトンネルの「空間を貫いて」進む → through。along は川や道に「沿って」、across は橋や川のような「面を横断」するときだよ！',
+      ng: '✗ 惜しい！正解は through。トンネルは立体的な空間で、電車はその中を「貫いて」進むから through を使う。along は沿って進む、across は面を横断するときだよ。'
+    }
+  ];
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s' + cur).classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+    document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
+    if (correct === 7) {
+      document.getElementById('c-icon').textContent = '🎉';
+      document.getElementById('c-title').textContent = '全問正解！';
+      document.getElementById('c-msg').innerHTML = '方向・移動の前置詞、完全マスター！<br>並び替えも記述もバッチリだね。';
+    } else if (correct >= 5) {
+      document.getElementById('c-icon').textContent = '👍';
+      document.getElementById('c-title').textContent = 'あと一歩！';
+      document.getElementById('c-msg').innerHTML = '判断フローをもう一度確認して<br>再チャレンジしよう！';
+    } else {
+      document.getElementById('c-icon').textContent = '📖';
+      document.getElementById('c-title').textContent = 'スライドを見直そう';
+      document.getElementById('c-msg').innerHTML = '方向・移動の前置詞をスライドで確認してから<br>もう一度チャレンジしよう！';
+    }
+    if (correct === 7) saveLessonProgress(100);
+    else if (correct >= 5) saveLessonProgress(80);
+    else saveLessonProgress(60);
+  }
+
+  // 選択肢問題（Q1〜Q5）
+  function initChoiceQuestions() {
+    for (var q = 0; q < 5; q++) {
+      (function(qIdx) {
+        document.querySelectorAll('#o' + qIdx + ' .opt').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            if (answered[qIdx]) return;
+            answered[qIdx] = true;
+            const isCorrect = btn.dataset.correct === 'true';
+            if (isCorrect) correct++;
+            document.querySelectorAll('#o' + qIdx + ' .opt').forEach(function(b) {
+              b.disabled = true;
+              if (b.dataset.correct === 'true') b.classList.add('correct');
+            });
+            if (!isCorrect) btn.classList.add('wrong');
+            const fb = document.getElementById('f' + qIdx);
+            fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+            fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
+            const nBtn = document.getElementById('n' + qIdx);
+            if (nBtn) nBtn.disabled = false;
+          });
+        });
+      })(q);
+    }
+  }
+
+  // 並び替え（Q6）
+  const SORT_ANSWER = ['They', 'walked', 'across', 'the', 'bridge'];
+  var sortPlaced = [];
+
+  function initSort() {
+    var chips = document.querySelectorAll('#sc6 .sort-chip');
+    chips.forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        if (answered[5]) return;
+        if (chip.classList.contains('used')) return;
+        chip.classList.add('used');
+        sortPlaced.push(chip.dataset.word);
+        renderSortAnswer();
+        document.getElementById('ss6').disabled = sortPlaced.length === 0;
+      });
+    });
+
+    document.getElementById('ss6').addEventListener('click', function() {
+      if (answered[5]) return;
+      if (sortPlaced.length === 0) return;
+      answered[5] = true;
+      var sa = document.getElementById('sa6');
+      var isCorrect = JSON.stringify(sortPlaced) === JSON.stringify(SORT_ANSWER);
+      if (isCorrect) correct++;
+      sa.classList.add(isCorrect ? 'correct-ans' : 'wrong-ans');
+      document.querySelectorAll('#sc6 .sort-chip').forEach(function(c) { c.style.pointerEvents = 'none'; });
+      document.getElementById('ss6').disabled = true;
+      var fb = document.getElementById('f5');
+      fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+      fb.textContent = isCorrect ? FB[5].ok : FB[5].ng;
+      document.getElementById('n5').disabled = false;
+    });
+  }
+
+  function renderSortAnswer() {
+    var sa = document.getElementById('sa6');
+    sa.innerHTML = '';
+    sortPlaced.forEach(function(word, idx) {
+      var slot = document.createElement('span');
+      slot.className = 'sort-slot';
+      slot.textContent = word;
+      slot.addEventListener('click', function() {
+        if (answered[5]) return;
+        sortPlaced.splice(idx, 1);
+        // un-use the chip
+        document.querySelectorAll('#sc6 .sort-chip').forEach(function(c) {
+          if (c.dataset.word === word && c.classList.contains('used') && !sortPlaced.includes(word)) {
+            c.classList.remove('used');
+          }
+        });
+        renderSortAnswer();
+        document.getElementById('ss6').disabled = sortPlaced.length === 0;
+      });
+      sa.appendChild(slot);
+    });
+  }
+
+  // 記述問題（Q7）
+  const FILL_ANSWER = 'through';
+  var fillInput  = document.getElementById('fill6');
+  var fillSubmit = document.getElementById('fill-submit6');
+
+  fillSubmit.addEventListener('click', function() {
+    if (answered[6]) return;
+    var val = fillInput.value.trim().toLowerCase();
+    if (!val) return;
+    answered[6] = true;
+    fillInput.disabled = true;
+    fillSubmit.disabled = true;
+    var isCorrect = val === FILL_ANSWER;
+    if (isCorrect) correct++;
+    fillInput.classList.add(isCorrect ? 'correct-input' : 'wrong-input');
+    var fb = document.getElementById('f6');
+    fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+    fb.textContent = isCorrect ? FB[6].ok : FB[6].ng;
+    document.getElementById('n6').disabled = false;
+  });
+  fillInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') fillSubmit.click(); });
+
+  // ナビ
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { go(5); });
+  document.getElementById('n5').addEventListener('click', function() { go(6); });
+  document.getElementById('n6').addEventListener('click', function() { finish(); });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+  document.getElementById('back5').addEventListener('click', function() { go(4); });
+  document.getElementById('back6').addEventListener('click', function() { go(5); });
+
+  // リトライ
+  document.getElementById('retry-btn').addEventListener('click', function() {
+    correct = 0;
+    Object.keys(answered).forEach(function(k) { delete answered[k]; });
+    // 選択肢リセット
+    for (var q = 0; q < 5; q++) {
+      document.querySelectorAll('#o' + q + ' .opt').forEach(function(b) {
+        b.disabled = false; b.classList.remove('correct', 'wrong');
+      });
+      var fb = document.getElementById('f' + q);
+      if (fb) { fb.classList.remove('show', 'ok', 'ng'); fb.textContent = ''; }
+      var nBtn = document.getElementById('n' + q);
+      if (nBtn) nBtn.disabled = true;
+    }
+    // 並び替えリセット
+    sortPlaced = [];
+    document.querySelectorAll('#sc6 .sort-chip').forEach(function(c) {
+      c.classList.remove('used'); c.style.pointerEvents = '';
+    });
+    document.getElementById('sa6').innerHTML = '';
+    document.getElementById('sa6').classList.remove('correct-ans', 'wrong-ans');
+    document.getElementById('ss6').disabled = true;
+    var fb5 = document.getElementById('f5');
+    fb5.classList.remove('show', 'ok', 'ng'); fb5.textContent = '';
+    document.getElementById('n5').disabled = true;
+    // 記述リセット
+    fillInput.value = ''; fillInput.disabled = false;
+    fillInput.classList.remove('correct-input', 'wrong-input');
+    fillSubmit.disabled = false;
+    var fb6 = document.getElementById('f6');
+    fb6.classList.remove('show', 'ok', 'ng'); fb6.textContent = '';
+    document.getElementById('n6').disabled = true;
+
+    document.getElementById('complete').classList.remove('active');
+    cur = 0;
+    document.getElementById('s0').classList.add('active');
+    document.getElementById('nav-fill').style.width = (1 / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = '1 / ' + TOTAL;
+    renderDots(0);
+  });
+
+  initChoiceQuestions();
+  initSort();
+  renderDots(0);
+</script>
+</body>
+</html>

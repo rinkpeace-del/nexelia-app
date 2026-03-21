@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 20 レッスン1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --purple: #4527A0;
+  --purple-light: #EDE7F6;
+  --in-color: #4527A0;
+  --in-bg: #EDE7F6;
+  --on-color: #00695C;
+  --on-bg: #E0F2F1;
+  --at-color: #C62828;
+  --at-bg: #FFEBEE;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--purple); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--purple); }
+
+/* 3色バッジ横並び */
+.trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.trio-card { border-radius: 16px; padding: 20px 16px; text-align: center; display: flex; flex-direction: column; gap: 8px; }
+.trio-card.in { background: var(--in-bg); border: 1.5px solid #B39DDB; }
+.trio-card.on { background: var(--on-bg); border: 1.5px solid #80CBC4; }
+.trio-card.at { background: var(--at-bg); border: 1.5px solid #EF9A9A; }
+.trio-image { font-size: 28px; line-height: 1; }
+.trio-word { font-size: 28px; font-weight: 700; }
+.trio-card.in .trio-word { color: var(--in-color); }
+.trio-card.on .trio-word { color: var(--on-color); }
+.trio-card.at .trio-word { color: var(--at-color); }
+.trio-key { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-block; margin: 0 auto; }
+.trio-card.in .trio-key { background: var(--in-color); color: white; }
+.trio-card.on .trio-key { background: var(--on-color); color: white; }
+.trio-card.at .trio-key { background: var(--at-color); color: white; }
+.trio-sub { font-size: 11px; color: var(--sub); font-weight: 500; line-height: 1.4; }
+
+/* 3軸チェック */
+.axis-box { background: var(--purple-light); border-radius: 14px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.axis-title { font-size: 12px; font-weight: 700; color: var(--purple); letter-spacing: 0.05em; }
+.axis-rows { display: flex; flex-direction: column; gap: 6px; }
+.axis-row { display: flex; align-items: center; gap: 10px; }
+.axis-qlabel { font-size: 11px; font-weight: 700; width: 62px; flex-shrink: 0; }
+.axis-bar-wrap { flex: 1; height: 28px; border-radius: 8px; overflow: hidden; display: flex; }
+.axis-seg { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; }
+.axis-seg.in-fill  { background: var(--in-color); flex: 3; }
+.axis-seg.on-fill  { background: var(--on-color); flex: 3; }
+.axis-seg.at-fill  { background: var(--at-color); flex: 3; }
+.axis-seg.dim      { background: #E0E0E0; flex: 2; }
+.axis-note { font-size: 11px; font-weight: 600; flex-shrink: 0; width: 76px; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); line-height: 1.6; }
+.hl-in { color: var(--in-color); }
+.hl-on { color: var(--on-color); }
+.hl-at { color: var(--at-color); }
+
+/* 対比ペア */
+.pair-box { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+.pair-head { background: #FAFAFA; padding: 10px 18px; font-size: 11px; font-weight: 700; color: var(--sub); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); }
+.pair-row { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border); }
+.pair-row:first-child { border-top: none; }
+.pair-cell { padding: 13px 18px; font-size: 14px; font-weight: 700; line-height: 1.5; }
+.pair-cell small { font-size: 12px; font-weight: 500; color: var(--sub); display: block; margin-top: 2px; }
+.pair-cell.in-cell { background: var(--in-bg); color: var(--in-color); border-right: 1px solid var(--border); }
+.pair-cell.at-cell { background: var(--at-bg); color: var(--at-color); }
+
+/* 注意ボックス */
+.caution-list { display: flex; flex-direction: column; gap: 10px; }
+.caution-item { border-radius: 12px; padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start; }
+.caution-item.in { background: var(--in-bg); border: 1px solid #B39DDB; }
+.caution-item.on { background: var(--on-bg); border: 1px solid #80CBC4; }
+.caution-item.at { background: var(--at-bg); border: 1px solid #EF9A9A; }
+.ci-badge { font-size: 16px; font-weight: 700; min-width: 32px; padding-top: 2px; }
+.caution-item.in .ci-badge { color: var(--in-color); }
+.caution-item.on .ci-badge { color: var(--on-color); }
+.caution-item.at .ci-badge { color: var(--at-color); }
+.ci-body { font-size: 14px; font-weight: 600; line-height: 1.75; }
+.ci-body small { font-size: 12px; color: var(--sub); font-weight: 500; display: block; margin-top: 3px; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 8px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 16px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-badge { font-size: 15px; font-weight: 700; min-width: 36px; padding-top: 2px; }
+.summary-item:nth-child(1) .summary-badge { color: var(--in-color); }
+.summary-item:nth-child(2) .summary-badge { color: var(--on-color); }
+.summary-item:nth-child(3) .summary-badge { color: var(--at-color); }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.7; }
+.summary-text small { font-size: 12px; color: var(--sub); font-weight: 500; display: block; margin-top: 2px; }
+
+/* 判断フロー3択 */
+.judge-flow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.jf-card { border-radius: 12px; padding: 14px 12px; text-align: center; display: flex; flex-direction: column; gap: 5px; }
+.jf-card.in { background: var(--in-bg); border: 1.5px solid #B39DDB; }
+.jf-card.on { background: var(--on-bg); border: 1.5px solid #80CBC4; }
+.jf-card.at { background: var(--at-bg); border: 1.5px solid #EF9A9A; }
+.jf-q { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.jf-arrow { font-size: 13px; color: var(--sub); }
+.jf-ans { font-size: 22px; font-weight: 700; }
+.jf-card.in .jf-ans { color: var(--in-color); }
+.jf-card.on .jf-ans { color: var(--on-color); }
+.jf-card.at .jf-ans { color: var(--at-color); }
+.jf-eg { font-size: 11px; color: var(--sub); font-weight: 500; line-height: 1.4; }
+
+/* 迷ったらボックス */
+.shortcut-box { background: var(--purple); border-radius: 12px; padding: 16px 22px; text-align: center; }
+.shortcut-box .sc-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.08em; margin-bottom: 8px; }
+.shortcut-box .sc-rule { font-size: 15px; font-weight: 700; color: white; line-height: 1.75; }
+.shortcut-box .sc-rule .dim { font-size: 12px; opacity: 0.65; display: block; margin-top: 4px; font-weight: 500; }
+
+.point-box { background: var(--purple-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--purple); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--purple); border-color: var(--purple); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(69,39,160,0.3); }
+.dot.active { background: var(--purple); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 18px; }
+  .trio { grid-template-columns: 1fr; }
+  .judge-flow { grid-template-columns: 1fr; }
+  .pair-row { grid-template-columns: 1fr; }
+  .pair-cell.in-cell { border-right: none; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 20 · 場所の前置詞</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+<a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：イメージで判断する -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン1 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">イメージで判断する<br><span class="accent">in / on / at の使い分け</span></div>
+      </div>
+
+      <div class="trio">
+        <div class="trio-card in">
+          <div class="trio-image">📦</div>
+          <div class="trio-word">in</div>
+          <div class="trio-key">中にある</div>
+          <div class="trio-sub">空間の中に<br>入っているイメージ</div>
+        </div>
+        <div class="trio-card on">
+          <div class="trio-image">📋</div>
+          <div class="trio-word">on</div>
+          <div class="trio-key">触れている</div>
+          <div class="trio-sub">表面に<br>くっついているイメージ</div>
+        </div>
+        <div class="trio-card at">
+          <div class="trio-image">📍</div>
+          <div class="trio-word">at</div>
+          <div class="trio-key">1つの点</div>
+          <div class="trio-sub">ある地点を<br>ピンで刺すイメージ</div>
+        </div>
+      </div>
+
+      <div class="axis-box">
+        <div class="axis-title">🔑 3つのイメージはどれも同じくらい大事！「中・触・点」で判断しよう</div>
+        <div class="axis-rows">
+          <div class="axis-row">
+            <div class="axis-qlabel" style="color:var(--in-color);">中にある？</div>
+            <div class="axis-bar-wrap">
+              <div class="axis-seg in-fill">in ✓</div>
+              <div class="axis-seg dim" style="flex:1;"></div>
+              <div class="axis-seg dim" style="flex:1;"></div>
+            </div>
+            <div class="axis-note" style="color:var(--in-color);">→ in を使う</div>
+          </div>
+          <div class="axis-row">
+            <div class="axis-qlabel" style="color:var(--on-color);">触れてる？</div>
+            <div class="axis-bar-wrap">
+              <div class="axis-seg dim" style="flex:1;"></div>
+              <div class="axis-seg on-fill">on ✓</div>
+              <div class="axis-seg dim" style="flex:1;"></div>
+            </div>
+            <div class="axis-note" style="color:var(--on-color);">→ on を使う</div>
+          </div>
+          <div class="axis-row">
+            <div class="axis-qlabel" style="color:var(--at-color);">1点を指す？</div>
+            <div class="axis-bar-wrap">
+              <div class="axis-seg dim" style="flex:1;"></div>
+              <div class="axis-seg dim" style="flex:1;"></div>
+              <div class="axis-seg at-fill">at ✓</div>
+            </div>
+            <div class="axis-note" style="color:var(--at-color);">→ at を使う</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">⚠️ 前置詞には例外も多い。まず「中・触・点」の3イメージを体にしみこませよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：例文で比較＋対比ペア -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン1 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">例文で確かめよう</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">The cat is <span class="hl-in">in</span> the box.</div>
+          <div class="jp">猫は箱の中にいる。→ 箱という空間の中に入っているから <strong style="color:var(--in-color)">in</strong></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">The book is <span class="hl-on">on</span> the desk.</div>
+          <div class="jp">本は机の上にある。→ 机の表面にのっている（接触）から <strong style="color:var(--on-color)">on</strong></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">She is <span class="hl-at">at</span> the station.</div>
+          <div class="jp">彼女は駅にいる。→「駅」という1地点をピンポイントで指すから <strong style="color:var(--at-color)">at</strong></div>
+        </div>
+      </div>
+
+      <div class="pair-box">
+        <div class="pair-head">📌 対比で覚えよう — 同じ「東京」でも変わる！</div>
+        <div class="pair-row">
+          <div class="pair-cell in-cell">I live <strong>in</strong> Tokyo.<small>東京という広い空間の中にいる</small></div>
+          <div class="pair-cell at-cell">I am <strong>at</strong> Tokyo Station.<small>東京駅という1点にいる</small></div>
+        </div>
+        <div class="pair-row">
+          <div class="pair-cell in-cell">She is <strong>in</strong> the classroom.<small>教室という空間の中にいる</small></div>
+          <div class="pair-cell at-cell">She is <strong>at</strong> school.<small>「学校」という場所（1点）にいる</small></div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 「広い空間の中」なら <strong>in</strong>、「1か所をピンポイントで指す」なら <strong>at</strong>。同じ場所でも使い分けが変わるよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：よく間違える表現 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン1 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">要注意！<span class="accent">丸ごと覚える表現</span></div>
+      </div>
+
+      <div class="caution-list">
+        <div class="caution-item in">
+          <div class="ci-badge">in</div>
+          <div class="ci-body">
+            <span style="color:var(--in-color);font-weight:700;">in bed</span>（ベッドに入っている）・<span style="color:var(--in-color);font-weight:700;">in the hospital</span>（入院中）
+            <small>「中に入っている」感覚で in。※ in the hospital は「入院中」の意味で使うのが一般的だよ。</small>
+          </div>
+        </div>
+        <div class="caution-item on">
+          <div class="ci-badge">on</div>
+          <div class="ci-body">
+            <span style="color:var(--on-color);font-weight:700;">on TV</span>（テレビで）・<span style="color:var(--on-color);font-weight:700;">on the bus / train / plane</span>（バス・電車・飛行機に乗って）
+            <small><strong>乗り物は on が基本！</strong>「乗り物の床（表面）に接触している」イメージで覚えよう。in a car（車）だけ例外なので注意。</small>
+          </div>
+        </div>
+        <div class="caution-item at">
+          <div class="ci-badge">at</div>
+          <div class="ci-body">
+            <span style="color:var(--at-color);font-weight:700;">at home</span>（家に）・<span style="color:var(--at-color);font-weight:700;">at school</span>（学校で）・<span style="color:var(--at-color);font-weight:700;">at the door</span>（ドアのところに）
+            <small>「家・学校」は空間の「中」でなく、<strong>1つの場所（地点）</strong>としてとらえるから at。</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">⚠️ 前置詞は<strong>例外が多い</strong>！ルールが通じないときは丸ごとセットで覚えよう。<br>特に <strong>at home・on the bus・in bed</strong> は頻出だよ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ＋判断フロー＋最終ルール -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン1 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-badge">in</div>
+          <div class="summary-text">空間の<strong>中に</strong>いる・ある（乗り物は on が基本）
+            <small>in the box / in Tokyo / in bed / in the hospital</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-badge">on</div>
+          <div class="summary-text">表面に<strong>接触</strong>している（乗り物も on！）
+            <small>on the desk / on TV / on the bus / on the wall</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-badge">at</div>
+          <div class="summary-text">ある<strong>1地点</strong>をピンポイントで指す
+            <small>at the station / at home / at school / at the door</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="judge-flow">
+        <div class="jf-card in">
+          <div class="jf-q">中に入ってる？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">in</div>
+          <div class="jf-eg">in the box<br>in Tokyo</div>
+        </div>
+        <div class="jf-card on">
+          <div class="jf-q">表面に触れてる？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">on</div>
+          <div class="jf-eg">on the desk<br>on the bus</div>
+        </div>
+        <div class="jf-card at">
+          <div class="jf-q">1点を指してる？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">at</div>
+          <div class="jf-eg">at the station<br>at home</div>
+        </div>
+      </div>
+
+      <div class="shortcut-box">
+        <div class="sc-label">💡 迷ったときの最終判断ルール</div>
+        <div class="sc-rule">
+          中なら <strong>in</strong> ／ 触れてたら <strong>on</strong> ／ 点なら <strong>at</strong>
+          <span class="dim">※ 例外もあるから、慣れたら丸ごとセットで覚えていこう！</span>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit20-lesson1-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>

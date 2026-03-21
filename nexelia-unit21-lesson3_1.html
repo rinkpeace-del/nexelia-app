@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 21 レッスン3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --purple: #512DA8;
+  --purple-light: #EDE7F6;
+  --accent: #512DA8;
+  --accent-light: #EDE7F6;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--purple); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--accent); }
+
+/* 分岐ボックス */
+.branch-box { display: flex; flex-direction: column; gap: 8px; }
+.branch-row { border-radius: 14px; overflow: hidden; border: 1.5px solid var(--border); display: flex; align-items: stretch; }
+.branch-row.wh-type { border-color: var(--purple); }
+.branch-row.yn-type { border-color: #2E7D32; }
+.branch-badge { display: flex; align-items: center; justify-content: center; padding: 14px 16px; font-size: 12px; font-weight: 700; min-width: 100px; text-align: center; line-height: 1.5; flex-shrink: 0; }
+.branch-row.wh-type .branch-badge { background: var(--purple-light); color: var(--purple); border-right: 1.5px solid var(--purple); }
+.branch-row.yn-type .branch-badge { background: #E8F5E9; color: #2E7D32; border-right: 1.5px solid #A5D6A7; }
+.branch-content { padding: 14px 18px; background: var(--white); flex: 1; }
+.branch-content .bc-rule { font-size: 15px; font-weight: 700; line-height: 1.5; }
+.branch-content .bc-ex { font-size: 13px; color: var(--sub); margin-top: 5px; font-weight: 500; line-height: 1.6; }
+.hl { color: var(--purple); font-weight: 700; }
+.hl-green { color: #2E7D32; font-weight: 700; }
+
+/* 変換ブロック */
+.convert-block { border-radius: 14px; overflow: hidden; border: 1.5px solid #A5D6A7; }
+.convert-block .cb-head { background: #E8F5E9; padding: 8px 18px; font-size: 11px; font-weight: 700; color: #2E7D32; letter-spacing: 0.08em; }
+.convert-block .cb-body { background: var(--white); padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.cb-row { display: flex; align-items: flex-start; gap: 12px; }
+.cb-lbl { font-size: 11px; font-weight: 700; min-width: 36px; padding-top: 3px; flex-shrink: 0; }
+.cb-lbl.ng { color: #C62828; }
+.cb-lbl.ok { color: #1B873B; }
+.cb-sentence { font-size: 15px; font-weight: 700; line-height: 1.6; }
+.cb-note { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 3px; }
+.hl-ng { color: #C62828; background: #FFEBEE; border-radius: 4px; padding: 1px 4px; }
+.hl-ok { color: #1B873B; background: #E6F4EA; border-radius: 4px; padding: 1px 4px; }
+.cb-arrow { text-align: center; color: var(--purple); font-size: 18px; }
+
+/* if vs whether カード */
+.vs-box { display: flex; gap: 10px; }
+.vs-card { flex: 1; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+.vs-card.if-card      { background: var(--purple-light); border: 1.5px solid #B39DDB; }
+.vs-card.whether-card { background: #E8F5E9; border: 1.5px solid #A5D6A7; }
+.vs-card .vc-word { font-size: 22px; font-weight: 700; }
+.vs-card.if-card .vc-word      { color: var(--purple); }
+.vs-card.whether-card .vc-word { color: #2E7D32; }
+.vs-card .vc-desc { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.6; }
+.vs-card .vc-ex   { font-size: 12px; color: var(--sub); font-weight: 500; line-height: 1.6; margin-top: 4px; }
+.vs-eq { display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--sub); font-weight: 700; flex-shrink: 0; }
+
+/* まとめ */
+.one-liner { background: var(--purple); border-radius: 12px; padding: 14px 22px; color: white; font-size: 15px; font-weight: 700; text-align: center; line-height: 1.6; }
+.one-liner span { opacity: 0.75; font-size: 12px; display: block; margin-top: 4px; font-weight: 500; }
+
+.summary-list { display: flex; flex-direction: column; gap: 9px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--purple); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.7; }
+.summary-text small { display: block; font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 2px; }
+
+.caution-box { background: #FFF8E1; border: 1.5px solid #FFE082; border-radius: 12px; padding: 13px 18px; font-size: 13px; font-weight: 600; color: #795548; line-height: 1.75; }
+
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 15px 22px; font-size: 14px; color: var(--purple); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--purple); border-color: var(--purple); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(81,45,168,0.3); }
+.dot.active { background: var(--purple); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 18px; }
+  .branch-badge { min-width: 76px; font-size: 11px; }
+  .vs-box { flex-direction: column; }
+  .vs-eq { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 21 · if / whether</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+<a href="nexelia-unit21-lesson2_1.html" class="btn-exit">← Lesson 2</a>
+</nav>
+
+<main>
+
+  <!-- スライド1：疑問詞あり vs Yes/No の分岐 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン3 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">Yes/No 疑問文を<br>文の中に入れるときは<span class="accent"> if ！</span></div>
+      </div>
+
+      <div class="branch-box">
+        <div class="branch-row wh-type">
+          <div class="branch-badge">疑問詞あり<br>（what / where…）</div>
+          <div class="branch-content">
+            <div class="bc-rule">→ <span class="hl">疑問詞</span> をそのまま使う</div>
+            <div class="bc-ex">I know <span class="hl">where he is</span>. / Do you know <span class="hl">what she wants</span>?</div>
+          </div>
+        </div>
+        <div class="branch-row yn-type">
+          <div class="branch-badge">Yes/No 疑問文<br>（Is she ...? など）</div>
+          <div class="branch-content">
+            <div class="bc-rule">→ <span class="hl-green">if</span> または <span class="hl-green">whether</span> を使う</div>
+            <div class="bc-ex">I don't know <span class="hl-green">if she is busy</span>. / Do you know <span class="hl-green">if he came</span>?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 判断軸：<strong>疑問詞がある？→ 疑問詞をそのまま使う</strong><br>　　　　　<strong>疑問詞がない？→ if（または whether）を使う</strong></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド2：変換デモ -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン3 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">変換してみよう<br><span class="accent">if ＋ 主語 ＋ 動詞</span></div>
+      </div>
+
+      <div class="convert-block">
+        <div class="cb-head">🔄 Yes/No 疑問文 → 間接疑問文（if）</div>
+        <div class="cb-body">
+          <div class="cb-row">
+            <span class="cb-lbl ng">❌</span>
+            <div>
+              <div class="cb-sentence">I don't know <span class="hl-ng">is she busy</span>.</div>
+              <div class="cb-note">疑問文の語順のまま＆if が抜けている</div>
+            </div>
+          </div>
+          <div class="cb-arrow">↓</div>
+          <div class="cb-row">
+            <span class="cb-lbl ok">✅</span>
+            <div>
+              <div class="cb-sentence">I don't know <span class="hl-ok">if she is busy</span>.</div>
+              <div class="cb-note">if ＋ 主語（she）＋ 動詞（is）の順</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="convert-block">
+        <div class="cb-head">🔄 過去形の Yes/No 疑問文</div>
+        <div class="cb-body">
+          <div class="cb-row">
+            <span class="cb-lbl ng">❌</span>
+            <div>
+              <div class="cb-sentence">Do you know <span class="hl-ng">did he come</span>?</div>
+              <div class="cb-note">did は疑問文用 → 間接疑問文には入れない</div>
+            </div>
+          </div>
+          <div class="cb-arrow">↓</div>
+          <div class="cb-row">
+            <span class="cb-lbl ok">✅</span>
+            <div>
+              <div class="cb-sentence">Do you know <span class="hl-ok">if he came</span>?</div>
+              <div class="cb-note">if ＋ 主語（he）＋ 動詞（came）。did は不要！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 語順ルールは疑問詞のときと同じ！<br><strong>if ＋ 主語 ＋ 動詞</strong>（疑問文の語順にしない・do/did は入れない）</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド3：if vs whether -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン3 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">if と whether<span class="accent">どう違う？</span></div>
+      </div>
+
+      <div class="vs-box">
+        <div class="vs-card if-card">
+          <div class="vc-word">if</div>
+          <div class="vc-desc">日常会話でよく使う<br>「〜かどうか」</div>
+          <div class="vc-ex">I don't know <strong>if</strong> she is busy.<br>Do you know <strong>if</strong> he came?</div>
+        </div>
+        <div class="vs-eq">=</div>
+        <div class="vs-card whether-card">
+          <div class="vc-word">whether</div>
+          <div class="vc-desc">やや丁寧・書き言葉的<br>「〜かどうか」</div>
+          <div class="vc-ex">I don't know <strong>whether</strong> she is busy.<br>Do you know <strong>whether</strong> he came?</div>
+        </div>
+      </div>
+
+      <div class="caution-box">
+        ⚠️ 中学では <strong>if</strong> を使えば OK！<br>
+        whether はほぼ同じ意味で少しフォーマルな表現だよ。<br>
+        試験では「if または whether」どちらでも正解になることが多いよ。
+      </div>
+
+      <div class="point-box">💡 if も whether も「〜かどうか」で意味は同じ！<br>まずは <strong>if</strong> を使いこなせれば十分だよ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン3 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="one-liner">
+        疑問詞がない？→ if ＋ 主語 ＋ 動詞
+        <span>語順ルールは疑問詞のときと完全共通！</span>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">
+            Yes/No 疑問文を文の中に入れるときは <strong>if</strong>（または whether）を使う
+            <small>Is she busy? → I don't know if she is busy.</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">
+            if のあとも <strong>主語 ＋ 動詞</strong> の順（do / did は入れない！）
+            <small>❌ if did he come　→　✅ if he came</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">
+            if と whether は同じ意味。中学では <strong>if</strong> で OK！
+            <small>I don't know if / whether she is busy. どちらも正解</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 お疲れさま！演習で if の感覚をつかもう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  var TOTAL = 4;
+  var cur = 0;
+
+  function renderDots(id) {
+    var el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (var i = 0; i < TOTAL; i++) {
+      var d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit21-lesson3-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>

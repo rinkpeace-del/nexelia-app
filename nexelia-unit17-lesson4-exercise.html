@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 17 レッスン4 · 演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --indigo: #283593; --indigo-light: #E8EAF6; --indigo-mid: #C5CAE9;
+  --orange: #E65100; --orange-light: #FFF8E1;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--indigo); }
+.rule-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; border-radius: 6px; padding: 3px 10px; background: var(--indigo-light); color: var(--indigo); border: 1px solid var(--indigo-mid); }
+.q-text  { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub   { font-size: 14px; color: var(--sub); line-height: 1.6; }
+
+/* 四択 */
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
+.opt { padding: 15px 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: left; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled):not(.selected) { border-color: var(--indigo); background: var(--indigo-light); transform: translateY(-2px); }
+.opt.correct  { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong    { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt.selected { background: var(--indigo-light); border-color: var(--indigo); color: var(--indigo); }
+.opt.missed   { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
+.opt:disabled { cursor: default; transform: none; }
+
+/* 複数選択 */
+.multi-check-row { display: flex; gap: 10px; }
+.btn-multi-check { flex: 1; padding: 13px; border-radius: 10px; border: none; background: var(--indigo); color: white; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: opacity 0.15s; }
+.btn-multi-check:hover { opacity: 0.88; }
+.btn-multi-check:disabled { opacity: 0.3; cursor: default; }
+.btn-multi-reset { padding: 13px 18px; border-radius: 10px; border: 1.5px solid var(--border); background: white; color: var(--sub); font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; }
+.btn-multi-reset:hover { border-color: #aaa; }
+.btn-multi-reset:disabled { opacity: 0.3; cursor: default; }
+.select-hint { font-size: 12px; color: var(--indigo); font-weight: 600; }
+
+/* 並び替え */
+.sort-area { display: flex; flex-direction: column; gap: 14px; margin-top: auto; }
+.sort-answer-box { min-height: 56px; border: 2px dashed var(--indigo-mid); border-radius: 12px; padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: var(--indigo-light); transition: border-color 0.2s; }
+.sort-answer-box.correct-box { border-color: var(--green); background: var(--green-light); }
+.sort-answer-box.wrong-box   { border-color: var(--wrong); background: var(--wrong-light); }
+.sort-answer-box .placeholder { font-size: 13px; color: var(--sub); font-weight: 500; }
+.sort-bank { display: flex; flex-wrap: wrap; gap: 8px; }
+.sort-chip { padding: 9px 14px; border-radius: 8px; border: 1.5px solid var(--indigo-mid); background: var(--white); font-size: 15px; font-weight: 700; color: var(--indigo); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: background 0.12s, transform 0.1s, opacity 0.15s; user-select: none; }
+.sort-chip:hover { background: var(--indigo-light); transform: translateY(-2px); }
+.sort-chip.used { opacity: 0.3; pointer-events: none; }
+.sort-chip.disabled { pointer-events: none; }
+.ans-chip { padding: 9px 14px; border-radius: 8px; border: 1.5px solid var(--indigo); background: var(--indigo); font-size: 15px; font-weight: 700; color: white; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: opacity 0.12s; }
+.ans-chip:hover { opacity: 0.8; }
+.ans-chip.disabled { pointer-events: none; }
+.sort-check-row { display: flex; gap: 10px; }
+.btn-sort-check { flex: 1; padding: 13px; border-radius: 10px; border: none; background: var(--indigo); color: white; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: opacity 0.15s; }
+.btn-sort-check:hover { opacity: 0.88; }
+.btn-sort-check:disabled { opacity: 0.3; cursor: default; }
+.btn-sort-reset { padding: 13px 18px; border-radius: 10px; border: 1.5px solid var(--border); background: white; color: var(--sub); font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; }
+.btn-sort-reset:hover { border-color: #aaa; }
+.btn-sort-reset:disabled { opacity: 0.3; cursor: default; }
+
+/* 語順解説 */
+.order-explain { display: none; background: var(--indigo-light); border-radius: 12px; padding: 14px 18px; }
+.order-explain.show { display: block; }
+.order-explain-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--indigo); margin-bottom: 10px; }
+.order-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.order-chip { border-radius: 8px; padding: 5px 10px; font-size: 13px; font-weight: 700; border: 1.5px solid var(--indigo-mid); background: var(--white); color: var(--indigo); }
+.order-chip.key { background: var(--indigo); color: white; border-color: var(--indigo); }
+.order-note { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 2px; }
+
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.75; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+.dots { display: flex; gap: 7px; align-items: center; }
+.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(40,53,147,0.3); }
+.dot.active { background: var(--indigo); width: 22px; }
+
+/* 結果 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 52px; margin-bottom: 16px; }
+.complete-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.complete-sub { font-size: 14px; font-weight: 700; color: var(--indigo); background: var(--indigo-light); border-radius: 8px; padding: 6px 16px; margin-bottom: 16px; }
+.score-badge { font-size: 34px; font-weight: 700; color: var(--indigo); margin-bottom: 14px; }
+.complete-msg { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 28px; }
+.complete-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; }
+.cbtn { padding: 14px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; text-align: center; }
+.cbtn.primary   { background: var(--indigo); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+.cbtn.tertiary  { background: transparent; color: var(--sub); border: none; font-size: 13px; }
+
+@media (max-width: 600px) { nav { padding: 0 16px; } .nav-center { display: none; } main { padding: 20px 16px; } .quiz-card { padding: 24px 18px; } }
+</style>
+</head>
+<body>
+
+<nav>
+      <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 17 · 関係代名詞まとめ · 演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:20%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+        <a href="nexelia-unit17-lesson4_1.html" class="btn-exit">← スライドへ</a>
+</nav>
+
+<main>
+
+  <!-- Q1：⭐ 複数選択「who が使える文を2つ選べ」 -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-label">問題 1 / 5 ⭐</div>
+      <span class="rule-badge">先行詞ルール</span>
+      <div class="q-text">who を使って正しい文になるものを <strong>2つ</strong> 選ぼう。</div>
+      <div class="q-sub">先行詞が「人」かどうか確認しよう！</div>
+      <div class="select-hint" id="q1-hint">あと 2 つ選べるよ</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="true"  data-reason="">the girl <span style="text-decoration:underline;text-underline-offset:4px;">who</span> lives next door</button>
+        <button class="opt" data-correct="false" data-reason="a book は「もの」→ who は使えない。which / that を使おう（先行詞ルール）">a book <span style="text-decoration:underline;text-underline-offset:4px;">who</span> is interesting</button>
+        <button class="opt" data-correct="true"  data-reason="">My brother, <span style="text-decoration:underline;text-underline-offset:4px;">who</span> lives in Tokyo, is a doctor.</button>
+        <button class="opt" data-correct="false" data-reason="a dog は「動物」→ who は使えない。which / that を使おう（先行詞ルール）">a dog <span style="text-decoration:underline;text-underline-offset:4px;">who</span> runs fast</button>
+      </div>
+      <div class="multi-check-row">
+        <button class="btn-multi-reset" id="q1-reset">リセット</button>
+        <button class="btn-multi-check" id="q1-check" disabled>答え合わせ →</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：⭐⭐ コンマルール（that はコンマのあとで使えない） -->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-label">問題 2 / 5 ⭐⭐</div>
+      <span class="rule-badge">コンマルール</span>
+      <div class="q-text">（　）に入る正しい語はどれ？<br><span style="font-size:17px; color:var(--indigo);">This is my brother, (　　) lives in Tokyo.</span></div>
+      <div class="q-sub">コンマ（,）のあとに注目！that のコンマルールを思い出そう。</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="true"  data-reason="">who　（→ 人 ＋ コンマのあとでも使える）</button>
+        <button class="opt" data-correct="false" data-reason="【コンマルール】that はコンマ（,）の後ろでは使えないよ！">that　（→ コンマのあとは使えない）</button>
+        <button class="opt" data-correct="false" data-reason="my brother は「人」なので which は使えない（先行詞ルール）">which　（→ 人には使えない）</button>
+        <button class="opt" data-correct="false" data-reason="what は先行詞なしで使う関係代名詞。ここでは使えないよ">what　（→ 先行詞ありでは使えない）</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：⭐⭐ 最上級ルール（best のあとは that） -->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-label">問題 3 / 5 ⭐⭐</div>
+      <span class="rule-badge">最上級ルール</span>
+      <div class="q-text">（　）に入る最も自然な語はどれ？<br><span style="font-size:17px; color:var(--indigo);">This is the best movie (　　) I have ever seen.</span></div>
+      <div class="q-sub"><span style="text-decoration:underline;text-underline-offset:4px;">the best movie</span> が先行詞。最上級のあとに何を使う？</div>
+      <div class="options" id="o2">
+        <button class="opt" data-correct="false" data-reason="who は人を表す名詞に使う言葉。movie は「もの」なので who は使えない（先行詞ルール）">who　（→ movie は人ではない）</button>
+        <button class="opt" data-correct="false" data-reason="which も文法的にはOKだけど【最上級ルール】best / first / only のあとは that が自然で試験でも正解になりやすい">which　（→ 使えるが best のあとは…）</button>
+        <button class="opt" data-correct="true"  data-reason="">that　（→ best / first / only のあとは that が自然）</button>
+        <button class="opt" data-correct="false" data-reason="what は先行詞なしで使う関係代名詞。先行詞（the best movie）があるので使えない">what　（→ 先行詞ありでは使えない）</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：⭐⭐⭐ 総合（正しい英文を選ぶ） -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">問題 4 / 5 ⭐⭐⭐</div>
+      <span class="rule-badge">最上級ルール ＋ 先行詞ルール</span>
+      <div class="q-text">日本語に合う正しい英文はどれ？<br><span style="font-size:16px; color:var(--indigo);">「彼女は私が今まで会った中で一番優しい人です。」</span></div>
+      <div class="q-sub">先行詞・最上級のあとの関係代名詞・形容詞の形、全部確認しよう！</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false" data-reason="【先行詞ルール】which は人には不自然。最上級のあとは that を使おう">She is the kindest person which I have ever met.</button>
+        <button class="opt" data-correct="false" data-reason="who も使えるが【最上級ルール】kindest（最上級）のあとは that がより自然。試験では that が正解になるよ">She is the kindest person who I have ever met.</button>
+        <button class="opt" data-correct="true"  data-reason="">She is the kindest person that I have ever met.</button>
+        <button class="opt" data-correct="false" data-reason="「most kind」は誤り。kind は短い形容詞なので kindest（-est をつける）が正しいよ">She is the most kind person that I have ever met.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5：⭐⭐⭐ 文章生成（2文→1文・which） -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">問題 5 / 5 ⭐⭐⭐</div>
+      <span class="rule-badge">先行詞ルール ＋ 文生成</span>
+      <div class="q-text">並び替えて正しい英文を作ろう。<br><span style="font-size:15px;color:var(--sub);">「私はとても速く走る犬を飼っています。」</span></div>
+      <div class="q-sub">チップをタップして順番に並べよう。<strong>which / runs</strong> の位置と形に注意！</div>
+      <div class="sort-area">
+        <div class="sort-answer-box" id="ans-box">
+          <span class="placeholder" id="placeholder-text">ここに並べよう</span>
+        </div>
+        <div class="sort-bank" id="sort-bank"></div>
+        <div class="sort-check-row">
+          <button class="btn-sort-reset" id="sort-reset">リセット</button>
+          <button class="btn-sort-check" id="sort-check" disabled>答え合わせ →</button>
+        </div>
+      </div>
+      <div class="feedback" id="f4"></div>
+      <div class="order-explain" id="order-explain">
+        <div class="order-explain-title">📖 語順のポイント（先行詞ルール）</div>
+        <div class="order-row">
+          <div class="order-chip">I have</div>
+          <div class="order-chip">a dog</div>
+          <div class="order-chip key">which</div>
+          <div class="order-chip key">runs very fast.</div>
+        </div>
+        <div class="order-note">① <strong>a dog</strong>（先行詞・動物）の直後に which を置く</div>
+        <div class="order-note">② 先行詞が「動物」なので <strong>which</strong>（who は使えない）</div>
+        <div class="order-note">③ a dog は単数なので <strong>runs</strong>（s あり）</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon" id="c-icon"></div>
+    <div class="complete-title" id="c-title"></div>
+    <div class="complete-sub">🎓 関係代名詞マスター！</div>
+    <div class="score-badge" id="c-score"></div>
+    <div class="complete-msg" id="c-msg"></div>
+    <div class="complete-btns">
+      <a href="#" class="cbtn primary">次の Unit へ →</a>
+      <a href="nexelia-unit17-lesson4_1.html" class="cbtn secondary">← このレッスンのスライドへ</a>
+      <a href="lessons.html" class="cbtn tertiary">レッスン一覧へ</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5; let cur = 0; let correct = 0; const answered = {};
+  const LESSON_ID = 'lesson65';
+  const PROGRESS_KEY = 'nexeliaLessonProgress';
+
+  function saveLessonProgress(value) {
+    let progressMap = {};
+    try { progressMap = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; }
+    catch (e) { progressMap = {}; }
+    const nextValue = Math.max(Number(progressMap[LESSON_ID]) || 0, value);
+    progressMap[LESSON_ID] = nextValue;
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+    localStorage.setItem('nexeliaLastLesson', LESSON_ID);
+  }
+
+  /* ===== Q1：複数選択 ===== */
+  const CORRECT_Q1 = new Set([0, 2]);
+  let q1Selected = new Set();
+  let q1Done = false;
+
+  (function() {
+    const opts = Array.from(document.querySelectorAll('#o0 .opt'));
+    const hint = document.getElementById('q1-hint');
+    const checkBtn = document.getElementById('q1-check');
+    const resetBtn = document.getElementById('q1-reset');
+
+    opts.forEach(function(btn, idx) {
+      btn.addEventListener('click', function() {
+        if (q1Done) return;
+        if (q1Selected.has(idx)) { q1Selected.delete(idx); btn.classList.remove('selected'); }
+        else if (q1Selected.size < 2) { q1Selected.add(idx); btn.classList.add('selected'); }
+        const rem = 2 - q1Selected.size;
+        hint.textContent = rem > 0 ? 'あと ' + rem + ' つ選べるよ' : '答え合わせしてみよう！';
+        checkBtn.disabled = (q1Selected.size !== 2);
+      });
+    });
+
+    resetBtn.addEventListener('click', function() {
+      if (q1Done) return;
+      q1Selected.clear();
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      hint.textContent = 'あと 2 つ選べるよ';
+      checkBtn.disabled = true;
+    });
+
+    checkBtn.addEventListener('click', function() {
+      if (q1Done) return;
+      q1Done = true; answered[0] = true;
+      const isCorrect = q1Selected.has(0) && q1Selected.has(2) && q1Selected.size === 2;
+      if (isCorrect) correct++;
+      opts.forEach(function(btn, idx) {
+        btn.disabled = true; btn.classList.remove('selected');
+        const isC = CORRECT_Q1.has(idx), wasS = q1Selected.has(idx);
+        if (isC && wasS) btn.classList.add('correct');
+        else if (isC && !wasS) btn.classList.add('missed');
+        else if (!isC && wasS) {
+          btn.classList.add('wrong');
+          const r = btn.dataset.reason;
+          if (r) { const n = document.createElement('div'); n.style.cssText='font-size:12px;font-weight:600;color:var(--wrong);margin-top:6px;'; n.textContent='→ '+r; btn.parentNode.insertBefore(n, btn.nextSibling); }
+        }
+      });
+      checkBtn.disabled = true; resetBtn.disabled = true;
+      hint.textContent = isCorrect ? '✓ 2つとも正解！' : '正解は1番と3番だよ';
+      hint.style.color = isCorrect ? 'var(--green)' : 'var(--wrong)';
+      const fb = document.getElementById('f0');
+      fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+      fb.textContent = isCorrect
+        ? '✓ 正解！【先行詞ルール】who は「人」の先行詞のみ。コンマ（,）のあとでも使えるよ！book・dog は人ではないから who は使えないよ！'
+        : '✗ 惜しい！【先行詞ルール】who が使えるのは先行詞が「人」のとき。book・dog は人ではないから NG。コンマありの My brother, who ... も OK だよ！';
+      document.getElementById('n0').disabled = false;
+    });
+  })();
+
+  /* ===== Q2〜Q4：単択 ===== */
+  const FB_OK = {
+    1: '✓ 正解！【コンマルール】that はコンマ（,）のあとでは使えないよ。人 ＋ コンマあり → who が正解！',
+    2: '✓ 正解！【最上級ルール】best / first / only のあとは that が自然だよ。which も使えるけど試験では that を選ぼう！',
+    3: '✓ 正解！【最上級ルール ＋ 先行詞ルール】kindest（最上級）のあとは that が自然。kindest の形もバッチリ！'
+  };
+  const FB_NG = {
+    1: '✗ 惜しい！【コンマルール】that はコンマ（,）の後ろでは使えないよ。人 ＋ コンマあり → who が正解！',
+    2: '✗ 惜しい！【最上級ルール】best / first / only のあとは that が自然だよ。who は movie（もの）には使えない！',
+    3: '✗ 惜しい！【最上級ルール】kindest（最上級）のあとは that が自然。which は人に不自然、「most kind」ではなく kindest が正しい形だよ！'
+  };
+
+  [1, 2, 3].forEach(function(qIdx) {
+    const opts = document.querySelectorAll('#o' + qIdx + ' .opt');
+    opts.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered[qIdx]) return; answered[qIdx] = true;
+        const isCorrect = btn.dataset.correct === 'true';
+        const reason = btn.dataset.reason;
+        if (isCorrect) correct++;
+        opts.forEach(function(b) { b.disabled = true; if (b.dataset.correct === 'true') b.classList.add('correct'); });
+        if (!isCorrect) btn.classList.add('wrong');
+        const fb = document.getElementById('f' + qIdx);
+        fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+        fb.textContent = isCorrect
+          ? FB_OK[qIdx]
+          : '✗ 惜しい！' + (reason ? reason + '　' : '') + FB_NG[qIdx];
+        document.getElementById('n' + qIdx).disabled = false;
+      });
+    });
+  });
+
+  /* ===== 並び替え（Q5） ===== */
+  const SORT_WORDS = ['I have', 'a dog', 'which', 'runs very fast.'];
+  const CORRECT_ORDER = ['I have', 'a dog', 'which', 'runs very fast.'];
+  let answerArr = [];
+  let sortAnswered = false;
+
+  function buildSortBank() {
+    const bank = document.getElementById('sort-bank');
+    bank.innerHTML = '';
+    const shuffled = [...SORT_WORDS].sort(() => Math.random() - 0.5);
+    shuffled.forEach(function(w) {
+      const chip = document.createElement('button');
+      chip.className = 'sort-chip'; chip.textContent = w; chip.dataset.word = w;
+      chip.addEventListener('click', function() {
+        if (sortAnswered) return;
+        answerArr.push(w); chip.classList.add('used');
+        renderAnswerBox();
+        document.getElementById('sort-check').disabled = (answerArr.length === 0);
+      });
+      bank.appendChild(chip);
+    });
+  }
+
+  function renderAnswerBox() {
+    const box = document.getElementById('ans-box');
+    const placeholder = document.getElementById('placeholder-text');
+    box.querySelectorAll('.ans-chip').forEach(function(c) { c.remove(); });
+    if (answerArr.length === 0) { placeholder.style.display = ''; }
+    else {
+      placeholder.style.display = 'none';
+      answerArr.forEach(function(w, i) {
+        const chip = document.createElement('button');
+        chip.className = 'ans-chip' + (sortAnswered ? ' disabled' : '');
+        chip.textContent = w;
+        chip.addEventListener('click', function() {
+          if (sortAnswered) return;
+          answerArr.splice(i, 1);
+          const chips = Array.from(document.querySelectorAll('#sort-bank .sort-chip'));
+          const t = chips.find(function(c) { return c.dataset.word === w && c.classList.contains('used'); });
+          if (t) t.classList.remove('used');
+          renderAnswerBox();
+          document.getElementById('sort-check').disabled = (answerArr.length === 0);
+        });
+        box.appendChild(chip);
+      });
+    }
+  }
+
+  document.getElementById('sort-reset').addEventListener('click', function() {
+    if (sortAnswered) return;
+    answerArr = [];
+    document.querySelectorAll('#sort-bank .sort-chip').forEach(function(c) { c.classList.remove('used'); });
+    renderAnswerBox();
+    document.getElementById('sort-check').disabled = true;
+  });
+
+  document.getElementById('sort-check').addEventListener('click', function() {
+    if (sortAnswered) return;
+    sortAnswered = true;
+    const isCorrect = JSON.stringify(answerArr) === JSON.stringify(CORRECT_ORDER);
+    if (isCorrect) correct++;
+    answered[4] = true;
+    const box = document.getElementById('ans-box');
+    box.classList.add(isCorrect ? 'correct-box' : 'wrong-box');
+    document.querySelectorAll('#sort-bank .sort-chip').forEach(function(c) { c.classList.add('disabled'); });
+    document.querySelectorAll('#ans-box .ans-chip').forEach(function(c) { c.classList.add('disabled'); });
+    document.getElementById('sort-check').disabled = true;
+    document.getElementById('sort-reset').disabled = true;
+    const fb = document.getElementById('f4');
+    fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+    fb.textContent = isCorrect
+      ? '✓ 正解！【先行詞ルール】「I have a dog which runs very fast.」完璧！a dog（動物）→ which、単数なので runs（s あり）もバッチリ！'
+      : '✗ 惜しい！【先行詞ルール】正しい語順は「I have a dog which runs very fast.」。which は a dog の直後、単数なので runs（s あり）に注意！';
+    document.getElementById('order-explain').classList.add('show');
+    document.getElementById('n4').disabled = false;
+  });
+
+  /* ===== 共通 ===== */
+  function renderDots(id) {
+    const el = document.getElementById('d' + id); if (!el) return; el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) { const d = document.createElement('div'); d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : ''); el.appendChild(d); }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active'); cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s4').classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+    document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
+    if (correct === 5) {
+      document.getElementById('c-icon').textContent = '🎉';
+      document.getElementById('c-title').textContent = '全問正解！';
+      document.getElementById('c-msg').textContent = 'Unit 17 関係代名詞、完全マスター！\nwho・which・that の使い分け、コンマルール、最上級ルール、全部バッチリ！';
+    } else if (correct >= 3) {
+      document.getElementById('c-icon').textContent = '👍';
+      document.getElementById('c-title').textContent = 'もう少し！';
+      document.getElementById('c-msg').textContent = 'いい感じ！コンマルールや最上級ルールをスライドでもう一度確認してみよう。';
+    } else {
+      document.getElementById('c-icon').textContent = '📖';
+      document.getElementById('c-title').textContent = 'スライドを見直そう';
+      document.getElementById('c-msg').textContent = 'Unit 17 のスライドをもう一度確認して再チャレンジしよう！';
+    }
+    if (correct === 5) saveLessonProgress(100);
+    else if (correct >= 3) saveLessonProgress(80);
+    else saveLessonProgress(60);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { finish(); });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  buildSortBank();
+  renderDots(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 15 レッスン3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --teal: #00695C;
+  --teal-light: #E0F2F1;
+  --yellow: #F57F17;
+  --yellow-light: #FFF8E1;
+  --wrong: #C62828;
+  --wrong-light: #FFEBEE;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--teal); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--teal); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 24px; font-weight: 700; line-height: 1.3; white-space: nowrap; }
+.concept-text .accent { color: var(--teal); }
+
+/* to vs ing 対比 */
+.contrast-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contrast-card { border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+.contrast-card.ng  { background: var(--wrong-light); border: 1.5px solid #EF9A9A; }
+.contrast-card.ok  { background: var(--green-light); border: 1.5px solid #A5D6A7; }
+.contrast-badge { font-size: 13px; font-weight: 700; }
+.contrast-card.ng .contrast-badge { color: var(--wrong); }
+.contrast-card.ok .contrast-badge { color: var(--green); }
+.contrast-en { font-size: 16px; font-weight: 700; line-height: 1.5; }
+.contrast-card.ng .contrast-en { color: var(--wrong); text-decoration: line-through; }
+.contrast-card.ok .contrast-en { color: var(--green); }
+.contrast-jp { font-size: 12px; color: var(--sub); font-weight: 600; }
+
+/* 文構造ビジュアル */
+.sentence-visual { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+.sv-block { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.sv-word { padding: 10px 16px; border-radius: 10px; font-size: 15px; font-weight: 700; white-space: nowrap; }
+.sv-word.subj { background: #F3E5F5; border: 1.5px solid #CE93D8; color: #7B1FA2; }
+.sv-word.verb { background: var(--yellow-light); border: 1.5px solid #FFE082; color: var(--yellow); }
+.sv-word.obj  { background: var(--teal-light); border: 1.5px solid var(--teal); color: var(--teal); }
+.sv-tag { font-size: 10px; font-weight: 700; color: var(--sub); }
+
+/* 「何を？」吹き出し */
+.ask-box { display: flex; align-items: center; gap: 10px; background: var(--yellow-light); border: 1.5px solid #FFE082; border-radius: 12px; padding: 12px 18px; }
+.ask-q { font-size: 15px; font-weight: 700; color: var(--yellow); white-space: nowrap; }
+.ask-arrow { font-size: 18px; color: var(--yellow); }
+.ask-a { font-size: 15px; font-weight: 700; color: var(--teal); }
+
+/* 動詞グループ */
+.verb-groups { display: flex; flex-direction: column; gap: 12px; }
+.verb-group { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+.vg-header { padding: 10px 18px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+.vg-header.feel { background: #EDE7F6; color: #512DA8; }
+.vg-header.act  { background: #E8F5E9; color: #2E7D32; }
+.vg-body { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 18px; background: var(--white); }
+.vg-chip { padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 700; }
+.vg-chip.feel { background: #EDE7F6; color: #512DA8; }
+.vg-chip.act  { background: #E8F5E9; color: #2E7D32; }
+.vg-chip-jp { font-size: 11px; font-weight: 600; color: var(--sub); display: block; margin-top: 2px; text-align: center; }
+
+/* 例文（正誤対比） */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.ex-single.wrong-ex .en { background: var(--wrong-light); color: var(--wrong); text-decoration: line-through; }
+.ex-single.wrong-ex .jp { background: #FFF5F5; }
+.hl  { color: var(--teal); }
+.hl-v { color: var(--yellow); font-weight: 700; }
+
+/* ミニ演習 */
+.mini-quiz { display: flex; flex-direction: column; gap: 12px; }
+.mq-q { font-size: 16px; font-weight: 700; background: var(--teal-light); border-radius: 10px; padding: 14px 18px; color: var(--teal); }
+.mq-opts { display: flex; gap: 10px; }
+.mq-btn { flex: 1; padding: 13px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; transition: all 0.15s; }
+.mq-btn:hover:not(:disabled) { border-color: var(--teal); background: var(--teal-light); transform: translateY(-2px); }
+.mq-btn.mq-correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.mq-btn.mq-wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.mq-btn:disabled { cursor: default; transform: none; }
+.mq-fb { display: none; padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; line-height: 1.7; }
+.mq-fb.show { display: block; }
+.mq-fb.ok { background: var(--green-light); color: var(--green); }
+.mq-fb.ng { background: var(--wrong-light); color: var(--wrong); }
+
+/* まとめ */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+.point-box { background: var(--teal-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--teal); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--teal); border-color: var(--teal); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(0,105,92,0.3); }
+.dot.active { background: var(--teal); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 16px; }
+  .concept-text { font-size: 20px; white-space: normal; }
+  .contrast-box { grid-template-columns: 1fr; }
+  .sv-word { font-size: 13px; padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 15 · 動名詞</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：to との対比から入る -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 15 · レッスン3 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">動名詞は <span class="accent">目的語</span> にもなれる</div>
+      </div>
+
+      <div class="contrast-box">
+        <div class="contrast-card ng">
+          <div class="contrast-badge">❌ NG</div>
+          <div class="contrast-en">I enjoy to play soccer.</div>
+          <div class="contrast-jp">enjoy のあとに to は使えない！</div>
+        </div>
+        <div class="contrast-card ok">
+          <div class="contrast-badge">✅ OK</div>
+          <div class="contrast-en">I enjoy playing soccer.</div>
+          <div class="contrast-jp">enjoy のあとは ing 形を使う！</div>
+        </div>
+      </div>
+
+      <div class="sentence-visual">
+        <div class="sv-block">
+          <div class="sv-word subj">I</div>
+          <span class="sv-tag">主語</span>
+        </div>
+        <div class="sv-block">
+          <div class="sv-word verb">enjoy</div>
+          <span class="sv-tag">動詞</span>
+        </div>
+        <div class="sv-block">
+          <div class="sv-word obj">playing soccer.</div>
+          <span class="sv-tag">目的語 ← 動名詞！</span>
+        </div>
+      </div>
+
+      <div class="point-box">💡 動詞のあとに <strong>ing 形</strong> を置くと「〜することを（する）」という意味になるよ！<br>to ＋ 動詞（不定詞）と混同しないように注意しよう。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：「何を？」視点で意味強化 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 15 · レッスン3 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">「<span class="accent">何を？</span>」が動名詞になる</div>
+      </div>
+
+      <div class="sentence-visual">
+        <div class="sv-block">
+          <div class="sv-word subj">I</div>
+          <span class="sv-tag">私は</span>
+        </div>
+        <div class="sv-block">
+          <div class="sv-word verb">enjoy</div>
+          <span class="sv-tag">楽しむ</span>
+        </div>
+        <div class="sv-block">
+          <div class="sv-word obj">playing soccer.</div>
+          <span class="sv-tag">← 何を楽しむ？</span>
+        </div>
+      </div>
+
+      <div class="ask-box">
+        <div class="ask-q">enjoy「楽しむ」→ 何を？</div>
+        <div class="ask-arrow">→</div>
+        <div class="ask-a">playing soccer「サッカーをすること」</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">She <span class="hl-v">finished</span> <span class="hl">doing her homework</span>.</div>
+          <div class="jp">finish「し終える」→ 何を？→ doing her homework「宿題をすること」</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">He <span class="hl-v">stopped</span> <span class="hl">playing games</span>.</div>
+          <div class="jp">stop「やめる」→ 何を？→ playing games「ゲームをすること」</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 動詞のあとに「何を？」と問いかけて、その答えが動名詞になるよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：動詞グループ化 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 15 · レッスン3 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">ing</span> をとる動詞 2グループ</div>
+      </div>
+
+      <div class="verb-groups">
+        <div class="verb-group">
+          <div class="vg-header feel">😊 感情・気持ちグループ</div>
+          <div class="vg-body">
+            <div>
+              <div class="vg-chip feel">enjoy</div>
+              <span class="vg-chip-jp">楽しむ</span>
+            </div>
+            <div>
+              <div class="vg-chip feel">mind</div>
+              <span class="vg-chip-jp">気にする</span>
+            </div>
+            <div>
+              <div class="vg-chip feel">give up</div>
+              <span class="vg-chip-jp">あきらめる</span>
+            </div>
+          </div>
+        </div>
+        <div class="verb-group">
+          <div class="vg-header act">⚡ 行動・動作グループ</div>
+          <div class="vg-body">
+            <div>
+              <div class="vg-chip act">finish</div>
+              <span class="vg-chip-jp">し終える</span>
+            </div>
+            <div>
+              <div class="vg-chip act">stop</div>
+              <span class="vg-chip-jp">やめる</span>
+            </div>
+            <div>
+              <div class="vg-chip act">practice</div>
+              <span class="vg-chip-jp">練習する</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 「感情系」と「行動系」の2グループで覚えよう！<br>どちらのグループも後ろには必ず <strong>ing 形</strong> が来るよ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：例文（ミス例つき） -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 15 · レッスン3 · スライド 4</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">例文で確認 <span class="accent">ミス例と正解</span></div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single wrong-ex">
+          <div class="en">I enjoy <span style="text-decoration:underline;text-underline-offset:4px;">to listen</span> to music.</div>
+          <div class="jp">❌ enjoy のあとに to は使えない！</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I <span class="hl-v">enjoy</span> <span class="hl">listening</span> to music.</div>
+          <div class="jp">✅ 私は音楽を聴くことを楽しんでいます。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I <span class="hl-v">practice</span> <span class="hl">speaking English</span> every day.</div>
+          <div class="jp">✅ 私は毎日英語を話す練習をしています。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">She <span class="hl-v">gave up</span> <span class="hl">running</span> the marathon.</div>
+          <div class="jp">✅ 彼女はマラソンを走るのをあきらめました。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 ミス例と正解を見比べて、「toじゃなくingだ！」を体にしみこませよう。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ＋1秒チェック -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 15 · レッスン3 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ ＋ <span class="accent">1秒チェック</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">動名詞（〜ing）は動詞の <strong>目的語</strong>「〜することを」になれる</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">感情系（enjoy / mind）・行動系（finish / stop / practice）は必ず <strong>ing 形</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">これらの動詞のあとに <strong>to ＋ 動詞は使えない</strong></div>
+        </div>
+      </div>
+
+      <!-- ミニ演習 -->
+      <div class="mini-quiz">
+        <div class="mq-q">⚡ 1秒チェック：正しいのはどちら？<br><span style="font-size:14px;font-weight:600;color:var(--sub);">I enjoy (　　) soccer.</span></div>
+        <div class="mq-opts">
+          <button class="mq-btn" id="mq-wrong" data-correct="false">to play</button>
+          <button class="mq-btn" id="mq-ok"    data-correct="true">playing</button>
+        </div>
+        <div class="mq-fb" id="mq-fb"></div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  // ミニ演習
+  var mqDone = false;
+  ['mq-wrong', 'mq-ok'].forEach(function(id) {
+    document.getElementById(id).addEventListener('click', function() {
+      if (mqDone) return;
+      mqDone = true;
+      var isCorrect = this.dataset.correct === 'true';
+      document.getElementById('mq-wrong').disabled = true;
+      document.getElementById('mq-ok').disabled = true;
+      document.getElementById('mq-ok').classList.add('mq-correct');
+      if (!isCorrect) document.getElementById('mq-wrong').classList.add('mq-wrong');
+      var fb = document.getElementById('mq-fb');
+      fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+      fb.textContent = isCorrect
+        ? '✓ 正解！enjoy のあとは ing 形（playing）だよ。演習でもバッチリ確認しよう！'
+        : '✗ 惜しい！enjoy のあとに to は使えないよ。正しくは「I enjoy playing soccer.」だよ！';
+    });
+  });
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'nexelia-unit15-lesson3-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 19 レッスン3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --purple: #4527A0;
+  --purple-light: #EDE7F6;
+  --accent: #4527A0;
+  --accent-light: #EDE7F6;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--purple); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--accent); }
+
+/* 公式ボックス */
+.formula-box { border-radius: 14px; overflow: hidden; border: 1.5px solid #B39DDB; }
+.formula-head { background: var(--purple); padding: 10px 20px; }
+.formula-head span { font-size: 12px; font-weight: 700; color: white; letter-spacing: 0.06em; }
+.formula-body { background: var(--purple-light); padding: 18px 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; text-align: center; border: 1.5px solid #B39DDB; }
+.f-part .f-main { font-size: 15px; font-weight: 700; color: var(--purple); }
+.f-part .f-sub  { font-size: 11px; color: var(--sub); font-weight: 500; margin-top: 3px; }
+.f-plus { font-size: 18px; font-weight: 700; color: var(--purple); }
+
+/* If vs I wish 対比 */
+.contrast-box { display: flex; flex-direction: column; gap: 10px; }
+.contrast-row { border-radius: 14px; padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start; }
+.contrast-row.if-row   { background: #E3F2FD; border: 1px solid #90CAF9; }
+.contrast-row.wish-row { background: var(--purple-light); border: 1px solid #B39DDB; }
+.c-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+.if-row   .c-badge { background: #1565C0; color: white; }
+.wish-row .c-badge { background: var(--purple); color: white; }
+.c-body { display: flex; flex-direction: column; gap: 5px; }
+.c-en { font-size: 15px; font-weight: 700; line-height: 1.5; }
+.c-jp { font-size: 13px; color: var(--sub); font-weight: 500; line-height: 1.5; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 22px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 22px; font-size: 13px; color: var(--sub); background: var(--bg); line-height: 1.6; }
+.hl { color: var(--purple); }
+
+/* よくあるミスボックス */
+.warn-box { background: #FFEBEE; border: 1px solid #EF9A9A; border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 700; color: #C62828; line-height: 1.8; }
+.warn-box span { font-size: 13px; font-weight: 500; color: #555; display: block; margin-top: 2px; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--purple); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.7; }
+.summary-text small { font-size: 12px; color: var(--sub); font-weight: 500; display: block; margin-top: 2px; }
+
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--purple); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--purple); border-color: var(--purple); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(69,39,160,0.3); }
+.dot.active { background: var(--purple); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 19 · I wish の使い方</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+<a href="nexelia-unit19-lesson2_2.html" class="btn-exit">← Lesson 2</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：I wish とは？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">I wish</span> ＝ 今と違う<br>現実への願望</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-head"><span>📐 I wish の形</span></div>
+        <div class="formula-body">
+          <div class="f-part">
+            <div class="f-main" style="color:var(--purple);">I wish</div>
+            <div class="f-sub">〜だったらいいのに</div>
+          </div>
+          <div class="f-plus">＋</div>
+          <div class="f-part">
+            <div class="f-main">S + <span style="color:var(--purple)">動詞の過去形</span></div>
+            <div class="f-sub">（今の現実と違う願望）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="hl">wish</span> I <span class="hl">were</span> taller.</div>
+          <div class="jp">背が高かったらいいのに。<br>
+            <span style="font-size:12px;color:#888;">（今の現実：背が高くない）</span>
+            <span style="font-size:12px;color:var(--purple);font-weight:600;display:block;margin-top:2px;">→ I wish は<strong>現実の逆のこと</strong>を言っている！</span>
+          </div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I <span class="hl">wish</span> I <span class="hl">could</span> fly.</div>
+          <div class="jp">空を飛べたらいいのに。<br>
+            <span style="font-size:12px;color:#888;">（今の現実：飛べない）</span>
+            <span style="font-size:12px;color:#888;display:block;margin-top:2px;">※ could は can の仮定法形（過去形扱い）。原形は fly のまま。</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 核となる判断軸：<strong>I wish + 過去形</strong> ＝ 今の現実と違う願望<br>I wish のあとは<strong>現実の逆</strong>を言う。wish のあとも仮定法と同じく<strong>過去形</strong>！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：If との違い -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">If 仮定法との<span class="accent">違い</span></div>
+      </div>
+
+      <div style="background:#E8F5E9;border:1px solid #A5D6A7;border-radius:10px;padding:11px 16px;font-size:13px;font-weight:600;color:#2E7D32;line-height:1.65;">
+        ✅ <strong>共通点</strong>：どちらも「仮定法」！<br>
+        <span style="font-size:12px;font-weight:500;color:#388E3C;">If も I wish も「今の現実と違うことを表す」という本質は同じ。動詞を過去形にするルールも同じだよ。</span>
+      </div>
+
+      <div class="contrast-box">
+        <div class="contrast-row if-row">
+          <div class="c-badge">If 仮定法</div>
+          <div class="c-body">
+            <div class="c-en">If I <strong style="color:#1565C0">had</strong> more money, I <strong style="color:#1565C0">would</strong> buy it.</div>
+            <div class="c-jp">もっとお金があれば、買うのに。</div>
+            <div style="font-size:12px;color:#1565C0;font-weight:600;margin-top:4px;">→ 「もし〜なら、〜するのに」という<strong>条件と結果</strong>の文</div>
+          </div>
+        </div>
+        <div class="contrast-row wish-row">
+          <div class="c-badge">I wish</div>
+          <div class="c-body">
+            <div class="c-en">I <strong style="color:var(--purple)">wish</strong> I <strong style="color:var(--purple)">had</strong> more money.</div>
+            <div class="c-jp">もっとお金があればいいのに。</div>
+            <div style="font-size:12px;color:var(--purple);font-weight:600;margin-top:4px;">→ 「〜だったらいいのに」という<strong>願望</strong>を表す文</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:12px;padding:14px 18px;font-size:14px;font-weight:600;color:#5D4037;line-height:1.75;">
+        🔍 見分けるポイント<br>
+        <span style="font-size:13px;font-weight:500;color:#666;">
+          ・<strong>If 仮定法</strong> → 後半に would / could がある（条件＋結果）<br>
+          ・<strong>I wish</strong> → 基本的に would / could はなく、願望だけで文が完結する
+        </span>
+      </div>
+
+      <div class="point-box">💡 どちらも「今の現実と違う」を表す！<br>条件と結果 → <strong>If</strong>　／　願望だけ → <strong>I wish</strong></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：例文と注意点 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">例文で<span class="accent">使い方を確認</span></div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="hl">wish</span> I <span class="hl">were</span> a better singer.</div>
+          <div class="jp">もっと歌が上手だったらいいのに。<br><span style="font-size:12px;color:#888;">be動詞は主語にかかわらず were（was はNG！）</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I <span class="hl">wish</span> I <span class="hl">knew</span> the answer.</div>
+          <div class="jp">答えを知っていればいいのに。<br><span style="font-size:12px;color:#888;">know → knew（一般動詞も過去形）</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I <span class="hl">wish</span> I <span class="hl">had</span> more free time.</div>
+          <div class="jp">自由な時間がもっとあればいいのに。<br><span style="font-size:12px;color:#888;">have → had（一般動詞の過去形）</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I <span class="hl">wish</span> I <span class="hl">could</span> speak Spanish.</div>
+          <div class="jp">スペイン語が話せたらいいのに。<br><span style="font-size:12px;color:#888;">can → could（can の仮定法形・原形は speak のまま）</span></div>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ よくあるミス
+        <span>❌ I wish I <strong>am</strong> taller. → wish のあとは現在形にしない！</span>
+        <span>✓ I wish I <strong>were</strong> taller. → wish のあとも<strong>過去形</strong>（be動詞は were）</span>
+      </div>
+
+      <div class="point-box">💡 I wish のあとも仮定法と同じルール！<br>be動詞 → <strong>were</strong>　／　一般動詞 → <strong>過去形</strong>　／　can → <strong>could</strong></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">
+            <strong>I wish + 過去形</strong> ＝「〜だったらいいのに」
+            <small>今の現実と違う<strong>願望</strong>を表す表現</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">
+            wish のあとも仮定法と同じ：be動詞 → <strong>were</strong>、一般動詞 → <strong>過去形</strong>
+            <small>⚠️ 現在形（am / is / know）にしてしまうのがよくあるミス！</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">
+            If 仮定法との使い分け
+            <small>条件＋結果 → <strong>If … would / could …</strong>　／　願望だけ → <strong>I wish …</strong></small>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:var(--purple);border-radius:12px;padding:14px 20px;display:flex;gap:14px;align-items:center;">
+          <div style="font-size:22px;">🎯</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:4px;">I wish の2ステップ判断</div>
+            <div style="font-size:14px;font-weight:700;color:white;line-height:1.8;">① 「今の現実の逆のこと」を言っているか？<br>② wish のあとの動詞が<strong>過去形</strong>になっているか？</div>
+          </div>
+        </div>
+        <div style="background:#E3F2FD;border:1px solid #90CAF9;border-radius:12px;padding:14px 20px;display:flex;gap:14px;align-items:center;">
+          <div style="font-size:22px;">🔵</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#1565C0;margin-bottom:4px;">If 仮定法との違い</div>
+            <div style="font-size:14px;font-weight:700;color:#1565C0;">条件＋結果 → If　／　願望だけ → I wish<br><span style="font-size:12px;font-weight:500;">どちらも仮定法！過去形にするルールは共通</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 レッスン3おつかれさま！演習で I wish を使いこなそう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit19-lesson3-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 11 レッスン2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --indigo: #3949AB;
+  --indigo-light: #E8EAF6;
+  --accent: #3949AB;
+  --accent-light: #E8EAF6;
+  --orange: #E65100;
+  --orange-light: #FFF3E0;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--indigo); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--accent); }
+
+/* ステップリスト */
+.step-list { display: flex; flex-direction: column; gap: 10px; }
+.step-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.step-num { width: 32px; height: 32px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.step-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+.step-text span { color: var(--indigo); }
+
+/* 変換ボックス */
+.convert-box { display: flex; flex-direction: column; gap: 10px; }
+.convert-row { display: flex; align-items: stretch; gap: 10px; }
+.convert-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 8px; width: fit-content; }
+.convert-label.active-v { background: #F9A825; color: white; }
+.convert-label.passive-v { background: var(--indigo); color: white; }
+.convert-cell { flex: 1; border-radius: 12px; padding: 16px 20px; }
+.convert-cell.active-v { background: #FFF8E1; border: 1px solid #FFE082; }
+.convert-cell.passive-v { background: var(--indigo-light); border: 1px solid #9FA8DA; }
+.convert-cell .c-en { font-size: 17px; font-weight: 700; line-height: 1.6; }
+.convert-cell.active-v  .c-en { color: #7B5E00; }
+.convert-cell.passive-v .c-en { color: var(--indigo); }
+.convert-cell .c-jp { font-size: 13px; color: var(--sub); font-weight: 500; margin-top: 4px; }
+.arrow-down { text-align: center; font-size: 22px; color: var(--indigo); font-weight: 700; line-height: 1; }
+.hl-sub { color: var(--orange); }
+.hl { color: var(--indigo); }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--indigo); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(57,73,171,0.3); }
+.dot.active { background: var(--indigo); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 11 · 受動態の作り方</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：変換の3ステップ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン2 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">受動態の<span class="accent">作り方</span></div>
+      </div>
+
+      <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:12px;padding:14px 20px;font-size:14px;font-weight:600;color:#7B5E00;line-height:1.7;">
+        📌 <strong>能動態</strong>とは？　主語が「する側」のふつうの文のこと。<br>
+        例）Ken <strong>cleaned</strong> the room.　（ケンが部屋を掃除した）
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">能動態の<span>目的語</span>を主語にする</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text"><span>be 動詞 ＋ 過去分詞</span> にする</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">元の主語を <span>by ～</span> にして後ろに置く</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 この3ステップで能動態の文を受動態に変えられるよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：現在形での変換例 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン2 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">変換してみよう（<span class="accent">現在形</span>）</div>
+      </div>
+
+      <div class="convert-box">
+        <div class="convert-cell active-v">
+          <div class="convert-label active-v">能動態</div>
+          <div class="c-en">Many people <span class="hl-sub">speak</span> English.</div>
+          <div class="c-jp">多くの人が英語を話す。</div>
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="convert-cell passive-v">
+          <div class="convert-label passive-v">受動態</div>
+          <div class="c-en">English <span class="hl">is spoken</span> by many people.</div>
+          <div class="c-jp">英語は多くの人によって話されている。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 目的語「English」が主語に。動詞は「is spoken」（is＋過去分詞）になるよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：過去形での変換例 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン2 · スライド 3</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">変換してみよう（<span class="accent">過去形</span>）</div>
+      </div>
+
+      <div class="convert-box">
+        <div class="convert-cell active-v">
+          <div class="convert-label active-v">能動態</div>
+          <div class="c-en">Picasso <span class="hl-sub">painted</span> this picture.</div>
+          <div class="c-jp">ピカソがこの絵を描いた。</div>
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="convert-cell passive-v">
+          <div class="convert-label passive-v">受動態</div>
+          <div class="c-en">This picture <span class="hl">was painted</span> by Picasso.</div>
+          <div class="c-jp">この絵はピカソによって描かれた。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 過去形のときは be 動詞を was / were に変えるよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 11 · レッスン2 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">目的語を主語にして文の先頭へ</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">動詞を <strong>be 動詞 ＋ 過去分詞</strong> にする</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">元の主語は <strong>by ～</strong> にして後ろへ</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 3ステップをしっかり覚えたら演習に進もう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-exercise40.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+</body>
+</html>
+

@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — canの否定文</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --blue: #1A56DB;
+  --blue-dark: #1446B8;
+  --blue-light: #E8F0FE;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --orange: #E65100;
+  --wrong: #C62828;
+  --wrong-light: #FFEBEE;
+  --indigo: #3949AB;
+  --indigo-light: #E8EAF6;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; flex-shrink: 0;
+}
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main {
+  flex: 1; display: flex; flex-direction: column;
+  max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px;
+}
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 52px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text  { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--wrong); }
+
+/* 変換ボックス */
+.transform-row {
+  display: flex; align-items: center; gap: 16px;
+  justify-content: center;
+}
+.transform-box {
+  padding: 16px 24px; border-radius: 14px;
+  font-size: 20px; font-weight: 700; text-align: center;
+  border: 1.5px solid var(--border);
+}
+.transform-box.before { background: var(--indigo-light); color: var(--indigo); }
+.transform-box.after  { background: var(--wrong-light); color: var(--wrong); }
+.transform-arrow { font-size: 24px; color: var(--sub); }
+
+/* 語順ボックス */
+.order-row { display: flex; align-items: stretch; gap: 8px; }
+.order-cell {
+  flex: 1; padding: 16px 12px; text-align: center;
+  border-radius: 12px; font-size: 14px; font-weight: 700; line-height: 1.4;
+}
+.order-cell .label { font-size: 10px; font-weight: 500; color: var(--sub); display: block; margin-bottom: 6px; }
+.order-cell.subj  { background: #F3F4F6; }
+.order-cell.cant  { background: var(--wrong-light); color: var(--wrong); }
+.order-cell.verb  { background: var(--green-light); color: var(--green); }
+.order-plus { display: flex; align-items: center; color: var(--sub); font-size: 18px; font-weight: 700; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.ex-single .en {
+  padding: 16px 22px;
+  font-size: 19px; font-weight: 700;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.02em;
+}
+.ex-single .en .subj { color: var(--orange); }
+.ex-single .en .cant { color: var(--wrong); }
+.ex-single .en .verb { color: var(--green); }
+.ex-single .jp {
+  padding: 12px 22px;
+  font-size: 14px; color: var(--sub);
+  background: var(--bg);
+}
+
+/* ポイントボックス */
+.point-box {
+  background: var(--wrong-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 15px; color: var(--wrong);
+  font-weight: 600; line-height: 1.7;
+  margin-top: auto;
+}
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 12px;
+}
+.summary-num {
+  width: 26px; height: 26px; background: var(--blue); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* BOTTOM NAV */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { background: var(--blue-dark); }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(26,86,219,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">canの否定文</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:33%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 3</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- ══ スライド 1: can't とは？ ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">canの否定文 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">can't</span> とは？</div>
+      </div>
+
+      <div class="transform-row">
+        <div class="transform-box before">can</div>
+        <div class="transform-arrow">→</div>
+        <div class="transform-box after">cannot / can't</div>
+      </div>
+
+      <div style="font-size:14px; color:var(--sub); line-height:1.8; text-align:center;">
+        <strong style="color:var(--wrong)">cannot</strong> が正式な形、<strong style="color:var(--wrong)">can't</strong> が短縮形。<br>
+        どちらも「〜できない」という意味。
+      </div>
+
+      <div class="order-row">
+        <div class="order-cell subj">
+          <span class="label">主語</span>
+          I / He / They...
+        </div>
+        <div class="order-plus">＋</div>
+        <div class="order-cell cant">
+          <span class="label">否定</span>
+          can't
+        </div>
+        <div class="order-plus">＋</div>
+        <div class="order-cell verb">
+          <span class="label">動詞の原形</span>
+          swim / speak...
+        </div>
+      </div>
+
+      <div class="point-box">💡 can → <strong>can't</strong> に変えるだけ！主語が何であっても形は変わらない。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ スライド 2: 例文で確認 ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">canの否定文 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">例文で<span class="accent">確認</span>しよう</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="subj">I</span> <span class="cant">can't</span> <span class="verb">swim</span>.</div>
+          <div class="jp">私は泳ぐことができません。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="subj">He</span> <span class="cant">can't</span> <span class="verb">speak</span> English.</div>
+          <div class="jp">彼は英語を話すことができません。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="subj">They</span> <span class="cant">cannot</span> <span class="verb">play</span> the guitar.</div>
+          <div class="jp">彼らはギターを弾くことができません。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 can't と cannot はどちらも正しい。会話では can't を使うことが多い！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ まとめ ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">canの否定文 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">can の否定形は <strong style="color:var(--wrong)">cannot</strong>（正式）または <strong style="color:var(--wrong)">can't</strong>（短縮形）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">意味は「〜<strong style="color:var(--wrong)">できない</strong>」</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">主語が何であっても <strong style="color:var(--wrong)">can't</strong> の形は変わらない</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 この3つが頭に入ったら演習に進もう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 3;
+  let cur = 0;
+  const LESSON_ID = 'lesson21';
+  const PROGRESS_KEY = 'nexeliaLessonProgress';
+
+  function saveLessonProgress(value) {
+    try {
+      const raw = localStorage.getItem(PROGRESS_KEY) || '{}';
+      const progressMap = JSON.parse(raw);
+      const nextValue = Math.max(Number(progressMap[LESSON_ID]) || 0, value);
+      progressMap[LESSON_ID] = nextValue;
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+      localStorage.setItem('nexeliaLastLesson', LESSON_ID);
+    } catch (_) {}
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() {
+    saveLessonProgress(60);
+    location.href = 'nexelia-exercise20.html';
+  });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+
+  saveLessonProgress(30);
+  renderDots(0);
+</script>
+</body>
+</html>
+
