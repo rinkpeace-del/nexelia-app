@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 12 まとめ＋総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --red: #D32F2F; --green: #1B873B; --green-light: #E6F4EA; --wrong: #C62828; --wrong-light: #FFEBEE; --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9; --indigo: #283593; --indigo-light: #E8EAF6; --indigo-mid: #C5CAE9; --orange: #E65100; --orange-light: #FFF8E1; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+.unit-banner { background: var(--indigo); color: white; text-align: center; padding: 12px 24px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; flex-shrink: 0; }
+.unit-banner strong { font-size: 15px; }
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 32px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 36px 44px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--indigo); }
+.rule-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; border-radius: 6px; padding: 3px 10px; background: var(--indigo-light); color: var(--indigo); border: 1px solid var(--indigo-mid); }
+.q-text { font-size: 19px; font-weight: 700; line-height: 1.5; }
+.q-sub { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.options { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: auto; }
+.opt { padding: 13px 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: left; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--indigo); background: var(--indigo-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt.missed { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
+.opt:disabled { cursor: default; transform: none; }
+.feedback { padding: 13px 17px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.75; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+.btn-nav { padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+.dots { display: flex; gap: 5px; align-items: center; }
+.dot { width: 5px; height: 5px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done { background: rgba(40,53,147,0.3); }
+.dot.active { background: var(--indigo); width: 16px; }
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 56px; margin-bottom: 14px; }
+.complete-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.complete-sub { font-size: 14px; font-weight: 700; color: var(--indigo); background: var(--indigo-light); border-radius: 8px; padding: 6px 18px; margin-bottom: 14px; }
+.score-badge { font-size: 36px; font-weight: 700; color: var(--indigo); margin-bottom: 4px; }
+.score-max { font-size: 14px; color: var(--sub); font-weight: 600; margin-bottom: 18px; }
+.complete-msg { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 26px; }
+.complete-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; }
+.cbtn { padding: 14px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; text-align: center; }
+.cbtn.primary { background: var(--indigo); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+@media (max-width: 600px) { nav { padding: 0 16px; } .nav-center { display: none; } main { padding: 20px 16px; } .quiz-card { padding: 22px 18px; } }
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--indigo); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--indigo); }
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 17px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.6; }
+.grammar-box { background: var(--indigo-light); border: 1px solid var(--indigo-mid); border-radius: 14px; padding: 16px 20px; }
+.grammar-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--indigo); margin-bottom: 10px; }
+.grammar-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.grammar-key { font-size: 16px; font-weight: 700; color: var(--indigo); min-width: 80px; }
+.grammar-val { font-size: 14px; font-weight: 600; color: var(--text); }
+.ex-list { display: flex; flex-direction: column; gap: 8px; }
+.ex-row { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 11px 16px; }
+.ex-eng { font-size: 15px; font-weight: 700; color: var(--indigo); }
+.ex-jpn { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 3px; }
+.caution-box { background: var(--wrong-light); border: 1px solid #EF9A9A; border-radius: 10px; padding: 11px 16px; font-size: 13px; font-weight: 600; color: var(--wrong); }
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 15px 18px; font-size: 14px; color: var(--indigo); font-weight: 600; line-height: 1.7; margin-top: auto; }
+@media (max-width: 600px) { nav { padding: 0 16px; } .nav-center { display: none; } main { padding: 20px 16px; } .slide-card { padding: 28px 20px; gap: 16px; } }
+</style>
+<script src="ai-chat.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="lessons.html">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 12 · まとめ＋総合演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:11%"></div></div>
+    <span class="nav-count" id="nav-count">スライド 1 / 3</span>
+  </div>
+  <a class="btn-exit" href="lessons.html">レッスン一覧</a>
+</nav>
+
+<main>
+
+  <!-- Slide 0 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">UNIT 12 · SLIDE 1 / 3</div>
+      <div>
+        <div class="concept-title">比較級と最上級</div>
+        <div class="concept-text"><span class="accent">比較級</span>と<span class="accent">最上級</span>の作り方</div>
+      </div>
+      <div class="grammar-box">
+        <div class="grammar-title">比較級（〜より...）</div>
+        <div class="grammar-row"><span class="grammar-key">短い形容詞</span><span class="grammar-val">+ er（tall→taller, fast→faster）</span></div>
+        <div class="grammar-row"><span class="grammar-key">長い形容詞</span><span class="grammar-val">more + 形容詞（more beautiful）</span></div>
+        <div class="grammar-row" style="margin-bottom:0"><span class="grammar-key">比較</span><span class="grammar-val">A is 比較級 than B</span></div>
+      </div>
+      <div class="grammar-box">
+        <div class="grammar-title">最上級（一番...）</div>
+        <div class="grammar-row"><span class="grammar-key">短い形容詞</span><span class="grammar-val">the + est（tall→the tallest）</span></div>
+        <div class="grammar-row" style="margin-bottom:0"><span class="grammar-key">長い形容詞</span><span class="grammar-val">the most + 形容詞（the most beautiful）</span></div>
+      </div>
+      <div class="ex-list">
+        <div class="ex-row">
+          <div class="ex-eng">He is taller than me.</div>
+          <div class="ex-jpn">彼は私より背が高い</div>
+        </div>
+        <div class="ex-row">
+          <div class="ex-eng">She is the most beautiful in the class.</div>
+          <div class="ex-jpn">彼女はクラスで一番美しい</div>
+        </div>
+      </div>
+      <div class="point-box">💡 短い形容詞には -er/-est、長い形容詞には more/most を使う！</div>
+    </div>
+    <div class="bottom-nav">
+      <span></span>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Slide 1 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">UNIT 12 · SLIDE 2 / 3</div>
+      <div>
+        <div class="concept-title">同等比較と比較の疑問文</div>
+        <div class="concept-text"><span class="accent">as ... as</span>と疑問文</div>
+      </div>
+      <div class="grammar-box">
+        <div class="grammar-title">同等比較</div>
+        <div class="grammar-row"><span class="grammar-key">肯定</span><span class="grammar-val">as + 形容詞/副詞 + as（〜と同じくらい）</span></div>
+        <div class="grammar-row" style="margin-bottom:0"><span class="grammar-key">否定</span><span class="grammar-val">not as ... as（〜ほど...ではない）</span></div>
+      </div>
+      <div class="grammar-box">
+        <div class="grammar-title">比較の疑問文</div>
+        <div class="grammar-row"><span class="grammar-val">Which is + 比較級, A or B?</span></div>
+        <div class="grammar-row" style="margin-bottom:0"><span class="grammar-val">Who is + 最上級 + in/of ...?</span></div>
+      </div>
+      <div class="ex-list">
+        <div class="ex-row"><div class="ex-eng">I am as tall as you.</div></div>
+        <div class="ex-row"><div class="ex-eng">This is not as easy as that.</div></div>
+        <div class="ex-row"><div class="ex-eng">Which is bigger, Tokyo or Osaka?</div></div>
+      </div>
+      <div class="caution-box">⚠️ 比較級に the はつけない！ × the taller ○ taller。最上級には the が必要。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← 戻る</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">UNIT 12 · SLIDE 3 / 3</div>
+      <div>
+        <div class="concept-title">まとめ</div>
+        <div class="concept-text">Unit 12 <span class="accent">まとめ</span></div>
+      </div>
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">比較級：形容詞/副詞 + er または more + 形容詞（〜より...）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">最上級：the + 形容詞 + est または the most + 形容詞（一番...）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">同等比較：as + 形容詞 + as（〜と同じくらい）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">疑問：Which is + 比較級, A or B?</div>
+        </div>
+      </div>
+      <div class="point-box">💡 おつかれさま！Unit 12 全レッスン完了！総合演習で確認しよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← 戻る</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+
+
+  <!-- Q1 -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">QUESTION 1 / 6 &nbsp;<span class="rule-badge">⭐</span></div>
+      <div class="q-text">正しい比較級はどれ？</div>
+      <div class="q-sub">tall → 比較級</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false" data-reason="短い形容詞には + er。tall → taller">more tall</button>
+        <button class="opt" data-correct="false" data-reason="短い形容詞には + er。tall → taller">tallest</button>
+        <button class="opt" data-correct="true" data-reason="短い形容詞には + er。tall → taller">taller</button>
+        <button class="opt" data-correct="false" data-reason="短い形容詞には + er。tall → taller">most tall</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← 戻る</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>次へ →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">QUESTION 2 / 6 &nbsp;<span class="rule-badge">⭐</span></div>
+      <div class="q-text">正しい最上級はどれ？</div>
+      <div class="q-sub">beautiful → 最上級</div>
+      <div class="options" id="o4">
+        <button class="opt" data-correct="false" data-reason="長い形容詞には the most + 形容詞。the most beautiful">beautifulest</button>
+        <button class="opt" data-correct="true" data-reason="長い形容詞には the most + 形容詞。the most beautiful">the most beautiful</button>
+        <button class="opt" data-correct="false" data-reason="長い形容詞には the most + 形容詞。the most beautiful">the beautifuler</button>
+        <button class="opt" data-correct="false" data-reason="長い形容詞には the most + 形容詞。the most beautiful">most beautiful</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← 戻る</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>次へ →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label">QUESTION 3 / 6 &nbsp;<span class="rule-badge">⭐</span></div>
+      <div class="q-text">正しい文はどれ？（同等比較）</div>
+      <div class="options" id="o5">
+        <button class="opt" data-correct="false" data-reason="同等比較: as + 形容詞 + as。She is as tall as me.">She is as tall than me.</button>
+        <button class="opt" data-correct="true" data-reason="同等比較: as + 形容詞 + as。She is as tall as me.">She is as tall as me.</button>
+        <button class="opt" data-correct="false" data-reason="同等比較: as + 形容詞 + as。She is as tall as me.">She is more tall as me.</button>
+        <button class="opt" data-correct="false" data-reason="同等比較: as + 形容詞 + as。She is as tall as me.">She is tall as me.</button>
+      </div>
+      <div class="feedback" id="f5"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back5">← 戻る</button>
+      <div class="dots" id="d5"></div>
+      <button class="btn-nav primary" id="n5" disabled>次へ →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label">QUESTION 4 / 6 &nbsp;<span class="rule-badge">⭐⭐</span></div>
+      <div class="q-text">（　）に入る正しい形は？</div>
+      <div class="q-sub">He is ___ than his brother.</div>
+      <div class="options" id="o6">
+        <button class="opt" data-correct="false" data-reason="比較級には the を付けません。taller than が正しい形。">more tall</button>
+        <button class="opt" data-correct="false" data-reason="比較級には the を付けません。taller than が正しい形。">tallest</button>
+        <button class="opt" data-correct="true" data-reason="比較級には the を付けません。taller than が正しい形。">taller</button>
+        <button class="opt" data-correct="false" data-reason="比較級には the を付けません。taller than が正しい形。">the taller</button>
+      </div>
+      <div class="feedback" id="f6"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back6">← 戻る</button>
+      <div class="dots" id="d6"></div>
+      <button class="btn-nav primary" id="n6" disabled>次へ →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="slide" id="s7">
+    <div class="quiz-card">
+      <div class="q-label">QUESTION 5 / 6 &nbsp;<span class="rule-badge">⭐⭐</span></div>
+      <div class="q-text">正しい文はどれ？</div>
+      <div class="options" id="o7">
+        <button class="opt" data-correct="false" data-reason="短い形容詞の最上級: the + est。the tallest">She is the most tall in the class.</button>
+        <button class="opt" data-correct="true" data-reason="短い形容詞の最上級: the + est。the tallest">She is the tallest in the class.</button>
+        <button class="opt" data-correct="false" data-reason="短い形容詞の最上級: the + est。the tallest">She is tallest in the class.</button>
+        <button class="opt" data-correct="false" data-reason="短い形容詞の最上級: the + est。the tallest">She is most tallest in the class.</button>
+      </div>
+      <div class="feedback" id="f7"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back7">← 戻る</button>
+      <div class="dots" id="d7"></div>
+      <button class="btn-nav primary" id="n7" disabled>次へ →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="slide" id="s8">
+    <div class="quiz-card">
+      <div class="q-label">QUESTION 6 / 6 &nbsp;<span class="rule-badge">⭐⭐⭐</span></div>
+      <div class="q-text">正しい英文はどれ？</div>
+      <div class="q-sub">「東京は大阪より大きい」</div>
+      <div class="options" id="o8">
+        <button class="opt" data-correct="false" data-reason="big の比較級は bigger（g を重ねて + er）。Tokyo is bigger than Osaka.">Tokyo is more big than Osaka.</button>
+        <button class="opt" data-correct="false" data-reason="big の比較級は bigger（g を重ねて + er）。Tokyo is bigger than Osaka.">Tokyo is biggest than Osaka.</button>
+        <button class="opt" data-correct="true" data-reason="big の比較級は bigger（g を重ねて + er）。Tokyo is bigger than Osaka.">Tokyo is bigger than Osaka.</button>
+        <button class="opt" data-correct="false" data-reason="big の比較級は bigger（g を重ねて + er）。Tokyo is bigger than Osaka.">Tokyo is the bigger than Osaka.</button>
+      </div>
+      <div class="feedback" id="f8"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back8">← 戻る</button>
+      <div class="dots" id="d8"></div>
+      <button class="btn-nav primary" id="n8" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- Complete -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon">🎉</div>
+    <div class="complete-title">Unit 12 まとめ＋総合演習 完了！</div>
+    <div class="complete-sub">比較</div>
+    <div class="score-badge"><span id="score-num">0</span> / 6</div>
+    <div class="score-max">正解数</div>
+    <div class="complete-msg">おつかれさまでした！<br>比較級・最上級・同等比較をマスターしよう。</div>
+    <div class="complete-btns">
+      <a class="cbtn primary" href="lessons.html">レッスン一覧へ</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const MATOME_COUNT = 3;
+const QUIZ_COUNT = 6;
+const TOTAL = MATOME_COUNT + QUIZ_COUNT;
+let cur = 0;
+let score = 0;
+let answered = new Array(TOTAL).fill(false);
+
+function renderDots(id) {
+  const el = document.getElementById('d' + id);
+  if (!el) return;
+  el.innerHTML = '';
+  let dotCount, actualId;
+  if (id < 3) {
+    dotCount = 3;
+    actualId = id;
+  } else {
+    dotCount = 6;
+    actualId = id - 3;
+  }
+  for (let i = 0; i < dotCount; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < actualId ? ' done' : i === actualId ? ' active' : '');
+    el.appendChild(d);
+  }
+}
+
+function go(idx) {
+  if (idx >= TOTAL) { showComplete(); return; }
+  if (idx < 0) return;
+  document.getElementById('s' + cur).classList.remove('active');
+  cur = idx;
+  document.getElementById('s' + cur).classList.add('active');
+  if (cur < 3) {
+    document.getElementById('nav-fill').style.width = ((cur + 1) / 3 * 100) + '%';
+    document.getElementById('nav-count').textContent = 'スライド ' + (cur + 1) + ' / 3';
+  } else {
+    document.getElementById('nav-fill').style.width = ((cur - 2) / 6 * 100) + '%';
+    const quizNum = cur - 2;
+    document.getElementById('nav-count').textContent = '問題 ' + quizNum + ' / 6';
+  }
+  renderDots(cur);
+}
+
+function showComplete() {
+  document.getElementById('s' + (TOTAL - 1)).classList.remove('active');
+  document.getElementById('complete').classList.add('active');
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('nav-fill').style.width = '100%';
+  document.getElementById('nav-count').textContent = '完了';
+}
+
+document.querySelectorAll('.opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const slide = this.closest('.slide');
+    const qIdx = parseInt(slide.id.replace('s', ''));
+    if (answered[qIdx]) return;
+    answered[qIdx] = true;
+    const isCorrect = this.dataset.correct === 'true';
+    const reason = this.dataset.reason || '';
+    document.querySelectorAll('#o' + qIdx + ' .opt').forEach(b => {
+      b.disabled = true;
+      if (b.dataset.correct === 'true') b.classList.add('correct');
+    });
+    if (isCorrect) {
+      this.classList.add('correct');
+      score++;
+      document.getElementById('f' + qIdx).className = 'feedback show ok';
+      document.getElementById('f' + qIdx).innerHTML = '✅ 正解！' + (reason ? ' ' + reason : '');
+    } else {
+      this.classList.add('wrong');
+      document.getElementById('f' + qIdx).className = 'feedback show ng';
+      document.getElementById('f' + qIdx).innerHTML = '❌ 不正解。' + reason;
+    }
+    document.getElementById('n' + qIdx).disabled = false;
+  });
+});
+
+// Matome navigation
+document.getElementById('n0').addEventListener('click', function() { go(1); });
+document.getElementById('n1').addEventListener('click', function() { go(2); });
+document.getElementById('n2').addEventListener('click', function() { go(3); });
+document.getElementById('back1').addEventListener('click', function() { go(0); });
+document.getElementById('back2').addEventListener('click', function() { go(1); });
+
+// Quiz navigation
+for (let i = MATOME_COUNT; i < TOTAL; i++) {
+  const nextBtn = document.getElementById('n' + i);
+  if (nextBtn) nextBtn.addEventListener('click', function() { go(cur + 1); });
+  const backBtn = document.getElementById('back' + i);
+  if (backBtn) backBtn.addEventListener('click', function() { go(cur - 1); });
+}
+
+renderDots(0);
+function getCurrentContent() {    const activeSlide = document.querySelector('.slide.active .slide-card, .slide.active .quiz-card');    if (!activeSlide) return '';    const clone = activeSlide.cloneNode(true);    const scripts = clone.querySelectorAll('script, style');    scripts.forEach(s => s.remove());    return clone.innerText || '';  }  function buildChatContext() {    const unitMatch = window.location.pathname.match(/nexelia-unit(d+)/);    const unitNum = unitMatch ? parseInt(unitMatch[1]) : 12;    return {      unit: `Unit ${unitNum}`,      topic: document.querySelector('.lesson-name')?.innerText || '英語表現',      currentSlide: {        type: cur < MATOME ? 'slide' : 'quiz',        index: cur,        content: getCurrentContent()      },      answered: answered,      progress: {        slides: `${cur + 1} / ${MATOME}`,        exercises: `${cur - MATOME + 1} / ${TOTAL - MATOME}`      }    };  }  window.nexeliaContext = {    buildChatContext: buildChatContext,    getCurrentContent: getCurrentContent  };
+
+</script>
+</body>
+</html>

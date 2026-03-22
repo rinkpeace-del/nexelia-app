@@ -7,7 +7,8 @@
     page === "learning.html" ||
     page === "exercise.html" ||
     /^nexelia-study\d+\.html$/.test(page) ||
-    /^nexelia-exercise\d+\.html$/.test(page);
+    /^nexelia-exercise\d+\.html$/.test(page) ||
+    /^nexelia-unit\d+-final\.html$/.test(page);
   if (!isLessonOrExercise) return;
 
   var WIDTH_KEY = "nexeliaAiPanelWidth";

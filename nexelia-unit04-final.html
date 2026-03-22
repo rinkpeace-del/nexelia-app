@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 4 まとめ＋総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --indigo: #283593; --indigo-light: #E8EAF6; --indigo-mid: #C5CAE9;
+  --orange: #E65100; --orange-light: #FFF8E1;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+.unit-banner { background: var(--indigo); color: white; text-align: center; padding: 12px 24px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; flex-shrink: 0; }
+.unit-banner strong { font-size: 15px; }
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 32px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 36px 44px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--indigo); }
+.rule-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; border-radius: 6px; padding: 3px 10px; background: var(--indigo-light); color: var(--indigo); border: 1px solid var(--indigo-mid); }
+.q-text { font-size: 19px; font-weight: 700; line-height: 1.5; }
+.q-sub { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.options { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: auto; }
+.opt { padding: 13px 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: left; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled):not(.selected) { border-color: var(--indigo); background: var(--indigo-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt.missed { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
+.opt:disabled { cursor: default; transform: none; }
+.feedback { padding: 13px 17px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.75; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+.btn-nav { padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+.dots { display: flex; gap: 5px; align-items: center; }
+.dot { width: 5px; height: 5px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done { background: rgba(40,53,147,0.3); }
+.dot.active { background: var(--indigo); width: 16px; }
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 56px; margin-bottom: 14px; }
+.complete-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.complete-sub { font-size: 14px; font-weight: 700; color: var(--indigo); background: var(--indigo-light); border-radius: 8px; padding: 6px 18px; margin-bottom: 14px; }
+.score-badge { font-size: 36px; font-weight: 700; color: var(--indigo); margin-bottom: 4px; }
+.score-max { font-size: 14px; color: var(--sub); font-weight: 600; margin-bottom: 18px; }
+.complete-msg { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 26px; }
+.complete-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; }
+.cbtn { padding: 14px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; text-align: center; }
+.cbtn.primary { background: var(--indigo); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+@media (max-width: 600px) { nav { padding: 0 16px; } .nav-center { display: none; } main { padding: 20px 16px; } .quiz-card { padding: 22px 18px; } }
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--indigo); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--indigo); }
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 17px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--indigo); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.6; }
+.grammar-box { background: var(--indigo-light); border: 1px solid var(--indigo-mid); border-radius: 14px; padding: 16px 20px; }
+.grammar-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--indigo); margin-bottom: 10px; }
+.grammar-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.grammar-row:last-child { margin-bottom: 0; }
+.grammar-key { font-size: 16px; font-weight: 700; color: var(--indigo); min-width: 80px; }
+.grammar-val { font-size: 14px; font-weight: 600; color: var(--text); }
+.ex-list { display: flex; flex-direction: column; gap: 8px; }
+.ex-row { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 11px 16px; }
+.ex-eng { font-size: 15px; font-weight: 700; color: var(--indigo); }
+.ex-jpn { font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 3px; }
+.caution-box { background: var(--wrong-light); border: 1px solid #EF9A9A; border-radius: 10px; padding: 11px 16px; font-size: 13px; font-weight: 600; color: var(--wrong); }
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 15px 18px; font-size: 14px; color: var(--indigo); font-weight: 600; line-height: 1.7; margin-top: auto; }
+@media (max-width: 600px) { nav { padding: 0 16px; } .nav-center { display: none; } main { padding: 20px 16px; } .slide-card { padding: 28px 20px; gap: 16px; } }
+</style>
+<script src="ai-chat.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="lessons.html">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 4 · まとめ＋総合演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:11%"></div></div>
+    <span class="nav-count" id="nav-count">スライド 1 / 3</span>
+  </div>
+  <a class="btn-exit" href="lessons.html">レッスン一覧</a>
+</nav>
+
+<main>
+
+
+  <!-- スライド 1 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · 過去形まとめ · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">過去形は<span class="accent">was/were</span>と<span class="accent">-ed</span></div>
+      </div>
+
+      <div class="grammar-box">
+        <div class="grammar-title">be動詞の過去形</div>
+        <div class="grammar-row">
+          <div class="grammar-key">am / is</div>
+          <div class="grammar-val">→ was</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">are</div>
+          <div class="grammar-val">→ were</div>
+        </div>
+      </div>
+
+      <div class="grammar-box">
+        <div class="grammar-title">一般動詞の規則変化（-ed）</div>
+        <div class="grammar-row">
+          <div class="grammar-key">基本</div>
+          <div class="grammar-val">+ ed（play→played, watch→watched）</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">-eで終わる</div>
+          <div class="grammar-val">+ d（like→liked）</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">子音+y</div>
+          <div class="grammar-val">y→i + ed（study→studied）</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">短母音+子音</div>
+          <div class="grammar-val">子音重ねて + ed（stop→stopped）</div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-row">
+          <div class="ex-eng">I was tired.</div>
+          <div class="ex-jpn">私は疲れていました。</div>
+        </div>
+        <div class="ex-row">
+          <div class="ex-eng">She played tennis.</div>
+          <div class="ex-jpn">彼女はテニスをしました。</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · 過去形まとめ · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text"><span class="accent">不規則動詞</span>と否定・疑問文</div>
+      </div>
+
+      <div class="grammar-box">
+        <div class="grammar-title">不規則変化（主な動詞）</div>
+        <div class="grammar-row">
+          <div class="grammar-key">go</div>
+          <div class="grammar-val">→ went</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">come / have</div>
+          <div class="grammar-val">→ came / had</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">see / make / take</div>
+          <div class="grammar-val">→ saw / made / took</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">eat / get / write</div>
+          <div class="grammar-val">→ ate / got / wrote</div>
+        </div>
+      </div>
+
+      <div class="grammar-box">
+        <div class="grammar-title">否定文・疑問文</div>
+        <div class="grammar-row">
+          <div class="grammar-key">否定</div>
+          <div class="grammar-val">did not (didn't) + 動詞の原形</div>
+        </div>
+        <div class="grammar-row">
+          <div class="grammar-key">疑問</div>
+          <div class="grammar-val">Did + 主語 + 動詞の原形 ...?</div>
+        </div>
+      </div>
+
+      <div class="caution-box">⚠️ didn't のあとは動詞を必ず原形に！ × didn't played ○ didn't play</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · 過去形まとめ · スライド 3</div>
+      <div>
+        <div class="concept-title">まとめ</div>
+        <div class="concept-text">Unit 4 の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">be動詞の過去形：was（I/He/She/It）/ were（You/We/They）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">一般動詞の規則変化：-ed をつける（語尾に注意）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">不規則動詞：go→went など形が変わる（暗記必要）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">否定文：didn't + 動詞の原形 / 疑問文：Did + 主語 + 動詞の原形 ...?</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 おつかれさま！Unit 4 全レッスン完了！総合演習で実力を確かめよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+
+
+
+
+  <!-- Q1 -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">総合演習 1 / 6 ⭐</div>
+      <span class="rule-badge">be動詞の過去形</span>
+      <div class="q-text">（　）に入るbe動詞の過去形はどれ？<br><span style="font-size:17px; color:var(--indigo);">They ___ happy yesterday.</span></div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false" data-reason="is は現在形です。過去形は was / were を使います。">is</button>
+        <button class="opt" data-correct="false" data-reason="am は現在形です。過去形は was / were を使います。">am</button>
+        <button class="opt" data-correct="false" data-reason="are は現在形です。They の過去形は were です。">are</button>
+        <button class="opt" data-correct="true"  data-reason="">were</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">総合演習 2 / 6 ⭐</div>
+      <span class="rule-badge">規則変化（-ed）</span>
+      <div class="q-text">正しい過去形はどれ？<br><span style="font-size:17px; color:var(--indigo);">study → 過去形</span></div>
+      <div class="options" id="o4">
+        <button class="opt" data-correct="false" data-reason="子音 + y で終わる動詞は y をそのまま残さず、y を i に変えて + ed です。">studyed</button>
+        <button class="opt" data-correct="true"  data-reason="">studied</button>
+        <button class="opt" data-correct="false" data-reason="studeid という形は存在しません。y を i に変えて + ed → studied です。">studeid</button>
+        <button class="opt" data-correct="false" data-reason="studys は三単現の形です。過去形は studied です。">studys</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label">総合演習 3 / 6 ⭐</div>
+      <span class="rule-badge">不規則変化</span>
+      <div class="q-text">go の過去形はどれ？</div>
+      <div class="options" id="o5">
+        <button class="opt" data-correct="false" data-reason="goed という形は存在しません。go は不規則変化で went です。">goed</button>
+        <button class="opt" data-correct="false" data-reason="wented という形は存在しません。go の過去形は went です。">wented</button>
+        <button class="opt" data-correct="true"  data-reason="">went</button>
+        <button class="opt" data-correct="false" data-reason="gone は過去分詞形です。過去形は went です。">gone</button>
+      </div>
+      <div class="feedback" id="f5"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back5">← もどる</button>
+      <div class="dots" id="d5"></div>
+      <button class="btn-nav primary" id="n5" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label">総合演習 4 / 6 ⭐⭐</div>
+      <span class="rule-badge">否定文</span>
+      <div class="q-text">正しい否定文はどれ？<br><span style="font-size:17px; color:var(--indigo);">She played tennis. → 否定文</span></div>
+      <div class="options" id="o6">
+        <button class="opt" data-correct="false" data-reason="didn't のあとは動詞の原形を使います。× plays → ○ play">She didn't plays tennis.</button>
+        <button class="opt" data-correct="false" data-reason="didn't のあとは動詞の原形を使います。× played → ○ play">She didn't played tennis.</button>
+        <button class="opt" data-correct="true"  data-reason="">She didn't play tennis.</button>
+        <button class="opt" data-correct="false" data-reason="don't は現在形に使います。過去の否定文は didn't を使います。">She don't play tennis.</button>
+      </div>
+      <div class="feedback" id="f6"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back6">← もどる</button>
+      <div class="dots" id="d6"></div>
+      <button class="btn-nav primary" id="n6" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="slide" id="s7">
+    <div class="quiz-card">
+      <div class="q-label">総合演習 5 / 6 ⭐⭐</div>
+      <span class="rule-badge">疑問文</span>
+      <div class="q-text">正しい疑問文はどれ？<br><span style="font-size:17px; color:var(--indigo);">He went to school. → 疑問文</span></div>
+      <div class="options" id="o7">
+        <button class="opt" data-correct="false" data-reason="be動詞の過去疑問文の形ですが、go は一般動詞です。Did + 主語 + 動詞の原形 を使います。">Was he go to school?</button>
+        <button class="opt" data-correct="false" data-reason="Did のあとは動詞の原形を使います。× went → ○ go">Did he went to school?</button>
+        <button class="opt" data-correct="true"  data-reason="">Did he go to school?</button>
+        <button class="opt" data-correct="false" data-reason="Does は現在形の疑問文に使います。過去の疑問文は Did を使います。">Does he go to school?</button>
+      </div>
+      <div class="feedback" id="f7"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back7">← もどる</button>
+      <div class="dots" id="d7"></div>
+      <button class="btn-nav primary" id="n7" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="slide" id="s8">
+    <div class="quiz-card">
+      <div class="q-label">総合演習 6 / 6 ⭐⭐⭐</div>
+      <span class="rule-badge">総合</span>
+      <div class="q-text">正しい英文はどれ？</div>
+      <div class="options" id="o8">
+        <button class="opt" data-correct="false" data-reason="was + 動詞の原形という形は誤りです。過去形は動詞自体を変化させます。">I was study English yesterday.</button>
+        <button class="opt" data-correct="true"  data-reason="">I studied English yesterday.</button>
+        <button class="opt" data-correct="false" data-reason="I did study という形は強調表現で、通常の過去形は I studied です。">I did study English yesterday.</button>
+        <button class="opt" data-correct="false" data-reason="studyed という形は誤りです。y を i に変えて + ed → studied です。">I studyed English yesterday.</button>
+      </div>
+      <div class="feedback" id="f8"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back8">← もどる</button>
+      <div class="dots" id="d8"></div>
+      <button class="btn-nav primary" id="n8" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- 完了画面 -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon">🎉</div>
+    <div class="complete-title">Unit 4 まとめ＋総合演習 完了！</div>
+    <div class="complete-sub">過去形 マスター</div>
+    <div class="score-badge"><span id="score-num">0</span> / 6</div>
+    <div class="score-max">正解数</div>
+    <div class="complete-msg">be動詞の過去形、規則変化・不規則変化、否定文・疑問文を確認できましたか？<br>間違えた問題は復習してみましょう！</div>
+    <div class="complete-btns">
+      <a href="lessons.html" class="cbtn primary">← レッスン一覧へ</a>
+    </div>
+  </div>
+
+
+</main>
+
+<script>
+const MATOME_COUNT = 3;
+const QUIZ_COUNT = 6;
+const TOTAL = MATOME_COUNT + QUIZ_COUNT;
+let cur = 0;
+let score = 0;
+let answered = new Array(TOTAL).fill(false);
+
+function renderDots(id) {
+  const el = document.getElementById('d' + id);
+  if (!el) return;
+  el.innerHTML = '';
+  let dotCount, actualId;
+  if (id < 3) {
+    dotCount = 3;
+    actualId = id;
+  } else {
+    dotCount = 7;
+    actualId = id - 3;
+  }
+  for (let i = 0; i < dotCount; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < actualId ? ' done' : i === actualId ? ' active' : '');
+    el.appendChild(d);
+  }
+}
+
+function go(idx) {
+  if (idx >= TOTAL) { showComplete(); return; }
+  if (idx < 0) return;
+  document.getElementById('s' + cur).classList.remove('active');
+  cur = idx;
+  document.getElementById('s' + cur).classList.add('active');
+  if (cur < 3) {
+    document.getElementById('nav-fill').style.width = ((cur + 1) / 3 * 100) + '%';
+    document.getElementById('nav-count').textContent = 'スライド ' + (cur + 1) + ' / 3';
+  } else {
+    document.getElementById('nav-fill').style.width = ((cur - 2) / 7 * 100) + '%';
+    const quizNum = cur - 2;
+    document.getElementById('nav-count').textContent = '問題 ' + quizNum + ' / 7';
+  }
+  renderDots(cur);
+}
+
+function showComplete() {
+  document.getElementById('s' + (TOTAL - 1)).classList.remove('active');
+  document.getElementById('complete').classList.add('active');
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('nav-fill').style.width = '100%';
+  document.getElementById('nav-count').textContent = '完了';
+}
+
+const correctReasons = [
+  'They の過去形は were です。',
+  '子音 + y で終わる動詞は y を i に変えて + ed → studied',
+  'go は不規則変化で過去形は went です。',
+  'didn\'t のあとは動詞の原形。× played ○ play',
+  'Did + 主語 + 動詞の原形。Did he go to school?',
+  'study → studied（y を i に変えて ed）。I studied English yesterday.'
+];
+
+document.querySelectorAll('.opt').forEach(btn => {
+  const slide = btn.closest('.slide');
+  const qIdx = parseInt(slide.id.replace('s', ''));
+  btn.addEventListener('click', function() {
+    if (answered[qIdx]) return;
+    answered[qIdx] = true;
+    const isCorrect = this.dataset.correct === 'true';
+    const reason = isCorrect ? correctReasons[qIdx - MATOME_COUNT] : this.dataset.reason;
+    document.querySelectorAll('#o' + qIdx + ' .opt').forEach(b => {
+      b.disabled = true;
+      if (b.dataset.correct === 'true') b.classList.add('correct');
+    });
+    if (isCorrect) {
+      this.classList.add('correct');
+      score++;
+      document.getElementById('f' + qIdx).className = 'feedback show ok';
+      document.getElementById('f' + qIdx).innerHTML = '✅ 正解！' + (reason ? ' ' + reason : '');
+    } else {
+      this.classList.add('wrong');
+      document.getElementById('f' + qIdx).className = 'feedback show ng';
+      document.getElementById('f' + qIdx).innerHTML = '❌ 不正解。' + reason;
+    }
+    document.getElementById('n' + qIdx).disabled = false;
+  });
+});
+
+// Matome navigation
+document.getElementById('n0').addEventListener('click', function() { go(1); });
+document.getElementById('n1').addEventListener('click', function() { go(2); });
+document.getElementById('n2').addEventListener('click', function() { go(3); });
+document.getElementById('back1').addEventListener('click', function() { go(0); });
+document.getElementById('back2').addEventListener('click', function() { go(1); });
+
+// Quiz navigation
+for (let i = MATOME_COUNT; i < TOTAL; i++) {
+  const nextBtn = document.getElementById('n' + i);
+  if (nextBtn) nextBtn.addEventListener('click', function() { go(cur + 1); });
+  const backBtn = document.getElementById('back' + i);
+  if (backBtn) backBtn.addEventListener('click', function() { go(cur - 1); });
+}
+
+renderDots(0);
+function getCurrentContent() {    const activeSlide = document.querySelector('.slide.active .slide-card, .slide.active .quiz-card');    if (!activeSlide) return '';    const clone = activeSlide.cloneNode(true);    const scripts = clone.querySelectorAll('script, style');    scripts.forEach(s => s.remove());    return clone.innerText || '';  }  function buildChatContext() {    const unitMatch = window.location.pathname.match(/nexelia-unit(d+)/);    const unitNum = unitMatch ? parseInt(unitMatch[1]) : 04;    return {      unit: `Unit ${unitNum}`,      topic: document.querySelector('.lesson-name')?.innerText || '英語表現',      currentSlide: {        type: cur < MATOME ? 'slide' : 'quiz',        index: cur,        content: getCurrentContent()      },      answered: answered,      progress: {        slides: `${cur + 1} / ${MATOME}`,        exercises: `${cur - MATOME + 1} / ${TOTAL - MATOME}`      }    };  }  window.nexeliaContext = {    buildChatContext: buildChatContext,    getCurrentContent: getCurrentContent  };
+
+</script>
+</body>
+</html>
