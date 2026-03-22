@@ -8,6 +8,10 @@
     page === "exercise.html" ||
     page === "learning" ||
     page === "exercise" ||
+    page === "lessons.html" ||
+    page === "lessons" ||
+    page === "index.html" ||
+    page === "" ||
     /^nexelia-study\d+\.html?$/.test(page) ||
     /^nexelia-study\d+$/.test(page) ||
     /^nexelia-exercise\d+\.html?$/.test(page) ||
