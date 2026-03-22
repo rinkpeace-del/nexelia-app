@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 21 まとめ＋総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --purple: #512DA8;
+  --purple-light: #EDE7F6;
+  --accent: #512DA8;
+  --accent-light: #EDE7F6;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--purple); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--accent); }
+
+/* 直接 vs 間接 比較ブロック */
+.transform-block { display: flex; flex-direction: column; gap: 8px; }
+.tf-row { display: flex; align-items: stretch; border-radius: 14px; overflow: hidden; border: 1.5px solid var(--border); }
+.tf-row.direct   { border-color: #FFE082; }
+.tf-row.indirect { border-color: #B39DDB; }
+.tf-badge { display: flex; align-items: center; justify-content: center; padding: 0 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; flex-shrink: 0; min-width: 82px; text-align: center; line-height: 1.5; }
+.tf-row.direct   .tf-badge { background: #FFF8E1; color: #E65100; border-right: 1.5px solid #FFE082; }
+.tf-row.indirect .tf-badge { background: var(--purple-light); color: var(--purple); border-right: 1.5px solid #B39DDB; }
+.tf-content { padding: 13px 18px; background: var(--white); flex: 1; }
+.tf-en { font-size: 17px; font-weight: 700; line-height: 1.5; }
+.tf-note { font-size: 12px; color: var(--sub); margin-top: 4px; font-weight: 500; }
+.hl-orange { color: #E65100; }
+.hl { color: var(--purple); }
+.ng-tag { display: inline-block; font-size: 11px; font-weight: 700; background: #FFEBEE; color: #C62828; border-radius: 6px; padding: 1px 7px; margin-left: 6px; vertical-align: middle; }
+.ok-tag { display: inline-block; font-size: 11px; font-weight: 700; background: #E6F4EA; color: #1B873B; border-radius: 6px; padding: 1px 7px; margin-left: 6px; vertical-align: middle; }
+
+/* 変換矢印 */
+.convert-arrow { display: flex; align-items: center; justify-content: center; gap: 16px; background: var(--purple-light); border-radius: 14px; padding: 15px 20px; }
+.ca-from { font-size: 15px; font-weight: 700; color: #E65100; }
+.ca-to   { font-size: 15px; font-weight: 700; color: var(--purple); }
+.ca-arrow { font-size: 22px; color: var(--purple); font-weight: 700; }
+
+/* 語順ルールボックス */
+.rule-box { background: var(--purple); border-radius: 16px; padding: 20px 26px; color: white; }
+.rule-box .rb-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.75; margin-bottom: 10px; }
+.rule-box .rb-formula { font-size: 18px; font-weight: 700; line-height: 1.7; }
+.rule-box .rb-note { font-size: 13px; opacity: 0.85; margin-top: 10px; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 9px; }
+.ex-single { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.ex-single .en { padding: 13px 18px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 8px 18px; font-size: 13px; color: var(--sub); background: var(--bg); }
+
+/* まとめ：最短ルール帯 */
+.one-liner { background: var(--purple); border-radius: 12px; padding: 14px 22px; color: white; font-size: 16px; font-weight: 700; text-align: center; line-height: 1.6; }
+.one-liner span { opacity: 0.75; font-size: 13px; display: block; margin-top: 4px; font-weight: 500; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 9px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 26px; height: 26px; background: var(--purple); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.7; }
+.summary-text small { display: block; font-size: 12px; color: var(--sub); font-weight: 500; margin-top: 2px; }
+
+/* 伏線ボックス */
+.teaser-box { background: #FFF8E1; border: 1.5px solid #FFE082; border-radius: 12px; padding: 13px 18px; font-size: 13px; font-weight: 600; color: #795548; line-height: 1.7; }
+
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 22px; font-size: 14px; color: var(--purple); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--purple); border-color: var(--purple); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(81,45,168,0.3); }
+.dot.active { background: var(--purple); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 18px; }
+  .tf-badge { min-width: 64px; font-size: 10px; }
+  .convert-arrow { gap: 8px; }
+  .ca-from, .ca-to { font-size: 13px; }
+}
+</style>
+</head>
+</head><body><nav><a href="index.html" class="nav-logo">NEXELIA</a><div class="nav-center"><span class="lesson-name">Unit 21 · まとめ＋総合演習</span><div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:0%"></div></div><span class="nav-count" id="nav-count">スライド 1 / 4</span></div><a href="lessons.html" class="btn-exit">← 一覧へ</a></nav><main>
+  <div class="slide" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン1 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="one-liner">
+        疑問詞のあとは「主語 → 動詞」
+        <span>間接疑問文の最重要ルール！</span>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">
+            疑問文を文の中に入れたものを<strong>間接疑問文</strong>という
+            <small>Where is he? → I know where he is.</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">
+            間接疑問文の中は <strong>疑問詞 ＋ 主語 ＋ 動詞</strong> の語順
+            <small>❌ where is he　→　✅ where he is</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="teaser-box">
+        📌 次のレッスンは「Do you know ...?」など実際の文で練習！<br>
+        ※「Is she ...?」のような Yes/No 疑問文を入れるときは <strong>if / whether</strong> を使うよ → Lesson 3 で学ぼう！
+      </div>
+
+      <div class="point-box">👏 お疲れさま！演習で語順の感覚をつかもう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン2 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="one-liner">
+        Do you know ＋ 疑問詞 ＋ 主語 ＋ 動詞？
+        <span>語順ルールは Lesson 1 と完全共通！疑問文の語順にしない！</span>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">
+            「〜か知っていますか？」は <strong>Do you know ＋ 疑問詞 ＋ 主語 ＋ 動詞？</strong>
+            <small>❌ where does he live　→　✅ where he lives</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">
+            <strong>who が主語のとき</strong>だけ語順の変化なし
+            <small>Do you know who made this?　← who がそのまま主語</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="teaser-box">
+        📌 次のレッスンは「Is she ...?」のような <strong>Yes/No 疑問文</strong> を間接疑問文にする方法！<br>
+        そのときは <strong>if / whether</strong> を使うよ → Lesson 3 で学ぼう！
+      </div>
+
+      <div class="point-box">👏 お疲れさま！演習で「作れる」感覚をつかもう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン3 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="one-liner">
+        疑問詞がない？→ if ＋ 主語 ＋ 動詞
+        <span>語順ルールは疑問詞のときと完全共通！</span>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">
+            Yes/No 疑問文を文の中に入れるときは <strong>if</strong>（または whether）を使う
+            <small>Is she busy? → I don't know if she is busy.</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">
+            if のあとも <strong>主語 ＋ 動詞</strong> の順（do / did は入れない！）
+            <small>❌ if did he come　→　✅ if he came</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">
+            if と whether は同じ意味。中学では <strong>if</strong> で OK！
+            <small>I don't know if / whether she is busy. どちらも正解</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 お疲れさま！演習で if の感覚をつかもう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 21 · レッスン4 · まとめ</div>
+      <div>
+        <div class="concept-title">Unit 21 完全まとめ</div>
+        <div class="concept-text">これで<span class="accent">間接疑問文マスター！</span></div>
+      </div>
+
+      <div class="summary-anchor">
+        <div class="sa-label">攻略の2ステップ</div>
+        <div class="sa-steps">① 疑問詞がある？→ 疑問詞をそのまま使う<br>② ない（Yes/No）？→ if を使う</div>
+        <div class="sa-note">どちらも中の語順は「主語 → 動詞」— これが間接疑問文の絶対ルール！</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I know <span class="hl">where he is</span>.</div>
+          <div class="jp">疑問詞 where → where ＋ 主語 ＋ 動詞</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">Do you know <span class="hl">what she wants</span>?</div>
+          <div class="jp">疑問詞 what → what ＋ 主語 ＋ 動詞</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I don't know <span class="hl-green">if she is busy</span>.</div>
+          <div class="jp">Yes/No 疑問文 → if ＋ 主語 ＋ 動詞</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">Do you know <span class="hl-green">if he came</span>?</div>
+          <div class="jp">Yes/No 疑問文（過去）→ if ＋ 主語 ＋ 過去形動詞</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 Unit 21 全レッスン完了！演習で総仕上げをしよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide active" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 1 / 5</span>
+        <span class="q-type-badge">判別</span>
+      </div>
+      <div class="q-text">正しい間接疑問文はどれ？</div>
+      <div class="q-sub">💡 疑問文を文の中に入れたとき、語順が正しいものを選ぼう。</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="false">Where is she?</button>
+        <button class="opt" data-correct="false">I know where is she.</button>
+        <button class="opt" data-correct="true">I know where she is.</button>
+        <button class="opt" data-correct="false">I know she where is.</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 2 / 5</span>
+        <span class="q-type-badge">語順選択</span>
+      </div>
+      <div class="q-text">（　）に入る正しい形はどれ？<span class="q-focus">Do you know （　　　　　）?</span></div>
+      <div class="q-sub">⚠️ 間接疑問文の中は疑問文の語順（does he come）にしてはダメ！「主語 → 動詞」の順に直そう。</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">does he come ← 疑問文の語順のまま（×）</button>
+        <button class="opt" data-correct="true">what time he comes</button>
+        <button class="opt" data-correct="false">what time does he come</button>
+        <button class="opt" data-correct="false">he comes what time</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 3 / 5</span>
+        <span class="q-type-badge">英文選択</span>
+      </div>
+      <div class="q-text">日本語に合う英文はどれ？<span class="q-focus">「私は彼女がどこに住んでいるか知りません。」</span></div>
+      <div class="q-sub">💡 語順と、三人称単数現在（lives / live）の両方に注意！</div>
+      <div class="options" id="o2">
+        <button class="opt" data-correct="false">I don't know where does she live.</button>
+        <button class="opt" data-correct="false">I don't know where she live.</button>
+        <button class="opt" data-correct="true">I don't know where she lives.</button>
+        <button class="opt" data-correct="false">I don't know where lives she.</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s7">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 4 / 5</span>
+        <span class="q-type-badge">誤文訂正</span>
+      </div>
+      <div class="q-text">下線部の間違いを直した文はどれ？<span class="err-sentence">I know where <span class="err-hl">is he</span>.</span></div>
+      <div class="q-sub">⚠️ 間接疑問文の中は疑問文の語順にしてはダメ！どう直す？</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false">I know where is he.</button>
+        <button class="opt" data-correct="true">I know where he is.</button>
+        <button class="opt" data-correct="false">I know he where is.</button>
+        <button class="opt" data-correct="false">I know is he where.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s8">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 5 / 5</span>
+        <span class="q-type-badge">並び替え</span>
+      </div>
+      <div class="q-text">日本語に合うように、正しく並べた英文はどれ？<span class="q-focus">「彼女が何を食べているか教えて。」</span></div>
+      <div class="q-sub">💡 語順のカギは「what → she → is eating」の順！Tell me のあとに続けよう。</div>
+      <div class="options" id="o4">
+        <button class="opt" data-correct="false">Tell me what is she eating.</button>
+        <button class="opt" data-correct="false">Tell me she what is eating.</button>
+        <button class="opt" data-correct="true">Tell me what she is eating.</button>
+        <button class="opt" data-correct="false">Tell me eating she what is.</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <div class="slide active" id="s9">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 1 / 6</span>
+        <span class="q-type-badge">判別</span>
+      </div>
+      <div class="q-text">正しい英文はどれ？</div>
+      <div class="q-sub">💡 4つのうち1つだけが正しい間接疑問文。語順と三単現に注意！</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="false">Do you know where is she?<span class="warn-inline">語順ミス</span></button>
+        <button class="opt" data-correct="false">Do you know where does she live?<span class="warn-inline">does不要</span></button>
+        <button class="opt" data-correct="true">Do you know where she lives?</button>
+        <button class="opt" data-correct="false">Do you know where she live?<span class="warn-inline">三単現ミス</span></button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s10">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 2 / 6</span>
+        <span class="q-type-badge">語順選択</span>
+      </div>
+      <div class="q-text">（　）に入る正しい形はどれ？<span class="q-focus">Do you know （　　　　　）?</span></div>
+      <div class="q-sub">「彼が何を食べているか知っていますか？」という意味にしよう。<br>⚠️ 疑問文の語順（does he / what does）にしてはダメ！</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">what does he eat　← 疑問文の語順のまま（×）</button>
+        <button class="opt" data-correct="false">what he eats</button>
+        <button class="opt" data-correct="true">what he is eating</button>
+        <button class="opt" data-correct="false">what is he eating</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s11">
+    <div class="quiz-card">
+      <div class="q-label">
+        <span class="q-label-text">問題 3 / 6</span>
+        <span class="q-type-badge">英文選択</span>
+      </div>
+      <div class="q-text">日本語に合う英文はどれ？<span class="q-focus">「誰がこのケーキを作ったか知っていますか？」</span></div>
+      <div class="q-sub">💡 「誰が〜した」のとき、who 自体が主語 → 語順の変化なし・did は不要！</div>
+      <div class="options" id="o2">
+        <button class="opt" data-correct="false">Do you know who did make this cake?</button>
+        <button class="opt" data-correct="true">Do you know who made this cake?</button>
+        <button class="opt" data-correct="false">Do you know who this cake made?</button>
+        <button class="opt" data-correct="false">Do you know who makes this cake did?</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+</main>
+<script>const TOTAL=12;const MATOME=4;let cur=0;function renderDots(id){const el=document.getElementById('d'+id);if(!el)return;el.innerHTML='';for(let i=0;i<(id<MATOME?MATOME:TOTAL-MATOME);i++){const d=document.createElement('div');const ai=id<MATOME?i:MATOME+i;d.className='dot'+(ai<id?' done':ai===id?' active':'');el.appendChild(d);}}function go(idx){document.getElementById('s'+cur).classList.remove('active');cur=idx;document.getElementById('s'+cur).classList.add('active');let pct,txt;if(cur<MATOME){pct=Math.round((cur+1)/MATOME*100);txt='スライド '+(cur+1)+' / '+MATOME;}else{pct=Math.round((cur-MATOME+1)/(TOTAL-MATOME)*100);txt='問題 '+(cur-MATOME+1)+' / '+(TOTAL-MATOME);}document.getElementById('nav-fill').style.width=pct+'%';document.getElementById('nav-count').textContent=txt;renderDots(cur);}for(var q=0;q<4;q++){document.getElementById('n'+q).addEventListener('click',function(){go(cur+1);});}for(var b=1;b<4;b++){if(document.getElementById('back'+b))document.getElementById('back'+b).addEventListener('click',function(){go(cur-1);});}renderDots(0);</script>
+</body></html>

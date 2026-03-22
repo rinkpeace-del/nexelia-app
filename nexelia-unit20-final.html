@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 20 まとめ＋総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --purple: #4527A0;
+  --purple-light: #EDE7F6;
+  --in-color: #4527A0;
+  --in-bg: #EDE7F6;
+  --on-color: #00695C;
+  --on-bg: #E0F2F1;
+  --at-color: #C62828;
+  --at-bg: #FFEBEE;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--purple); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--purple); }
+
+/* 3色バッジ横並び */
+.trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.trio-card { border-radius: 16px; padding: 20px 16px; text-align: center; display: flex; flex-direction: column; gap: 8px; }
+.trio-card.in { background: var(--in-bg); border: 1.5px solid #B39DDB; }
+.trio-card.on { background: var(--on-bg); border: 1.5px solid #80CBC4; }
+.trio-card.at { background: var(--at-bg); border: 1.5px solid #EF9A9A; }
+.trio-image { font-size: 28px; line-height: 1; }
+.trio-word { font-size: 28px; font-weight: 700; }
+.trio-card.in .trio-word { color: var(--in-color); }
+.trio-card.on .trio-word { color: var(--on-color); }
+.trio-card.at .trio-word { color: var(--at-color); }
+.trio-key { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-block; margin: 0 auto; }
+.trio-card.in .trio-key { background: var(--in-color); color: white; }
+.trio-card.on .trio-key { background: var(--on-color); color: white; }
+.trio-card.at .trio-key { background: var(--at-color); color: white; }
+.trio-sub { font-size: 11px; color: var(--sub); font-weight: 500; line-height: 1.4; }
+
+/* 3軸チェック */
+.axis-box { background: var(--purple-light); border-radius: 14px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.axis-title { font-size: 12px; font-weight: 700; color: var(--purple); letter-spacing: 0.05em; }
+.axis-rows { display: flex; flex-direction: column; gap: 6px; }
+.axis-row { display: flex; align-items: center; gap: 10px; }
+.axis-qlabel { font-size: 11px; font-weight: 700; width: 62px; flex-shrink: 0; }
+.axis-bar-wrap { flex: 1; height: 28px; border-radius: 8px; overflow: hidden; display: flex; }
+.axis-seg { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; }
+.axis-seg.in-fill  { background: var(--in-color); flex: 3; }
+.axis-seg.on-fill  { background: var(--on-color); flex: 3; }
+.axis-seg.at-fill  { background: var(--at-color); flex: 3; }
+.axis-seg.dim      { background: #E0E0E0; flex: 2; }
+.axis-note { font-size: 11px; font-weight: 600; flex-shrink: 0; width: 76px; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); line-height: 1.6; }
+.hl-in { color: var(--in-color); }
+.hl-on { color: var(--on-color); }
+.hl-at { color: var(--at-color); }
+
+/* 対比ペア */
+.pair-box { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+.pair-head { background: #FAFAFA; padding: 10px 18px; font-size: 11px; font-weight: 700; color: var(--sub); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); }
+.pair-row { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border); }
+.pair-row:first-child { border-top: none; }
+.pair-cell { padding: 13px 18px; font-size: 14px; font-weight: 700; line-height: 1.5; }
+.pair-cell small { font-size: 12px; font-weight: 500; color: var(--sub); display: block; margin-top: 2px; }
+.pair-cell.in-cell { background: var(--in-bg); color: var(--in-color); border-right: 1px solid var(--border); }
+.pair-cell.at-cell { background: var(--at-bg); color: var(--at-color); }
+
+/* 注意ボックス */
+.caution-list { display: flex; flex-direction: column; gap: 10px; }
+.caution-item { border-radius: 12px; padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start; }
+.caution-item.in { background: var(--in-bg); border: 1px solid #B39DDB; }
+.caution-item.on { background: var(--on-bg); border: 1px solid #80CBC4; }
+.caution-item.at { background: var(--at-bg); border: 1px solid #EF9A9A; }
+.ci-badge { font-size: 16px; font-weight: 700; min-width: 32px; padding-top: 2px; }
+.caution-item.in .ci-badge { color: var(--in-color); }
+.caution-item.on .ci-badge { color: var(--on-color); }
+.caution-item.at .ci-badge { color: var(--at-color); }
+.ci-body { font-size: 14px; font-weight: 600; line-height: 1.75; }
+.ci-body small { font-size: 12px; color: var(--sub); font-weight: 500; display: block; margin-top: 3px; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 8px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 16px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-badge { font-size: 15px; font-weight: 700; min-width: 36px; padding-top: 2px; }
+.summary-item:nth-child(1) .summary-badge { color: var(--in-color); }
+.summary-item:nth-child(2) .summary-badge { color: var(--on-color); }
+.summary-item:nth-child(3) .summary-badge { color: var(--at-color); }
+.summary-text { font-size: 14px; font-weight: 600; line-height: 1.7; }
+.summary-text small { font-size: 12px; color: var(--sub); font-weight: 500; display: block; margin-top: 2px; }
+
+/* 判断フロー3択 */
+.judge-flow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.jf-card { border-radius: 12px; padding: 14px 12px; text-align: center; display: flex; flex-direction: column; gap: 5px; }
+.jf-card.in { background: var(--in-bg); border: 1.5px solid #B39DDB; }
+.jf-card.on { background: var(--on-bg); border: 1.5px solid #80CBC4; }
+.jf-card.at { background: var(--at-bg); border: 1.5px solid #EF9A9A; }
+.jf-q { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.jf-arrow { font-size: 13px; color: var(--sub); }
+.jf-ans { font-size: 22px; font-weight: 700; }
+.jf-card.in .jf-ans { color: var(--in-color); }
+.jf-card.on .jf-ans { color: var(--on-color); }
+.jf-card.at .jf-ans { color: var(--at-color); }
+.jf-eg { font-size: 11px; color: var(--sub); font-weight: 500; line-height: 1.4; }
+
+/* 迷ったらボックス */
+.shortcut-box { background: var(--purple); border-radius: 12px; padding: 16px 22px; text-align: center; }
+.shortcut-box .sc-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.08em; margin-bottom: 8px; }
+.shortcut-box .sc-rule { font-size: 15px; font-weight: 700; color: white; line-height: 1.75; }
+.shortcut-box .sc-rule .dim { font-size: 12px; opacity: 0.65; display: block; margin-top: 4px; font-weight: 500; }
+
+.point-box { background: var(--purple-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--purple); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--purple); border-color: var(--purple); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(69,39,160,0.3); }
+.dot.active { background: var(--purple); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 18px; }
+  .trio { grid-template-columns: 1fr; }
+  .judge-flow { grid-template-columns: 1fr; }
+  .pair-row { grid-template-columns: 1fr; }
+  .pair-cell.in-cell { border-right: none; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+</head><body><nav><a href="index.html" class="nav-logo">NEXELIA</a><div class="nav-center"><span class="lesson-name">Unit 20 · まとめ＋総合演習</span><div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:0%"></div></div><span class="nav-count" id="nav-count">スライド 1 / 4</span></div><a href="lessons.html" class="btn-exit">← 一覧へ</a></nav><main>
+  <div class="slide" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン1 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-badge">in</div>
+          <div class="summary-text">空間の<strong>中に</strong>いる・ある（乗り物は on が基本）
+            <small>in the box / in Tokyo / in bed / in the hospital</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-badge">on</div>
+          <div class="summary-text">表面に<strong>接触</strong>している（乗り物も on！）
+            <small>on the desk / on TV / on the bus / on the wall</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-badge">at</div>
+          <div class="summary-text">ある<strong>1地点</strong>をピンポイントで指す
+            <small>at the station / at home / at school / at the door</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="judge-flow">
+        <div class="jf-card in">
+          <div class="jf-q">中に入ってる？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">in</div>
+          <div class="jf-eg">in the box<br>in Tokyo</div>
+        </div>
+        <div class="jf-card on">
+          <div class="jf-q">表面に触れてる？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">on</div>
+          <div class="jf-eg">on the desk<br>on the bus</div>
+        </div>
+        <div class="jf-card at">
+          <div class="jf-q">1点を指してる？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">at</div>
+          <div class="jf-eg">at the station<br>at home</div>
+        </div>
+      </div>
+
+      <div class="shortcut-box">
+        <div class="sc-label">💡 迷ったときの最終判断ルール</div>
+        <div class="sc-rule">
+          中なら <strong>in</strong> ／ 触れてたら <strong>on</strong> ／ 点なら <strong>at</strong>
+          <span class="dim">※ 例外もあるから、慣れたら丸ごとセットで覚えていこう！</span>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン2 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-badge">in</div>
+          <div class="summary-text">年・月・季節など<strong>長い期間・ぼんやりしたまとまり</strong>
+            <small>in 2024 / in June / in summer / in the morning</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-badge">on</div>
+          <div class="summary-text"><strong>特定の曜日・日付</strong>（日レベルで特定できる）
+            <small>on Monday / on March 3rd / on my birthday</small>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-badge">at</div>
+          <div class="summary-text"><strong>時刻・特定の瞬間</strong>（ピンポイント）
+            <small>at 7:00 / at noon / at night / at that time</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="judge-flow">
+        <div class="jf-card in">
+          <div class="jf-q">年・月・季節？ぼんやりした期間？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">in</div>
+          <div class="jf-eg">in 2024<br>in summer</div>
+        </div>
+        <div class="jf-card on">
+          <div class="jf-q">特定の曜日・日付？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">on</div>
+          <div class="jf-eg">on Monday<br>on March 3rd</div>
+        </div>
+        <div class="jf-card at">
+          <div class="jf-q">時刻・瞬間？ピンポイント？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">at</div>
+          <div class="jf-eg">at 7:00<br>at noon</div>
+        </div>
+        <div class="jf-card none">
+          <div class="jf-q">this / last / next / every がついてる？</div>
+          <div class="jf-arrow">↓</div>
+          <div class="jf-ans">前置詞なし</div>
+          <div class="jf-eg">next Monday<br>last summer</div>
+        </div>
+      </div>
+
+      <div class="shortcut-box">
+        <div class="sc-label">💡 迷ったときの最終判断ルール</div>
+        <div class="sc-rule">
+          ぼんやり長い → <strong>in</strong> ／ 特定の日 → <strong>on</strong> ／ ピンポイント → <strong>at</strong>
+        </div>
+        <span class="sc-dim">this / last / next / every がついたら前置詞なし！例外もあるから慣れたらセットで覚えよう。</span>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン3 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-table">
+        <div class="st-head">
+          <div>前置詞</div>
+          <div>意味・イメージ</div>
+          <div>例</div>
+        </div>
+        <div class="st-row">
+          <div class="st-word">to</div>
+          <div class="st-cell">〜へ向かう（目的地）</div>
+          <div class="st-cell">go to school</div>
+        </div>
+        <div class="st-row">
+          <div class="st-word">from</div>
+          <div class="st-cell">〜から来る（出発点）</div>
+          <div class="st-cell">come from Tokyo</div>
+        </div>
+        <div class="st-row">
+          <div class="st-word">into</div>
+          <div class="st-cell">中へ入る（動きあり）</div>
+          <div class="st-cell">go into the room</div>
+        </div>
+        <div class="st-row">
+          <div class="st-word">out of</div>
+          <div class="st-cell">中から出る（動きあり）</div>
+          <div class="st-cell">get out of a car</div>
+        </div>
+        <div class="st-row">
+          <div class="st-word">through</div>
+          <div class="st-cell">空間を貫いて通る</div>
+          <div class="st-cell">walk through the park</div>
+        </div>
+        <div class="st-row">
+          <div class="st-word">along</div>
+          <div class="st-cell">〜に沿って（平行に進む）</div>
+          <div class="st-cell">walk along the river</div>
+        </div>
+        <div class="st-row">
+          <div class="st-word">across</div>
+          <div class="st-cell">面を横断して渡る</div>
+          <div class="st-cell">swim across the river</div>
+        </div>
+      </div>
+
+      <div class="quick-flow">
+        <div class="qf-row"><span class="qf-q">どこかへ向かう先がある？</span><span class="qf-sep">→</span><span class="qf-ans">to</span></div>
+        <div class="qf-row"><span class="qf-q">出発点・出身を言う？</span><span class="qf-sep">→</span><span class="qf-ans">from</span></div>
+        <div class="qf-row"><span class="qf-q">中に入る動きがある？</span><span class="qf-sep">→</span><span class="qf-ans">into</span></div>
+        <div class="qf-row"><span class="qf-q">中から出る動きがある？</span><span class="qf-sep">→</span><span class="qf-ans">out of</span></div>
+        <div class="qf-row"><span class="qf-q">空間を突き抜ける？</span><span class="qf-sep">→</span><span class="qf-ans">through</span></div>
+        <div class="qf-row"><span class="qf-q">道・川に沿って進む？</span><span class="qf-sep">→</span><span class="qf-ans">along</span></div>
+        <div class="qf-row"><span class="qf-q">面を端から端まで渡る？</span><span class="qf-sep">→</span><span class="qf-ans">across</span></div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！方向・移動の前置詞を演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · まとめ</div>
+      <div>
+        <div class="concept-title">Unit 20 全体まとめ</div>
+        <div class="concept-text">全前置詞<span class="accent">最終判断フロー</span></div>
+      </div>
+
+      <div class="final-flow">
+        <div class="ff-row"><span class="ff-cat place">場所</span><span class="ff-q">広い空間の中？</span><span class="ff-sep">→</span><span class="ff-ans">in</span></div>
+        <div class="ff-row"><span class="ff-cat place">場所</span><span class="ff-q">表面に接触？乗り物？</span><span class="ff-sep">→</span><span class="ff-ans">on</span></div>
+        <div class="ff-row"><span class="ff-cat place">場所</span><span class="ff-q">1つの地点をピンポイント？</span><span class="ff-sep">→</span><span class="ff-ans">at</span></div>
+        <div class="ff-row"><span class="ff-cat time">時間</span><span class="ff-q">年・月・季節など長い期間？</span><span class="ff-sep">→</span><span class="ff-ans">in</span></div>
+        <div class="ff-row"><span class="ff-cat time">時間</span><span class="ff-q">特定の曜日・日付？</span><span class="ff-sep">→</span><span class="ff-ans">on</span></div>
+        <div class="ff-row"><span class="ff-cat time">時間</span><span class="ff-q">時刻・瞬間？ / this・next・last・every？</span><span class="ff-sep">→</span><span class="ff-ans">at / なし</span></div>
+        <div class="ff-row"><span class="ff-cat move">移動</span><span class="ff-q">目的地へ向かう？</span><span class="ff-sep">→</span><span class="ff-ans">to</span></div>
+        <div class="ff-row"><span class="ff-cat move">移動</span><span class="ff-q">中に入る・空間を貫く？</span><span class="ff-sep">→</span><span class="ff-ans">into / through</span></div>
+        <div class="ff-row"><span class="ff-cat confuse">注意</span><span class="ff-q">期限（完了）vs 継続？</span><span class="ff-sep">→</span><span class="ff-ans">by / until</span></div>
+        <div class="ff-row"><span class="ff-cat confuse">注意</span><span class="ff-q">数字で表せる期間？特定期間中？</span><span class="ff-sep">→</span><span class="ff-ans">for / during</span></div>
+        <div class="ff-row"><span class="ff-cat confuse">注意</span><span class="ff-q">手段・交通手段？手に持つ道具？</span><span class="ff-sep">→</span><span class="ff-ans">by / with</span></div>
+      </div>
+
+      <!-- 超圧縮版 -->
+      <div class="short-rule">
+        <div class="sr-label">⚡ 迷ったときの最短ルール（これだけ覚えればOK！）</div>
+        <div class="sr-grid">
+          <div class="sr-row"><span class="sr-cond">広い・長い</span><span class="sr-arrow">→</span><span class="sr-ans">in</span></div>
+          <div class="sr-row"><span class="sr-cond">特定の日・接触</span><span class="sr-arrow">→</span><span class="sr-ans">on</span></div>
+          <div class="sr-row"><span class="sr-cond">1点・時刻</span><span class="sr-arrow">→</span><span class="sr-ans">at</span></div>
+          <div class="sr-row"><span class="sr-cond">向かう先がある</span><span class="sr-arrow">→</span><span class="sr-ans">to</span></div>
+          <div class="sr-row"><span class="sr-cond">中に入る動き</span><span class="sr-arrow">→</span><span class="sr-ans">into</span></div>
+          <div class="sr-row"><span class="sr-cond">期限・完了</span><span class="sr-arrow">→</span><span class="sr-ans">by</span></div>
+          <div class="sr-row"><span class="sr-cond">数字の期間</span><span class="sr-arrow">→</span><span class="sr-ans">for</span></div>
+          <div class="sr-row"><span class="sr-cond">特定の期間中</span><span class="sr-arrow">→</span><span class="sr-ans">during</span></div>
+        </div>
+        <div class="sr-dim">※ 例外もあるから、慣れたら例文ごとセットで覚えるのが最強！</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">演習へ →</button>
+    </div>
+  </div>
+  <div class="slide active" id="s4">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 1 / 5</span>
+        <span class="diff-badge diff-basic">基本</span>
+      </div>
+      <div class="q-text">（　）に入る正しい前置詞はどれ？<br><span class="q-blank">The cat is (　　) the box.</span></div>
+      <div class="q-sub">猫は箱の「中」にいる。3つのイメージで考えよう。</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="false">on</button>
+        <button class="opt" data-correct="true">in</button>
+        <button class="opt" data-correct="false">at</button>
+        <button class="opt" data-correct="false">for</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 2 / 5</span>
+        <span class="diff-badge diff-basic">基本</span>
+      </div>
+      <div class="q-text">（　）に入る正しい前置詞はどれ？<br><span class="q-blank">There is a picture (　　) the wall.</span></div>
+      <div class="q-sub">絵は壁に「かかっている」。壁との関係はどんなイメージ？</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">in</button>
+        <button class="opt" data-correct="true">on</button>
+        <button class="opt" data-correct="false">at</button>
+        <button class="opt" data-correct="false">above</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 3 / 5</span>
+        <span class="diff-badge diff-mid">ふつう</span>
+      </div>
+      <div class="q-text">日本語に合う英文はどれ？<br><span class="q-blank">「彼は今、家にいる。」</span></div>
+      <div class="q-sub">「家」は空間の中？ それとも1つの地点？ the をつけるかどうかも確認！</div>
+      <div class="options single" id="o2">
+        <button class="opt" data-correct="false">He is in home now.</button>
+        <button class="opt" data-correct="false">He is on home now.</button>
+        <button class="opt" data-correct="true">He is at home now.</button>
+        <button class="opt" data-correct="false">He is at the home now.</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s7">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 4 / 5</span>
+        <span class="diff-badge diff-mid">ふつう</span>
+      </div>
+      <div class="q-text">日本語に合う正しい組み合わせはどれ？<br>
+        <span class="q-blank" style="font-size:16px;">
+          「私は東京に住んでいる。でも、今は渋谷駅にいる。」
+        </span>
+      </div>
+      <div class="q-sub">「東京」と「渋谷駅」—— 同じ場所でも前置詞が変わるよ！</div>
+      <div class="options single" id="o3">
+        <button class="opt" data-correct="false">I live at Tokyo. / I am in Shibuya Station now.</button>
+        <button class="opt" data-correct="true">I live in Tokyo. / I am at Shibuya Station now.</button>
+        <button class="opt" data-correct="false">I live in Tokyo. / I am in Shibuya Station now.</button>
+        <button class="opt" data-correct="false">I live at Tokyo. / I am at Shibuya Station now.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s8">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 5 / 5</span>
+        <span class="diff-badge diff-hard">応用</span>
+      </div>
+      <div class="q-text">次の英文の中で<strong>正しいもの</strong>はどれ？</div>
+      <div class="q-sub">前置詞が正しく使われている文を選ぼう。乗り物・メディア・場所のルールを思い出して！</div>
+      <div class="options single" id="o4">
+        <button class="opt" data-correct="false">I saw her <span style="text-decoration:underline;text-underline-offset:4px">at</span> TV yesterday.</button>
+        <button class="opt" data-correct="false">She is <span style="text-decoration:underline;text-underline-offset:4px">on</span> bed now.</button>
+        <button class="opt" data-correct="true">We talked <span style="text-decoration:underline;text-underline-offset:4px">on</span> the bus.</button>
+        <button class="opt" data-correct="false">He lives <span style="text-decoration:underline;text-underline-offset:4px">at</span> Osaka.</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <div class="slide active" id="s9">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 1 / 6</span>
+        <span class="diff-badge diff-basic">基本</span>
+      </div>
+      <div class="q-text">（　）に入る正しい前置詞はどれ？<br><span class="q-blank">I study English (　　) night.</span></div>
+      <div class="q-sub">「夜」は長い期間（ぼんやり）？ それともピンポイントの瞬間？ 2軸で考えよう。</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="false">in</button>
+        <button class="opt" data-correct="true">at</button>
+        <button class="opt" data-correct="false">on</button>
+        <button class="opt" data-correct="false">by</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s10">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 2 / 6</span>
+        <span class="diff-badge diff-basic">基本</span>
+      </div>
+      <div class="q-text">（　）に入る正しい前置詞はどれ？<br><span class="q-blank">Her concert is (　　) Saturday evening.</span></div>
+      <div class="q-sub">「土曜日の夕方」全体を1つのまとまりとして見よう。曜日＋時間帯のセットにはどれ？</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">in</button>
+        <button class="opt" data-correct="true">on</button>
+        <button class="opt" data-correct="false">at</button>
+        <button class="opt" data-correct="false">in Saturday night</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s11">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 3 / 6</span>
+        <span class="diff-badge diff-mid">ふつう</span>
+      </div>
+      <div class="q-text">日本語に合う英文はどれ？<br><span class="q-blank">「彼女は毎朝ジョギングをします。」</span></div>
+      <div class="q-sub">「every」がついたとき、前置詞は必要？</div>
+      <div class="options single" id="o2">
+        <button class="opt" data-correct="false">She goes jogging in every morning.</button>
+        <button class="opt" data-correct="false">She goes jogging at every morning.</button>
+        <button class="opt" data-correct="true">She goes jogging every morning.</button>
+        <button class="opt" data-correct="false">She goes jogging on every morning.</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <div class="slide" id="s12">
+    <div class="quiz-card">
+      <div class="q-label-row">
+        <span class="q-label">問題 4 / 6</span>
+        <span class="diff-badge diff-mid">ふつう</span>
+      </div>
+      <div class="q-text">（　）に正しい前置詞を入れると？<br>
+        <span class="q-blank" style="font-size:16px;">My birthday is (A) summer, (B) July 15th.</span>
+      </div>
+      <div class="q-sub">「夏」と「7月15日」—— 長さ・具体性の2軸でそれぞれ判断しよう！</div>
+      <div class="options single" id="o3">
+        <button class="opt" data-correct="false">(A) on  ／  (B) in</button>
+        <button class="opt" data-correct="true">(A) in  ／  (B) on</button>
+        <button class="opt" data-correct="false">(A) in  ／  (B) in</button>
+        <button class="opt" data-correct="false">(A) at  ／  (B) on</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+</main>
+<script>const TOTAL=13;const MATOME=4;let cur=0;function renderDots(id){const el=document.getElementById('d'+id);if(!el)return;el.innerHTML='';for(let i=0;i<(id<MATOME?MATOME:TOTAL-MATOME);i++){const d=document.createElement('div');const ai=id<MATOME?i:MATOME+i;d.className='dot'+(ai<id?' done':ai===id?' active':'');el.appendChild(d);}}function go(idx){document.getElementById('s'+cur).classList.remove('active');cur=idx;document.getElementById('s'+cur).classList.add('active');let pct,txt;if(cur<MATOME){pct=Math.round((cur+1)/MATOME*100);txt='スライド '+(cur+1)+' / '+MATOME;}else{pct=Math.round((cur-MATOME+1)/(TOTAL-MATOME)*100);txt='問題 '+(cur-MATOME+1)+' / '+(TOTAL-MATOME);}document.getElementById('nav-fill').style.width=pct+'%';document.getElementById('nav-count').textContent=txt;renderDots(cur);}for(var q=0;q<4;q++){document.getElementById('n'+q).addEventListener('click',function(){go(cur+1);});}for(var b=1;b<4;b++){if(document.getElementById('back'+b))document.getElementById('back'+b).addEventListener('click',function(){go(cur-1);});}renderDots(0);</script>
+</body></html>
