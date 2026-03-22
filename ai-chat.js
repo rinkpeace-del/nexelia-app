@@ -3,22 +3,10 @@
   window.__nexeliaAiButtonMounted = true;
 
   var page = ((window.location.pathname || "").split("/").pop() || "").toLowerCase();
-  var isLessonOrExercise =
-    page === "learning.html" ||
-    page === "exercise.html" ||
-    page === "learning" ||
-    page === "exercise" ||
-    page === "lessons.html" ||
-    page === "lessons" ||
-    page === "index.html" ||
-    page === "" ||
-    /^nexelia-study\d+\.html?$/.test(page) ||
-    /^nexelia-study\d+$/.test(page) ||
-    /^nexelia-exercise\d+\.html?$/.test(page) ||
-    /^nexelia-exercise\d+$/.test(page) ||
+  var isUnitPage =
     /^nexelia-unit\d+-final\.html?$/.test(page) ||
     /^nexelia-unit\d+-final$/.test(page);
-  if (!isLessonOrExercise) return;
+  if (!isUnitPage) return;
 
   var WIDTH_KEY = "nexeliaAiPanelWidth";
   var DEFAULT_WIDTH = 420;
