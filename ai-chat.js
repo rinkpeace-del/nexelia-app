@@ -6,9 +6,14 @@
   var isLessonOrExercise =
     page === "learning.html" ||
     page === "exercise.html" ||
-    /^nexelia-study\d+\.html$/.test(page) ||
-    /^nexelia-exercise\d+\.html$/.test(page) ||
-    /^nexelia-unit\d+-final\.html$/.test(page);
+    page === "learning" ||
+    page === "exercise" ||
+    /^nexelia-study\d+\.html?$/.test(page) ||
+    /^nexelia-study\d+$/.test(page) ||
+    /^nexelia-exercise\d+\.html?$/.test(page) ||
+    /^nexelia-exercise\d+$/.test(page) ||
+    /^nexelia-unit\d+-final\.html?$/.test(page) ||
+    /^nexelia-unit\d+-final$/.test(page);
   if (!isLessonOrExercise) return;
 
   var WIDTH_KEY = "nexeliaAiPanelWidth";
