@@ -161,6 +161,72 @@ main {
   main { padding: 20px 16px; }
   .quiz-card { padding: 24px 18px; }
 }
+
+.btn-ask-ai {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--blue);
+  background: var(--blue-light); color: var(--blue); font-size: 13px;
+  font-weight: 700; font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer; transition: all 0.15s; margin-top: 8px;
+}
+.btn-ask-ai:hover { background: var(--blue); color: white; }
+
+.ai-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+  z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.ai-overlay.open { opacity: 1; pointer-events: auto; }
+.ai-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 380px; max-width: 100vw;
+  background: var(--white); box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+  z-index: 1000; display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 0.3s ease;
+}
+.ai-panel.open { transform: translateX(0); }
+.ai-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.ai-panel-title { font-size: 15px; font-weight: 700; }
+.ai-panel-close {
+  width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--white); font-size: 14px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; color: var(--sub);
+  transition: border-color 0.15s, color 0.15s;
+}
+.ai-panel-close:hover { border-color: #aaa; color: var(--text); }
+.ai-panel-context {
+  padding: 14px 20px; background: #f8f9fa; border-bottom: 1px solid var(--border);
+  font-size: 13px; line-height: 1.7; color: var(--sub); flex-shrink: 0;
+}
+.ai-panel-context strong { color: var(--text); font-weight: 600; }
+.ai-panel-messages {
+  flex: 1; overflow-y: auto; padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.ai-msg { padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.75; }
+.ai-msg.user { background: var(--blue-light); color: var(--text); align-self: flex-end; max-width: 85%; }
+.ai-msg.assistant { background: #f0f0f0; color: var(--text); align-self: flex-start; max-width: 95%; white-space: pre-wrap; }
+.ai-msg.loading { color: var(--sub); font-style: italic; }
+.ai-panel-input {
+  padding: 12px 16px; border-top: 1px solid var(--border); flex-shrink: 0;
+  display: flex; gap: 8px; align-items: flex-end;
+}
+.ai-panel-input textarea {
+  flex: 1; resize: none; border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 10px 14px; font-size: 14px; font-family: 'Noto Sans JP', sans-serif;
+  line-height: 1.5; outline: none; transition: border-color 0.15s;
+}
+.ai-panel-input textarea:focus { border-color: var(--blue); }
+.ai-panel-send {
+  padding: 10px 18px; border-radius: 10px; border: none;
+  background: var(--blue); color: white; font-size: 14px; font-weight: 700;
+  font-family: 'Noto Sans JP', sans-serif; cursor: pointer;
+  transition: background 0.15s; flex-shrink: 0;
+}
+.ai-panel-send:hover { background: var(--blue-dark); }
+.ai-panel-send:disabled { opacity: 0.5; cursor: default; }
+@media (max-width: 600px) { .ai-panel { width: 100vw; } }
 </style>
 </head>
 <body>
@@ -252,6 +318,21 @@ main {
     </div>
   </div>
 
+<!-- AI Chat Side Panel -->
+<div class="ai-overlay" id="aiOverlay"></div>
+<aside class="ai-panel" id="aiChatPanel">
+  <div class="ai-panel-header">
+    <span class="ai-panel-title">🤖 AIに質問</span>
+    <button class="ai-panel-close" id="aiPanelClose" type="button" aria-label="閉じる">✕</button>
+  </div>
+  <div class="ai-panel-context" id="aiPanelContext"></div>
+  <div class="ai-panel-messages" id="aiPanelMessages"></div>
+  <form class="ai-panel-input" id="aiPanelForm">
+    <textarea id="aiPanelQuestion" placeholder="質問を入力してください..." rows="2"></textarea>
+    <button type="submit" class="ai-panel-send" id="aiPanelSend">送信</button>
+  </form>
+</aside>
+
 </main>
 
 <script>
@@ -330,6 +411,27 @@ main {
           fb.classList.add('show', isCorrect ? 'ok' : 'ng');
           fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
 
+          // AIに質問ボタンを追加
+          if (!fb.parentElement.querySelector('.btn-ask-ai')) {
+            var qText = document.querySelector('#s' + qIdx + ' .q-text');
+            var aiBtn = document.createElement('button');
+            aiBtn.type = 'button';
+            aiBtn.className = 'btn-ask-ai';
+            aiBtn.textContent = '🤖 AIに質問';
+            (function(questionText, selectedText, correctText, wasCorrect, feedbackText) {
+              aiBtn.addEventListener('click', function() {
+                openAiPanel(questionText, selectedText, correctText, wasCorrect, feedbackText);
+              });
+            })(
+              qText ? qText.textContent : '',
+              btn.textContent,
+              Array.from(opts).find(function(b) { return b.dataset.correct === 'true'; }).textContent,
+              isCorrect,
+              isCorrect ? FB[qIdx].ok : FB[qIdx].ng
+            );
+            fb.insertAdjacentElement('afterend', aiBtn);
+          }
+
           document.getElementById('n' + qIdx).disabled = false;
         });
       });
@@ -346,6 +448,77 @@ main {
   document.getElementById('back2').addEventListener('click', function() { go(1); });
 
   renderDots(0);
+
+  // ── AI Chat Panel ──
+  function openAiPanel(questionText, selectedText, correctText, wasCorrect, feedbackText) {
+    var panel = document.getElementById('aiChatPanel');
+    var overlay = document.getElementById('aiOverlay');
+    var contextEl = document.getElementById('aiPanelContext');
+    var messagesEl = document.getElementById('aiPanelMessages');
+    contextEl.innerHTML = '<strong>問題:</strong> ' + questionText +
+      '<br><strong>あなたの回答:</strong> ' + selectedText +
+      '<br><strong>正解:</strong> ' + correctText +
+      '<br><strong>結果:</strong> ' + (wasCorrect ? '正解' : '不正解');
+    messagesEl.innerHTML = '';
+    panel.classList.add('open');
+    overlay.classList.add('open');
+    var input = document.getElementById('aiPanelQuestion');
+    setTimeout(function() { input.focus(); }, 350);
+    window._aiContext = '問題: ' + questionText + ' / あなたの回答: ' + selectedText +
+      ' / 正解: ' + correctText + ' / 結果: ' + (wasCorrect ? '正解' : '不正解');
+  }
+
+  document.getElementById('aiPanelClose').addEventListener('click', function() {
+    document.getElementById('aiChatPanel').classList.remove('open');
+    document.getElementById('aiOverlay').classList.remove('open');
+  });
+  document.getElementById('aiOverlay').addEventListener('click', function() {
+    document.getElementById('aiChatPanel').classList.remove('open');
+    document.getElementById('aiOverlay').classList.remove('open');
+  });
+
+  document.getElementById('aiPanelForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var input = document.getElementById('aiPanelQuestion');
+    var q = input.value.trim();
+    if (!q) return;
+
+    var messagesEl = document.getElementById('aiPanelMessages');
+    var sendBtn = document.getElementById('aiPanelSend');
+
+    var userMsg = document.createElement('div');
+    userMsg.className = 'ai-msg user';
+    userMsg.textContent = q;
+    messagesEl.appendChild(userMsg);
+
+    input.value = '';
+    sendBtn.disabled = true;
+
+    var loadingMsg = document.createElement('div');
+    loadingMsg.className = 'ai-msg assistant loading';
+    loadingMsg.textContent = '回答を生成中...';
+    messagesEl.appendChild(loadingMsg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    fetch('/.netlify/functions/ai-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q, context: window._aiContext || '' })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      loadingMsg.classList.remove('loading');
+      loadingMsg.textContent = data.answer || '回答を取得できませんでした。';
+      sendBtn.disabled = false;
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    })
+    .catch(function() {
+      loadingMsg.classList.remove('loading');
+      loadingMsg.textContent = 'エラーが発生しました。もう一度お試しください。';
+      sendBtn.disabled = false;
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    });
+  });
 </script>
 </body>
 </html>

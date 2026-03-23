@@ -646,6 +646,26 @@ function buildQuestionStep(step) {
       inlineExplanation.textContent = `\u4e0d\u6b63\u89e3\u3067\u3059\u3002 ${hint}`;
     }
 
+    // AIに質問ボタンを追加
+    if (!actionRow.querySelector(".btn-ask-ai")) {
+      const selectedChoice = step.choices[selectedIndex] || "";
+      const correctChoice = step.choices[Number(step.answer)] || "";
+      const aiBtn = document.createElement("button");
+      aiBtn.type = "button";
+      aiBtn.className = "btn-ask-ai";
+      aiBtn.textContent = "🤖 AIに質問";
+      aiBtn.addEventListener("click", () => {
+        openAiPanel({
+          question: step.question || "",
+          selected: selectedChoice,
+          correct: correctChoice,
+          isCorrect,
+          explanation: isCorrect ? explanation : hint,
+        });
+      });
+      actionRow.appendChild(aiBtn);
+    }
+
     setFeedback("");
     saveProgress();
   });
@@ -1036,6 +1056,88 @@ async function init() {
 
 init();
 
+// ── AI Chat Panel ──
+(function () {
+  const panel = document.getElementById("aiChatPanel");
+  const overlay = document.getElementById("aiOverlay");
+  const closeBtn = document.getElementById("aiPanelClose");
+  const contextEl = document.getElementById("aiPanelContext");
+  const messagesEl = document.getElementById("aiPanelMessages");
+  const formEl = document.getElementById("aiPanelForm");
+  const questionInput = document.getElementById("aiPanelQuestion");
+  const sendBtn = document.getElementById("aiPanelSend");
+  if (!panel) return;
+
+  let currentContext = "";
+
+  function openPanel(ctx) {
+    currentContext = ctx || "";
+    contextEl.innerHTML = ctx || "";
+    messagesEl.innerHTML = "";
+    panel.classList.add("open");
+    overlay.classList.add("open");
+    setTimeout(() => questionInput.focus(), 350);
+  }
+
+  function closePanel() {
+    panel.classList.remove("open");
+    overlay.classList.remove("open");
+  }
+
+  closeBtn.addEventListener("click", closePanel);
+  overlay.addEventListener("click", closePanel);
+
+  formEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const q = questionInput.value.trim();
+    if (!q) return;
+
+    const userMsg = document.createElement("div");
+    userMsg.className = "ai-msg user";
+    userMsg.textContent = q;
+    messagesEl.appendChild(userMsg);
+
+    questionInput.value = "";
+    sendBtn.disabled = true;
+
+    const loadingMsg = document.createElement("div");
+    loadingMsg.className = "ai-msg assistant loading";
+    loadingMsg.textContent = "回答を生成中...";
+    messagesEl.appendChild(loadingMsg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    try {
+      const res = await fetch("/.netlify/functions/ai-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: q,
+          context: currentContext,
+        }),
+      });
+      const data = await res.json();
+      loadingMsg.classList.remove("loading");
+      loadingMsg.textContent = data.answer || "回答を取得できませんでした。";
+    } catch {
+      loadingMsg.classList.remove("loading");
+      loadingMsg.textContent = "エラーが発生しました。もう一度お試しください。";
+    }
+
+    sendBtn.disabled = false;
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  });
+
+  window.openAiPanel = function (info) {
+    const ctx = info
+      ? `<strong>問題:</strong> ${info.question}<br><strong>あなたの回答:</strong> ${info.selected}<br><strong>正解:</strong> ${info.correct}<br><strong>結果:</strong> ${info.isCorrect ? "正解" : "不正解"}`
+      : "";
+    const contextText = info
+      ? `問題: ${info.question} / あなたの回答: ${info.selected} / 正解: ${info.correct} / 結果: ${info.isCorrect ? "正解" : "不正解"}`
+      : "NEXELIA 学習ページ";
+    currentContext = contextText;
+    openPanel(ctx);
+  };
+})();
 
 
 
