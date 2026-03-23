@@ -215,15 +215,6 @@ footer {
   footer { padding: 24px 20px; }
 }
 </style>
-<script>
-// ログイン確認（ページ読み込み時）
-(function() {
-  const isLoggedIn = localStorage.getItem('nexeliaLoggedIn') === 'true';
-  if (!isLoggedIn) {
-    window.location.href = 'login.html';
-  }
-})();
-</script>
 </head>
 <body>
 

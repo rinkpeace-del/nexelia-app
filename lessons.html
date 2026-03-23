@@ -57,36 +57,6 @@
       line-height: 1;
     }
 
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .username-display {
-      color: var(--ink-2);
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .logout-button {
-      padding: 8px 18px;
-      border-radius: 8px;
-      border: 1.5px solid var(--line);
-      background: white;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink-3);
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .logout-button:hover {
-      border-color: #aaa;
-      color: var(--ink);
-      background: #F5F5F5;
-    }
 
     .lessons-page {
       max-width: 1000px;
@@ -364,10 +334,6 @@
   <header class="site-header">
     <div class="topbar">
       <a href="index.html" class="logo">NEXELIA</a>
-      <div class="user-info">
-        <span id="username-display" class="username-display"></span>
-        <button id="logoutBtn" class="logout-button">ログアウト</button>
-      </div>
     </div>
   </header>
 
@@ -390,8 +356,6 @@
   </main>
 
   <script>
-    const progressMap = JSON.parse(localStorage.getItem("nexeliaLessonProgress") || "{}");
-
     const units = [
       {
         label: "UNIT 1",
@@ -623,10 +587,6 @@
     const CHECK_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"/></svg>`;
 
     function createLessonCard(lesson, unitLabel) {
-      const progress = clamp(progressMap[lesson.id]);
-      const isComplete = progress >= 100;
-      const isInProgress = progress > 0 && progress < 100;
-
       // Unit 5以降かどうかを判定
       const unitMatch = unitLabel.match(/UNIT (\d+)/);
       const unitNum = unitMatch ? parseInt(unitMatch[1]) : 0;
@@ -635,12 +595,12 @@
       const card = document.createElement("article");
       card.className = "lesson-card";
 
-      const iconClass = isComplete ? "complete" : "default";
-      const iconContent = isComplete ? CHECK_SVG : `<span class="dot-inner"></span>`;
+      const iconClass = "default";
+      const iconContent = `<span class="dot-inner"></span>`;
 
-      const statusClass = isComplete ? "complete" : isInProgress ? "inprogress" : "none";
-      const statusLabel = isDisabled ? "準備中" : isComplete ? "完了" : isInProgress ? "学習中" : "未学習";
-      const barWidth = String(isComplete ? 100 : isInProgress ? progress : 0);
+      const statusClass = "none";
+      const statusLabel = isDisabled ? "準備中" : "未学習";
+      const barWidth = "0";
 
       card.innerHTML = `
         <div class="icon-dot ${iconClass}" aria-hidden="true">${iconContent}</div>
@@ -681,85 +641,41 @@
         }
       });
 
-      return { card, isComplete };
+      return { card };
     }
 
-    let totalLessons = 0;
-    let completedLessons = 0;
+    const totalLessons = units.reduce((sum, unit) => sum + unit.lessons.length, 0);
 
     units.forEach((unit) => {
       const section = document.createElement("section");
       const grid = document.createElement("div");
       grid.className = "lesson-grid";
 
-      let unitComplete = 0;
       const unitTotal = unit.lessons.length;
 
       unit.lessons.forEach((lesson) => {
-        const { card, isComplete } = createLessonCard(lesson, unit.label);
+        const { card } = createLessonCard(lesson, unit.label);
         grid.appendChild(card);
-        totalLessons += 1;
-        if (isComplete) {
-          completedLessons += 1;
-          unitComplete += 1;
-        }
       });
 
-      const unitPercent = unitTotal ? Math.round((unitComplete / unitTotal) * 100) : 0;
       const head = document.createElement("header");
       head.className = "unit-head";
       head.innerHTML = `
         <span class="unit-label">${unit.label}</span>
         <h2 class="unit-title">${unit.title}</h2>
-        <div class="unit-mini" aria-hidden="true"><div class="progress-fill" style="width:${unitPercent}%"></div></div>
-        <span class="unit-count">${unitComplete} / ${unitTotal}</span>
+        <div class="unit-mini" aria-hidden="true"><div class="progress-fill" style="width:0%"></div></div>
+        <span class="unit-count">0 / ${unitTotal}</span>
       `;
 
       section.append(head, grid);
       unitsContainer.appendChild(section);
     });
 
-    const overallPercent = totalLessons ? Math.round((completedLessons / totalLessons) * 100) : 0;
-    document.getElementById("overallFill").style.width = `${overallPercent}%`;
-    document.getElementById("overallPercent").textContent = `${overallPercent}%`;
-    document.getElementById("overallText").textContent = `${completedLessons} / ${totalLessons} レッスン完了`;
-
-    // ==================== ログイン機能 ====================
-    // ページ読み込み時にログイン確認
-    function checkLoginStatus() {
-      const isLoggedIn = localStorage.getItem('nexeliaLoggedIn') === 'true';
-      if (!isLoggedIn) {
-        // ログインしていない場合はlogin.htmlにリダイレクト
-        window.location.href = 'login.html';
-        return;
-      }
-
-      // ユーザー情報を表示
-      try {
-        const userData = JSON.parse(localStorage.getItem('nexeliaUser') || '{}');
-        const usernameDisplay = document.getElementById('username-display');
-        if (usernameDisplay && userData.username) {
-          usernameDisplay.textContent = `ユーザー: ${userData.username}`;
-        }
-      } catch (_) {}
-    }
-
-    // ログアウト処理
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-      if (confirm('ログアウトしますか？')) {
-        localStorage.removeItem('nexeliaLoggedIn');
-        localStorage.removeItem('nexeliaUser');
-        window.location.href = 'login.html';
-      }
-    });
-
-    // ページ読み込み時にログイン確認を実行
-    window.addEventListener('load', checkLoginStatus);
-    // ページ表示時にもチェック（ブラウザの戻るボタン対策）
-    window.addEventListener('pageshow', checkLoginStatus);
+    document.getElementById("overallFill").style.width = "0%";
+    document.getElementById("overallPercent").textContent = "0%";
+    document.getElementById("overallText").textContent = `0 / ${totalLessons} レッスン完了`;
 
   </script>
-  <script src="ai-chat.js"></script>
 <script src="beta-badge.js"></script>
 </body>
 </html>

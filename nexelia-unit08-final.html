@@ -432,7 +432,6 @@ renderDots(0);
 function getCurrentContent() {    const activeSlide = document.querySelector('.slide.active .slide-card, .slide.active .quiz-card');    if (!activeSlide) return '';    const clone = activeSlide.cloneNode(true);    const scripts = clone.querySelectorAll('script, style');    scripts.forEach(s => s.remove());    return clone.innerText || '';  }  function buildChatContext() {    const unitMatch = window.location.pathname.match(/nexelia-unit(d+)/);    const unitNum = unitMatch ? parseInt(unitMatch[1]) : 08;    return {      unit: `Unit ${unitNum}`,      topic: document.querySelector('.lesson-name')?.innerText || '英語表現',      currentSlide: {        type: cur < MATOME ? 'slide' : 'quiz',        index: cur,        content: getCurrentContent()      },      answered: answered,      progress: {        slides: `${cur + 1} / ${MATOME}`,        exercises: `${cur - MATOME + 1} / ${TOTAL - MATOME}`      }    };  }  window.nexeliaContext = {    buildChatContext: buildChatContext,    getCurrentContent: getCurrentContent  };
 
 </script>
-<script src="ai-chat.js"></script>
 <script src="beta-badge.js"></script>
 </body>
 </html>
