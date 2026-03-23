@@ -405,11 +405,13 @@
           // 新規ユーザーまたはユーザーが変更された場合、すべての進捗を削除
           const keysToRemove = [];
           Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('nexelia') && !key.startsWith('nexeliaLoggedIn') && !key.startsWith('nexeliaUser')) {
+            if (key.startsWith('nexelia') && key !== 'nexeliaLoggedIn' && key !== 'nexeliaUser') {
               keysToRemove.push(key);
             }
           });
+          console.log('削除対象キー:', keysToRemove);
           keysToRemove.forEach(key => localStorage.removeItem(key));
+          console.log('削除完了。残りのキー:', Object.keys(localStorage));
         }
 
         localStorage.setItem('nexeliaUser', JSON.stringify(userData));
