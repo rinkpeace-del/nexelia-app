@@ -205,6 +205,15 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 
   .quiz-card { padding: 22px 18px; }
 }
 </style>
+<script>
+// ログイン確認（ページ読み込み時）
+(function() {
+  const isLoggedIn = localStorage.getItem('nexeliaLoggedIn') === 'true';
+  if (!isLoggedIn) {
+    window.location.href = 'login.html';
+  }
+})();
+</script>
 </head>
 <body>
 
@@ -951,5 +960,6 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 
 </script>
 
 <script src="ai-chat.js"></script>
+<script src="beta-badge.js"></script>
 </body>
 </html>

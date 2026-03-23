@@ -215,6 +215,15 @@ footer {
   footer { padding: 24px 20px; }
 }
 </style>
+<script>
+// ログイン確認（ページ読み込み時）
+(function() {
+  const isLoggedIn = localStorage.getItem('nexeliaLoggedIn') === 'true';
+  if (!isLoggedIn) {
+    window.location.href = 'login.html';
+  }
+})();
+</script>
 </head>
 <body>
 
@@ -269,6 +278,7 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
+<script src="beta-badge.js"></script>
 </body>
 </html>
 

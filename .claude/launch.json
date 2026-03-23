@@ -2,9 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "static-server",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "5000", "."],
+      "name": "auth-server",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["auth-server.js"],
+      "port": 5001,
+      "autoPort": true
+    },
+    {
+      "name": "ai-proxy-server",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["ai-chat-proxy.js"],
       "port": 5000,
       "autoPort": true
     },

@@ -4,8 +4,12 @@
 
   var page = ((window.location.pathname || "").split("/").pop() || "").toLowerCase();
   var isUnitPage =
-    /^nexelia-unit\d+-final\.html?$/.test(page) ||
-    /^nexelia-unit\d+-final$/.test(page);
+    /^nexelia-unit\d+/.test(page) ||
+    /^nexelia-study\d+/.test(page) ||
+    /^nexelia-exercise\d+/.test(page) ||
+    /^slide\d+/.test(page) ||
+    /^learning/.test(page) ||
+    /^exercise/.test(page);
   if (!isUnitPage) return;
 
   var WIDTH_KEY = "nexeliaAiPanelWidth";
@@ -41,14 +45,16 @@
   var style = document.createElement("style");
   style.textContent = [
     "html,body{overflow-x:hidden}",
-    "body{transition:width .22s ease}",
-    "html.nx-ai-open body{width:calc(100vw - var(--nx-ai-panel-width, 420px))}",
+    "body{transition:padding-right .22s ease}",
+    "html.nx-ai-open body{padding-left:var(--nx-ai-panel-width, 420px) !important;box-sizing:border-box}",
     ".nx-ai-launcher{position:fixed;right:18px;bottom:18px;z-index:10001;border:0;border-radius:999px;background:#1a56db;color:#fff;font:700 14px 'Noto Sans JP',sans-serif;padding:12px 16px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.18);transition:opacity .15s ease}",
     ".nx-ai-launcher:hover{background:#1446b8}",
     "html.nx-ai-open .nx-ai-launcher{opacity:0;pointer-events:none}",
-    ".nx-ai-panel{position:fixed;top:0;right:0;bottom:0;height:100vh;width:var(--nx-ai-panel-width, 420px);z-index:10000;background:#fff;border-left:1px solid #e8e8e8;box-shadow:-8px 0 24px rgba(0,0,0,.12);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease}",
-    ".nx-ai-panel.is-open{transform:translateX(0)}",
-    ".nx-ai-resizer{position:absolute;left:-4px;top:0;bottom:0;width:8px;cursor:col-resize;background:transparent}",
+    "nav .nx-ai-launcher{position:static !important;box-shadow:none !important;border-radius:8px !important;padding:8px 16px !important;font-size:13px !important;flex-shrink:0}",
+    "nav .nx-ai-launcher.is-in-nav{display:inline-flex}",
+    ".nx-ai-panel{position:fixed;top:0;left:0;bottom:0;height:100vh;width:var(--nx-ai-panel-width, 420px);z-index:10000;background:#fff;border-right:1px solid #e8e8e8;box-shadow:none;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .22s ease}",
+    ".nx-ai-panel.is-open{transform:translateX(0);box-shadow:8px 0 24px rgba(0,0,0,.12)}",
+    ".nx-ai-resizer{position:absolute;right:-4px;top:0;bottom:0;width:8px;cursor:col-resize;background:transparent}",
     ".nx-ai-resizer:hover{background:rgba(26,86,219,.12)}",
     ".nx-ai-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #eee;min-height:60px}",
     ".nx-ai-title{font:700 14px 'Noto Sans JP',sans-serif;color:#111}",
@@ -83,11 +89,12 @@
   panel.innerHTML = [
     '<div class="nx-ai-resizer" title="幅を調整"></div>',
     '<div class="nx-ai-head">',
-    '  <div class="nx-ai-title">AIに質問</div>',
+    '  <div style="display:flex;align-items:center;gap:8px">',
+    '    <div class="nx-ai-title">AIに質問</div>',
+    '  </div>',
     '  <button class="nx-ai-close" type="button" aria-label="閉じる">&times;</button>',
     "</div>",
     '<div class="nx-ai-body">',
-    '  <p class="nx-ai-note">この画面内でAIが回答します。</p>',
     '  <div class="nx-ai-context" id="nxAiContext"></div>',
     '  <div class="nx-ai-messages" id="nxAiMessages">',
     '    <div class="nx-ai-empty" id="nxAiEmpty">ここにAIの回答が表示されます。</div>',
@@ -108,7 +115,26 @@
   launcher.setAttribute("aria-label", "AIに質問");
 
   document.body.appendChild(panel);
-  document.body.appendChild(launcher);
+
+  // ナビバーがあればそこに直接追加、なければbody右下に固定表示
+  var nav = document.querySelector('nav');
+  if (nav) {
+    launcher.style.position = 'static';
+    launcher.style.boxShadow = 'none';
+    launcher.style.borderRadius = '8px';
+    launcher.style.padding = '8px 16px';
+    launcher.style.fontSize = '13px';
+    launcher.style.flexShrink = '0';
+    var btnExit = nav.querySelector('.btn-exit, [href*="lessons"], [href*="index"]');
+    if (btnExit) {
+      btnExit.after(launcher);
+    } else {
+      nav.appendChild(launcher);
+    }
+  } else {
+    launcher.style.display = 'none';
+    document.body.appendChild(launcher);
+  }
 
   var closeBtn = panel.querySelector(".nx-ai-close");
   var input = panel.querySelector("#nxAiInput");
@@ -272,7 +298,7 @@
     var current = getComputedStyle(document.documentElement).getPropertyValue("--nx-ai-panel-width");
     var startWidth = parseInt(current, 10) || initialWidth;
     var onMove = function (ev) {
-      var delta = startX - ev.clientX;
+      var delta = ev.clientX - startX;
       var next = setPanelWidth(startWidth + delta);
       initialWidth = next;
     };

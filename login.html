@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン | NEXELIA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #5B7FFF 0%, #6B5B95 100%);
+      font-family: 'Noto Sans JP', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+
+    .login-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      gap: 0;
+    }
+
+    /* 左側：説明セクション */
+    .login-left {
+      flex: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 100px;
+      color: white;
+    }
+
+    .login-left h1 {
+      font-size: 52px;
+      font-weight: 700;
+      margin: 0 0 20px 0;
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+    }
+
+    .login-left p {
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 400px;
+      text-align: center;
+      opacity: 0.9;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .login-left .feature-list {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 400px;
+    }
+
+    .login-left .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 15px;
+    }
+
+    .login-left .feature-icon {
+      width: 30px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: bold;
+    }
+
+    /* 右側：ログインフォーム */
+    .login-right {
+      flex: 1;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+      overflow: hidden;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 20px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    /* スクロールバーのカスタマイズ */
+    .login-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .login-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .login-container::-webkit-scrollbar-thumb {
+      background: #D0D0D0;
+      border-radius: 3px;
+    }
+
+    .login-container::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .login-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1A1A1A;
+      margin: 0 0 10px 0;
+    }
+
+    .login-header p {
+      font-size: 14px;
+      color: #888;
+      margin: 0;
+    }
+
+    .form-group {
+      margin-bottom: 28px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #1A1A1A;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 15px 18px;
+      border: 1.5px solid #E8E8E8;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: 'Noto Sans JP', sans-serif;
+      transition: all 0.3s ease;
+      background: #FAFAFA;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #5B7FFF;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(91, 127, 255, 0.08);
+    }
+
+    .form-input::placeholder {
+      color: #AAA;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #5B7FFF 0%, #6B5B95 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .login-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(91, 127, 255, 0.35);
+    }
+
+    .login-button:active {
+      transform: translateY(0);
+    }
+
+    .login-button:disabled {
+      background: #CCC;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .error-message {
+      color: #D32F2F;
+      font-size: 14px;
+      margin-top: 8px;
+      display: none;
+      padding: 10px;
+      background: #FFEBEE;
+      border-radius: 4px;
+      border-left: 4px solid #D32F2F;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .login-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* レスポンシブデザイン */
+    @media (max-width: 768px) {
+      .login-wrapper {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .login-left {
+        padding: 40px 20px;
+        min-height: 300px;
+      }
+
+      .login-left h1 {
+        font-size: 36px;
+      }
+
+      .login-left p {
+        font-size: 16px;
+      }
+
+      .login-right {
+        padding: 40px 20px;
+        min-height: 500px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <!-- 左側：説明セクション -->
+    <div class="login-left">
+      <h1>NEXELIA</h1>
+      <p>短く学ぶ。すぐ解く。<br>中学生向け英語学習プラットフォーム</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">✓</div>
+          <div>短いレッスン（5～10分）</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">✓</div>
+          <div>すぐに練習問題で定着</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">✓</div>
+          <div>進捗が一目でわかる</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右側：ログインフォーム -->
+    <div class="login-right">
+      <div class="login-container">
+        <div class="login-header">
+          <h2>ログイン</h2>
+          <p>アカウントでログインしてください</p>
+        </div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="username">ユーザー名</label>
+            <input
+              type="text"
+              id="username"
+              class="form-input"
+              placeholder="ユーザー名を入力"
+              autocomplete="username"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">パスワード</label>
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="パスワードを入力"
+              autocomplete="current-password"
+              required
+            >
+            <div class="error-message" id="errorMessage"></div>
+          </div>
+
+          <button type="submit" class="login-button" id="loginButton">ログイン</button>
+        </form>
+
+        <div class="login-link">
+          アカウントをお持ちでないですか？ <a href="register.html">ユーザー登録</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ログインフォーム送信処理 */
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMessage');
+      const loginButton = document.getElementById('loginButton');
+
+      /* エラーメッセージをクリア */
+      errorMessage.classList.remove('show');
+      errorMessage.textContent = '';
+
+      /* 入力値の検証 */
+      if (!username || !password) {
+        errorMessage.textContent = 'ユーザー名とパスワードを入力してください';
+        errorMessage.classList.add('show');
+        return;
+      }
+
+      /* ボタンを無効化 */
+      loginButton.disabled = true;
+      loginButton.textContent = 'ログイン中...';
+
+      try {
+        /* 認証サーバーのAPIエンドポイントに送信 */
+        const apiUrl = 'http://localhost:5001/api/auth/login';
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username, password})
+        });
+
+        const data = await response.json();
+
+        /* ログイン失敗時の処理 */
+        if (!response.ok) {
+          errorMessage.textContent = data.error || 'ログインに失敗しました';
+          errorMessage.classList.add('show');
+          loginButton.disabled = false;
+          loginButton.textContent = 'ログイン';
+          document.getElementById('password').value = '';
+          return;
+        }
+
+        /* ログイン成功：ユーザーデータを保存 */
+        const userData = {
+          username: data.user.username,
+          userId: data.user.id,
+          loginTime: new Date().toISOString(),
+          sessionId: data.sessionId
+        };
+
+        // 新規ログイン時は進捗をリセット
+        const previousUser = localStorage.getItem('nexeliaUser');
+        let isNewUser = !previousUser;
+
+        if (previousUser) {
+          try {
+            const prev = JSON.parse(previousUser);
+            isNewUser = prev.userId !== data.user.id;
+          } catch (e) {
+            isNewUser = true;
+          }
+        }
+
+        if (isNewUser) {
+          // 新規ユーザーまたはユーザーが変更された場合、すべての進捗を削除
+          const keysToRemove = [];
+          Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('nexelia') && !key.startsWith('nexeliaLoggedIn') && !key.startsWith('nexeliaUser')) {
+              keysToRemove.push(key);
+            }
+          });
+          keysToRemove.forEach(key => localStorage.removeItem(key));
+        }
+
+        localStorage.setItem('nexeliaUser', JSON.stringify(userData));
+        localStorage.setItem('nexeliaLoggedIn', 'true');
+        window.location.href = 'lessons.html';
+      } catch (error) {
+        console.error('ログインエラー:', error);
+        errorMessage.textContent = 'ネットワークエラーが発生しました';
+        errorMessage.classList.add('show');
+        loginButton.disabled = false;
+        loginButton.textContent = 'ログイン';
+      }
+    });
+
+    /* ページロード時にログイン状態を確認 */
+    window.addEventListener('load', function() {
+      if (localStorage.getItem('nexeliaLoggedIn') === 'true') {
+        window.location.href = 'lessons.html';
+      }
+    });
+
+    /* パスワード入力でEnterキーを押した時の処理 */
+    document.getElementById('password').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,3 +3,6 @@
 
 # 機密情報を含むファイル（コミット禁止）
 .vscode/sftp.json
+.env
+.env.local
+.env.*

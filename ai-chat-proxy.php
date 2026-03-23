@@ -33,7 +33,7 @@ if ($prompt === '') {
 // 設定: ここに OpenAI の APIキー を直接貼り付けてください
 // 例: $apiKey = 'sk-proj-...';
 // =========================================================
-$apiKey = ''; 
+$apiKey = 'REMOVED'; 
 
 if ($apiKey === '') {
   $apiKey = getenv('OPENAI_API_KEY') ?: '';

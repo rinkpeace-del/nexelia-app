@@ -57,6 +57,37 @@
       line-height: 1;
     }
 
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .username-display {
+      color: var(--ink-2);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .logout-button {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1.5px solid var(--line);
+      background: white;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-3);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .logout-button:hover {
+      border-color: #aaa;
+      color: var(--ink);
+      background: #F5F5F5;
+    }
+
     .lessons-page {
       max-width: 1000px;
       margin: 0 auto;
@@ -212,6 +243,18 @@
       outline-offset: 2px;
     }
 
+    /* Unit 5以降は無効化状態 */
+    .lesson-card.is-disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .lesson-card.is-disabled:hover {
+      transform: none;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+
     .icon-dot {
       width: 28px;
       height: 28px;
@@ -321,6 +364,10 @@
   <header class="site-header">
     <div class="topbar">
       <a href="index.html" class="logo">NEXELIA</a>
+      <div class="user-info">
+        <span id="username-display" class="username-display"></span>
+        <button id="logoutBtn" class="logout-button">ログアウト</button>
+      </div>
     </div>
   </header>
 
@@ -575,10 +622,15 @@
     const unitsContainer = document.getElementById("unitsContainer");
     const CHECK_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"/></svg>`;
 
-    function createLessonCard(lesson) {
+    function createLessonCard(lesson, unitLabel) {
       const progress = clamp(progressMap[lesson.id]);
       const isComplete = progress >= 100;
       const isInProgress = progress > 0 && progress < 100;
+
+      // Unit 5以降かどうかを判定
+      const unitMatch = unitLabel.match(/UNIT (\d+)/);
+      const unitNum = unitMatch ? parseInt(unitMatch[1]) : 0;
+      const isDisabled = unitNum >= 5;
 
       const card = document.createElement("article");
       card.className = "lesson-card";
@@ -587,7 +639,7 @@
       const iconContent = isComplete ? CHECK_SVG : `<span class="dot-inner"></span>`;
 
       const statusClass = isComplete ? "complete" : isInProgress ? "inprogress" : "none";
-      const statusLabel = isComplete ? "完了" : isInProgress ? "学習中" : "未学習";
+      const statusLabel = isDisabled ? "準備中" : isComplete ? "完了" : isInProgress ? "学習中" : "未学習";
       const barWidth = String(isComplete ? 100 : isInProgress ? progress : 0);
 
       card.innerHTML = `
@@ -600,11 +652,18 @@
       `;
 
       card.classList.add("is-clickable");
+      if (isDisabled) {
+        card.classList.add("is-disabled");
+      }
       card.setAttribute("role", "link");
-      card.tabIndex = 0;
-      card.setAttribute("aria-label", `${lesson.title} を開く`);
+      card.tabIndex = isDisabled ? -1 : 0;
+      card.setAttribute("aria-label", `${lesson.title}${isDisabled ? " (準備中)" : " を開く"}`);
 
       const goToLesson = () => {
+        if (isDisabled) {
+          // Unit 5以降はクリック不可
+          return;
+        }
         if (!lesson.href || lesson.href === "#") return;
         try {
           localStorage.setItem("nexeliaLastLesson", lesson.id);
@@ -616,7 +675,9 @@
       card.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          goToLesson();
+          if (!isDisabled) {
+            goToLesson();
+          }
         }
       });
 
@@ -635,7 +696,7 @@
       const unitTotal = unit.lessons.length;
 
       unit.lessons.forEach((lesson) => {
-        const { card, isComplete } = createLessonCard(lesson);
+        const { card, isComplete } = createLessonCard(lesson, unit.label);
         grid.appendChild(card);
         totalLessons += 1;
         if (isComplete) {
@@ -663,8 +724,43 @@
     document.getElementById("overallPercent").textContent = `${overallPercent}%`;
     document.getElementById("overallText").textContent = `${completedLessons} / ${totalLessons} レッスン完了`;
 
+    // ==================== ログイン機能 ====================
+    // ページ読み込み時にログイン確認
+    function checkLoginStatus() {
+      const isLoggedIn = localStorage.getItem('nexeliaLoggedIn') === 'true';
+      if (!isLoggedIn) {
+        // ログインしていない場合はlogin.htmlにリダイレクト
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // ユーザー情報を表示
+      try {
+        const userData = JSON.parse(localStorage.getItem('nexeliaUser') || '{}');
+        const usernameDisplay = document.getElementById('username-display');
+        if (usernameDisplay && userData.username) {
+          usernameDisplay.textContent = `ユーザー: ${userData.username}`;
+        }
+      } catch (_) {}
+    }
+
+    // ログアウト処理
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      if (confirm('ログアウトしますか？')) {
+        localStorage.removeItem('nexeliaLoggedIn');
+        localStorage.removeItem('nexeliaUser');
+        window.location.href = 'login.html';
+      }
+    });
+
+    // ページ読み込み時にログイン確認を実行
+    window.addEventListener('load', checkLoginStatus);
+    // ページ表示時にもチェック（ブラウザの戻るボタン対策）
+    window.addEventListener('pageshow', checkLoginStatus);
+
   </script>
   <script src="ai-chat.js"></script>
+<script src="beta-badge.js"></script>
 </body>
 </html>
 
