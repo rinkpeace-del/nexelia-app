@@ -533,7 +533,22 @@ function buildSlideStep(step) {
   text.className = "step-text";
   text.textContent = step.text || "";
 
-  wrap.append(title, text);
+  const aiBtn = document.createElement("button");
+  aiBtn.type = "button";
+  aiBtn.className = "btn-ask-ai";
+  aiBtn.textContent = "🤖 AIに質問";
+  aiBtn.style.marginTop = "16px";
+  aiBtn.addEventListener("click", () => {
+    if (typeof window.openAiPanel === "function") {
+      window.openAiPanel({
+        slideTitle: step.title || "",
+        lessonTitle: lessonTitleEl ? lessonTitleEl.textContent : "",
+        isSlide: true,
+      });
+    }
+  });
+
+  wrap.append(title, text, aiBtn);
   return wrap;
 }
 
@@ -1128,12 +1143,17 @@ init();
   });
 
   window.openAiPanel = function (info) {
-    const ctx = info
-      ? `<strong>問題:</strong> ${info.question}<br><strong>あなたの回答:</strong> ${info.selected}<br><strong>正解:</strong> ${info.correct}<br><strong>結果:</strong> ${info.isCorrect ? "正解" : "不正解"}`
-      : "";
-    const contextText = info
-      ? `問題: ${info.question} / あなたの回答: ${info.selected} / 正解: ${info.correct} / 結果: ${info.isCorrect ? "正解" : "不正解"}`
-      : "NEXELIA 学習ページ";
+    let ctx, contextText;
+    if (info && info.isSlide) {
+      ctx = `<strong>レッスン:</strong> ${info.lessonTitle}<br><strong>スライド:</strong> ${info.slideTitle}`;
+      contextText = `レッスン: ${info.lessonTitle} / スライド: ${info.slideTitle}`;
+    } else if (info) {
+      ctx = `<strong>問題:</strong> ${info.question}<br><strong>あなたの回答:</strong> ${info.selected}<br><strong>正解:</strong> ${info.correct}<br><strong>結果:</strong> ${info.isCorrect ? "正解" : "不正解"}`;
+      contextText = `問題: ${info.question} / あなたの回答: ${info.selected} / 正解: ${info.correct} / 結果: ${info.isCorrect ? "正解" : "不正解"}`;
+    } else {
+      ctx = "";
+      contextText = "NEXELIA 学習ページ";
+    }
     currentContext = contextText;
     openPanel(ctx);
   };
