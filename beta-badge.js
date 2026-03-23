@@ -8,8 +8,9 @@
       // ロゴのフォントサイズを継承
       var computedStyle = window.getComputedStyle(logo);
       var fontSize = computedStyle.fontSize;
-      var padding = logo.classList.contains('hero-name') ? '4px 10px' : '2px 6px';
-      logo.innerHTML = 'NEXELIA <span style="background:#FF6B35;color:#fff;font-size:' + fontSize + ';font-weight:700;padding:' + padding + ';border-radius:999px;margin-left:8px;vertical-align:middle;letter-spacing:0.05em">β</span>';
+      var padding = '2px';
+      var minWidth = 'calc(' + fontSize + ' + 4px)';
+      logo.innerHTML = 'NEXELIA <span style="background:#FF6B35;color:#fff;font-size:' + fontSize + ';font-weight:700;padding:' + padding + ';border-radius:50%;margin-left:8px;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;width:' + minWidth + ';height:' + minWidth + '">β</span>';
     }
   });
 })();
