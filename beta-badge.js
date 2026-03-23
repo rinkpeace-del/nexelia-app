@@ -10,8 +10,9 @@
       var fontSize = parseFloat(computedStyle.fontSize);
       var badgeFontSize = (fontSize * 0.75) + 'px';
       var lineHeight = computedStyle.lineHeight;
-      var size = lineHeight === 'normal' ? computedStyle.fontSize : lineHeight;
-      logo.innerHTML = 'NEXELIA <span style="background:#FF6B35;color:#fff;font-size:' + badgeFontSize + ';font-weight:700;border-radius:50%;margin-left:8px;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;width:' + size + ';height:' + size + ';line-height:' + size + '">β</span>';
+      var baseSize = lineHeight === 'normal' ? computedStyle.fontSize : lineHeight;
+      var badgeSize = 'calc(' + baseSize + ' * 0.85)';
+      logo.innerHTML = 'NEXELIA <span style="background:#FF6B35;color:#fff;font-size:' + badgeFontSize + ';font-weight:700;border-radius:50%;margin-left:8px;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;width:' + badgeSize + ';height:' + badgeSize + ';line-height:' + badgeSize + '">β</span>';
     }
   });
 })();
