@@ -22,6 +22,7 @@ const progressRowEl = document.querySelector(".progress-row");
 const fullscreenToggleEl = document.getElementById("fullscreenToggle");
 const slideProgressEl = document.getElementById("slideProgress");
 const slideProgressFillEl = document.getElementById("slideProgressFill");
+const slideAiBtnEl = document.getElementById("slideAiBtn");
 
 let lesson = null;
 let steps = [];
@@ -533,22 +534,7 @@ function buildSlideStep(step) {
   text.className = "step-text";
   text.textContent = step.text || "";
 
-  const aiBtn = document.createElement("button");
-  aiBtn.type = "button";
-  aiBtn.className = "btn-ask-ai";
-  aiBtn.textContent = "🤖 AIに質問";
-  aiBtn.style.marginTop = "16px";
-  aiBtn.addEventListener("click", () => {
-    if (typeof window.openAiPanel === "function") {
-      window.openAiPanel({
-        slideTitle: step.title || "",
-        lessonTitle: lessonTitleEl ? lessonTitleEl.textContent : "",
-        isSlide: true,
-      });
-    }
-  });
-
-  wrap.append(title, text, aiBtn);
+  wrap.append(title, text);
   return wrap;
 }
 
@@ -892,6 +878,20 @@ function renderStep() {
   placeNavRowForStep(step);
   playSlideTransition(isSlideStep);
   navDirection = 0;
+
+  // スライドのときはナビバーのAIボタンを表示
+  if (slideAiBtnEl) {
+    slideAiBtnEl.hidden = !isSlideStep;
+    slideAiBtnEl.onclick = isSlideStep ? () => {
+      if (typeof window.openAiPanel === "function") {
+        window.openAiPanel({
+          slideTitle: step.title || "",
+          lessonTitle: lessonTitleEl ? lessonTitleEl.textContent : "",
+          isSlide: true,
+        });
+      }
+    } : null;
+  }
   saveProgress();
 }
 
