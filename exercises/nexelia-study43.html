@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 12 レッスン2</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* 意味カード */
+.meaning-card { border-radius: 14px; padding: 20px 24px; display: flex; gap: 20px; align-items: center; background: var(--blue-light); border: 1px solid #B3E5FC; }
+.meaning-word { font-size: 22px; font-weight: 700; color: var(--blue); min-width: 72px; white-space: nowrap; }
+.meaning-body { display: flex; flex-direction: column; gap: 5px; }
+.meaning-main { font-size: 17px; font-weight: 700; }
+.meaning-note { font-size: 13px; color: var(--sub); font-weight: 500; }
+
+/* the 強調バー（warn 色で必須感を強化） */
+.the-bar { background: var(--warn); color: white; border-radius: 12px; padding: 14px 22px; font-size: 15px; font-weight: 700; text-align: center; line-height: 1.7; }
+.the-bar .the-rule { font-size: 17px; font-weight: 700; letter-spacing: 0.02em; }
+.the-bar .the-sub { font-size: 12px; font-weight: 500; opacity: 0.9; margin-top: 4px; }
+
+/* 公式ボックス */
+.formula-box { border-radius: 14px; padding: 20px 22px; display: flex; align-items: flex-start; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.f-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); line-height: 1.4; }
+.f-part.key { background: var(--blue); color: white; border-color: var(--blue); }
+.f-part.warn-part { background: var(--warn); color: white; border-color: var(--warn); font-size: 16px; padding: 11px 18px; }
+.f-plus { font-size: 18px; font-weight: 700; color: var(--blue); margin-top: 10px; }
+.f-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--sub); }
+.f-label.warn-label { color: var(--warn); font-weight: 700; font-size: 12px; }
+
+/* 音節判断 */
+.syllable-rule { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.syl-card { border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.syl-card.short { background: var(--blue-light); border: 1.5px solid #B3E5FC; }
+.syl-card.long  { background: #F3F3F3; border: 1.5px solid var(--border); }
+.syl-label { font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.04em; }
+.syl-label.lg { color: var(--sub); }
+.syl-rule { font-size: 15px; font-weight: 700; }
+.syl-ex   { font-size: 12px; color: var(--sub); font-weight: 600; line-height: 1.6; }
+
+/* 接続タグ（比較級との対応） */
+.link-tag { display: inline-flex; align-items: center; gap: 6px; background: #FFF3E0; border: 1.5px solid #FFCC80; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: #BF360C; }
+
+/* ルールカード */
+.rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rule-card { border-radius: 14px; padding: 18px 16px; border: 1.5px solid #B3E5FC; background: var(--blue-light); display: flex; flex-direction: column; gap: 8px; }
+.rule-head { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.04em; }
+.rule-body { font-size: 14px; font-weight: 700; line-height: 1.5; }
+.rule-ex { font-size: 13px; color: var(--sub); font-weight: 600; font-style: italic; line-height: 1.6; }
+
+/* 変化プロセス表示 */
+.process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.process-card { border-radius: 14px; padding: 18px 16px; border: 1.5px solid #B3E5FC; background: var(--blue-light); display: flex; flex-direction: column; gap: 10px; }
+.process-head { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.04em; }
+.process-step { display: flex; flex-direction: column; gap: 4px; }
+.process-row { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+.process-arrow { color: var(--blue); font-size: 13px; }
+.process-highlight { color: var(--warn); font-weight: 700; }
+.process-result { font-size: 16px; font-weight: 700; color: var(--blue); }
+.process-ex { font-size: 12px; color: var(--sub); font-weight: 600; font-style: italic; margin-top: 2px; }
+
+/* 注目ボックス */
+.notice-box { background: #FFF3E0; border: 2.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 14px; font-weight: 700; color: #7B3100; line-height: 1.8; }
+.notice-box .notice-title { font-size: 14px; color: var(--warn); margin-bottom: 6px; }
+
+/* 比較表 */
+.compare-table { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.compare-col { border-radius: 14px; padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; }
+.compare-col.sup-col  { background: var(--blue-light); border: 1.5px solid #B3E5FC; }
+.compare-col.comp-col { background: #F3F3F3; border: 1.5px solid var(--border); }
+.compare-head { font-size: 16px; font-weight: 700; text-align: center; padding-bottom: 8px; border-bottom: 1.5px solid rgba(0,0,0,0.06); }
+.sup-col .compare-head  { color: var(--blue); }
+.comp-col .compare-head { color: var(--sub); }
+.compare-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-bottom: 4px; }
+.badge-in { background: var(--blue-light); color: var(--blue); }
+.badge-of { background: #F3F3F3; color: var(--sub); border: 1px solid var(--border); }
+.compare-desc { font-size: 13px; font-weight: 700; line-height: 1.5; color: var(--text); }
+.compare-ex { font-size: 13px; color: var(--sub); font-weight: 600; font-style: italic; line-height: 1.7; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 11px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); }
+
+/* ミニクイズ */
+.mini-quiz { background: var(--bg); border: 1.5px dashed var(--blue); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.mq-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); }
+.mq-questions { display: flex; flex-direction: column; gap: 8px; }
+.mq-q { font-size: 15px; font-weight: 700; line-height: 1.5; }
+.mq-q-small { font-size: 14px; font-weight: 700; color: var(--text); }
+.mq-reveal { padding: 9px 20px; border-radius: 8px; border: 1.5px solid var(--blue); background: white; font-size: 14px; font-weight: 700; color: var(--blue); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: background 0.15s; align-self: flex-start; }
+.mq-reveal:hover { background: var(--blue-light); }
+.mq-answer { display: none; padding: 10px 16px; background: var(--green-light); border-radius: 8px; font-size: 14px; font-weight: 700; color: var(--green); line-height: 1.7; }
+.mq-answer.show { display: block; }
+
+/* まとめフロー */
+.flow-box { background: var(--blue-light); border-radius: 14px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }
+.flow-title { font-size: 13px; font-weight: 700; color: var(--blue); letter-spacing: 0.04em; }
+.flow-step { display: flex; align-items: flex-start; gap: 12px; }
+.flow-num { width: 26px; height: 26px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.flow-num.warn-num { background: var(--warn); }
+.flow-text { font-size: 15px; font-weight: 700; line-height: 1.6; }
+.flow-branch { margin-left: 38px; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.9; }
+.flow-branch span { color: var(--blue); font-weight: 700; }
+.flow-divider { border: none; border-top: 1.5px dashed #B3E5FC; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: #FFF3E0; }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+body.embedded nav { display: none; }
+body.embedded main { padding: 20px 16px; }
+body.embedded .btn-nav { display: none; }
+body.embedded .bottom-nav { display: none; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 18px; }
+  .rule-grid, .process-grid, .syllable-rule, .compare-table { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 12 · 最上級（-est / most）</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <a href="../learning.html?lesson=lesson43" class="btn-exit">← スライドへ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：最上級とは？ the は必須！ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 12 · レッスン2 · スライド 1</div>
+      <div class="question-title"><span class="accent">最上級</span>で「グループの中で一番〜だ」を言おう！</div>
+
+      <div class="meaning-card">
+        <div class="meaning-word">最上級</div>
+        <div class="meaning-body">
+          <div class="meaning-main">「〜の中で一番〜だ」</div>
+          <div class="meaning-note">3つ以上のものを比べて、一番を選ぶときに使う</div>
+        </div>
+      </div>
+
+      <div class="the-bar">
+        <div class="the-rule">最上級 ＝ 必ず <span style="font-size:22px;">the</span> をつける（ないと不自然！）</div>
+        <div class="the-sub">⚠️ the がないと「どの集団の中での一番か」が伝わらない → 絶対に忘れない！</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="hl">The</span> biggest bag in the shop.</div>
+          <div class="jp">その店の中で一番大きいバッグ。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">This bag is <span class="hl">the most expensive</span> of all.</div>
+          <div class="jp">このバッグはすべての中で一番高い。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 「比較級は than」「最上級は the ＋ in / of」とセットで覚えよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：短い形容詞 -est（基本 + e終わり） -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 12 · レッスン2 · スライド 2</div>
+      <div class="question-title">1〜2音節の形容詞は<span class="accent">-est</span> をつける！</div>
+
+      <div class="syllable-rule">
+        <div class="syl-card short">
+          <div class="syl-label">📘 短い（1〜2音節）→ -est</div>
+          <div class="syl-rule">tall / fast / nice</div>
+          <div class="syl-ex">→ -er を使うグループと同じ！<br>比較級：-er　最上級：-est</div>
+        </div>
+        <div class="syl-card long">
+          <div class="syl-label lg">📗 長い（3音節以上）→ most</div>
+          <div class="syl-rule">beautiful / exciting</div>
+          <div class="syl-ex">→ スライド4で学ぶ！</div>
+        </div>
+      </div>
+
+      <div class="rule-grid">
+        <div class="rule-card">
+          <div class="rule-head">🔵 基本：そのまま + est</div>
+          <div class="rule-body">tall → <span style="color:var(--blue)">tallest</span></div>
+          <div class="rule-ex">fast → fastest<br>old → oldest</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-head">🔵 e で終わる：+ st のみ</div>
+          <div class="rule-body">large → <span style="color:var(--blue)">largest</span></div>
+          <div class="rule-ex">nice → nicest<br>late → latest</div>
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mq-label">✏️ ミニチェック（2問）</div>
+        <div class="mq-questions">
+          <div class="mq-q-small">① 「nice」の最上級は？　② 「old」の最上級は？（the も！）</div>
+        </div>
+        <button class="mq-reveal" onclick="revealAnswer('a1')">答えを見る</button>
+        <div class="mq-answer" id="a1">
+          ✅ ① the nicest（e で終わる → + st のみ）<br>
+          ✅ ② the oldest（そのまま + est）
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：スペル変化（変化プロセスを見せる） -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 12 · レッスン2 · スライド 3</div>
+      <div class="question-title">ここもミスる！<span class="accent">最上級のスペル変化</span></div>
+
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="process-head">⚠️ 子音字を重ねて + est</div>
+          <div class="process-step">
+            <div class="process-row">
+              big
+              <span class="process-arrow">→</span>
+              big<span class="process-highlight">g</span>
+              <span class="process-arrow">+</span>
+              est
+              <span class="process-arrow">→</span>
+              <span class="process-result">biggest</span>
+            </div>
+            <div class="process-row">
+              hot
+              <span class="process-arrow">→</span>
+              ho<span class="process-highlight">tt</span>
+              <span class="process-arrow">+</span>
+              est
+              <span class="process-arrow">→</span>
+              <span class="process-result">hottest</span>
+            </div>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-head">⚠️ y → i にして + est</div>
+          <div class="process-step">
+            <div class="process-row">
+              easy
+              <span class="process-arrow">→</span>
+              eas<span class="process-highlight">i</span>
+              <span class="process-arrow">+</span>
+              est
+              <span class="process-arrow">→</span>
+              <span class="process-result">easiest</span>
+            </div>
+            <div class="process-row">
+              happy
+              <span class="process-arrow">→</span>
+              happ<span class="process-highlight">i</span>
+              <span class="process-arrow">+</span>
+              est
+              <span class="process-arrow">→</span>
+              <span class="process-result">happiest</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-box">
+        <div class="notice-title">💡 比較級と最上級のスペル変化は同じルール！</div>
+        big：big<strong>g</strong>er（比較級）　→　big<strong>g</strong>est（最上級）<br>
+        easy：eas<strong>i</strong>er（比較級）　→　eas<strong>i</strong>est（最上級）
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mq-label">✏️ ミニチェック（2問）</div>
+        <div class="mq-q-small">① 「hot」の最上級は？　② 「busy」の最上級は？</div>
+        <button class="mq-reveal" onclick="revealAnswer('a2')">答えを見る</button>
+        <div class="mq-answer" id="a2">
+          ✅ ① the hottest（t を重ねる → hott + est）<br>
+          ✅ ② the busiest（y → i → busi + est）
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：長い形容詞 → most + in / of の使い分け -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 12 · レッスン2 · スライド 4</div>
+      <div class="question-title">3音節以上は<span class="accent">the most</span>！in と of の使い分けも！</div>
+
+      <div class="formula-box">
+        <div class="f-col">
+          <div class="f-part key">the most</div>
+          <div class="f-label">前につける</div>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">長い形容詞<br><span style="font-size:12px;font-weight:500;">変化させない</span></div>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part warn-part">in / of</div>
+          <div class="f-label warn-label">範囲を示す</div>
+        </div>
+      </div>
+
+      <div class="compare-table">
+        <div class="compare-col sup-col">
+          <div class="compare-head">in ＋ 場所・集団</div>
+          <span class="compare-badge badge-in">判断基準：場所・グループ名</span>
+          <div class="compare-desc">「〜の中で」（範囲が1つの場所や集団）</div>
+          <div class="compare-ex">in the class（クラスの中で）<br>in Japan（日本の中で）</div>
+        </div>
+        <div class="compare-col comp-col">
+          <div class="compare-head">of ＋ 複数のもの</div>
+          <span class="compare-badge badge-of">判断基準：数が決まってるもの</span>
+          <div class="compare-desc">「〜の中で」（数えられるものの中から）</div>
+          <div class="compare-ex">of all（すべての中で）<br>of the three（3つの中で）</div>
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mq-label">✏️ ミニチェック（2問）</div>
+        <div class="mq-q-small">① 「クラスの中で一番高い」→ in？ of？<br>② 「3つの中で一番きれい」→ in？ of？</div>
+        <button class="mq-reveal" onclick="revealAnswer('a3')">答えを見る</button>
+        <div class="mq-answer" id="a3">
+          ✅ ① the most expensive <strong>in</strong> the class（場所・集団 → in）<br>
+          ✅ ② the most beautiful <strong>of</strong> the three（数が決まってる → of）
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ（theチェックを最初に） -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 12 · レッスン2 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">最上級、<span class="accent">どう使い分ける？</span></div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">📋 解くときの思考フロー</div>
+
+        <div class="flow-step">
+          <div class="flow-num warn-num">①</div>
+          <div class="flow-text" style="color:var(--warn);">まず <strong>the</strong> をつけた？（最頻出ミス！）</div>
+        </div>
+        <div class="flow-branch" style="color:#7B3100;">
+          → the がない → 文が不自然になる。必ず確認！
+        </div>
+
+        <hr class="flow-divider">
+
+        <div class="flow-step">
+          <div class="flow-num">②</div>
+          <div class="flow-text">形容詞は <strong>1〜2音節（短い）</strong>？</div>
+        </div>
+        <div class="flow-branch">
+          → YES：<span>the ＋ -est をつける</span>（tall → the tallest）<br>
+          → NO（3音節以上）：<span>the most を前につける</span>（the most beautiful）
+        </div>
+
+        <hr class="flow-divider">
+
+        <div class="flow-step">
+          <div class="flow-num">③</div>
+          <div class="flow-text">範囲を <strong>in（場所）</strong> か <strong>of（数）</strong> で示す</div>
+        </div>
+        <div class="flow-branch">
+          → the biggest <span>in</span> the class　／　the most expensive <span>of</span> all ✅
+        </div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item warn-item">
+          <div class="summary-num">!</div>
+          <div class="summary-text"><strong>the を忘れない</strong>！最上級には必ず the がつく。</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">!</div>
+          <div class="summary-text">most を使うとき <strong>-est はつけない</strong>（the most expensivest は ×）</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function revealAnswer(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('show');
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'nexelia-unit12-lesson2-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+
+  // 埋め込みモード判定
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+    const pageParam = params.get('page');
+    if (pageParam) {
+      const pageNum = Math.max(0, parseInt(pageParam) - 1);
+      if (pageNum < TOTAL && pageNum >= 0) {
+        go(pageNum);
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
