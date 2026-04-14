@@ -6,3 +6,13 @@
 .env
 .env.local
 .env.*
+users.json
+
+# 依存パッケージ
+node_modules/
+
+# Claude Code設定
+.claude/
+
+# 開発用
+preview-server.js
