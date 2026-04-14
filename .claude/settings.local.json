@@ -60,7 +60,9 @@
       "Bash(cat \"C:/Users/rinkp/Downloads/nexelia-unit13-lesson4 \\(2\\).html\")",
       "Bash(git --version)",
       "Bash(gh --version)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(gh repo:*)"
     ]
   }
 }
