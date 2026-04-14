@@ -1,155 +1,400 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>NEXELIA — Unit 1 レッスン1</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --blue: #1A56DB;
-  --blue-light: #E8F0FE;
+  --red: #D32F2F;
+  --text: #1A1A1A;
   --sub: #888;
   --border: #E8E8E8;
-  --bg: #F9F9F9;
-  --text: #1A1A1A;
   --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
 }
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: #fff;
-  color: var(--text);
-  padding: 40px 48px 56px;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  overflow: auto;
-  scrollbar-width: none;
-}
-body::-webkit-scrollbar { display: none; }
-.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
-.concept-block { display: flex; flex-direction: column; gap: 10px; }
-.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); }
-.concept-text { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1.4; }
-.diagram {
-  background: var(--bg);
-  border-radius: 14px;
-  padding: 24px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.diagram-title {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sub);
-  margin-bottom: 4px;
-}
-.eq-row {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--white);
-  font-size: 17px;
-  font-weight: 600;
-}
-.eq-cell {
-  flex: 1;
-  padding: 14px 16px;
-  text-align: center;
-}
-.eq-cell + .eq-cell { border-left: 1px solid var(--border); }
-.eq-cell.be { color: var(--blue); font-size: 20px; line-height: 1.7; }
-.eq-label { font-size: 11px; color: var(--sub); text-align: center; margin-top: 4px; }
-.examples { display: flex; flex-direction: column; gap: 10px; }
-.ex-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  font-size: 15px;
-}
-.ex-en {
-  padding: 13px 18px;
-  font-weight: 600;
-  background: var(--white);
-  border-right: 1px solid var(--border);
-  line-height: 1.5;
-}
-.ex-en .be { color: var(--blue); }
-.ex-jp {
-  padding: 13px 18px;
-  color: var(--sub);
-  background: var(--bg);
-  font-size: 14px;
-  line-height: 1.5;
-}
-.point-box {
-  background: var(--blue-light);
-  border-radius: 10px;
-  padding: 14px 18px;
-  font-size: 14px;
-  color: var(--blue);
-  font-weight: 600;
-  line-height: 1.65;
-}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* be動詞まとめバナー */
+.be-group { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 16px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+.be-group-label { font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; }
+.be-badges { display: flex; gap: 10px; justify-content: center; }
+.be-badge { background: var(--blue); color: white; border-radius: 12px; padding: 12px 28px; font-size: 22px; font-weight: 700; }
+.be-group-caption { text-align: center; font-size: 13px; font-weight: 700; color: var(--blue); }
+
+/* イコール説明 */
+.eq-row { display: flex; align-items: center; justify-content: center; gap: 14px; background: var(--blue); border-radius: 14px; padding: 20px 24px; }
+.eq-item { font-size: 17px; font-weight: 700; color: rgba(255,255,255,0.9); text-align: center; line-height: 1.5; }
+.eq-main { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.eq-sign { font-size: 36px; font-weight: 700; color: white; line-height: 1; }
+.eq-meaning { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.85); white-space: nowrap; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 22px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); }
+
+/* 対応テーブル */
+.match-table { display: flex; flex-direction: column; gap: 10px; }
+.match-row { display: grid; grid-template-columns: 1fr 36px 1fr; align-items: center; gap: 8px; }
+.match-cell { border-radius: 12px; padding: 13px 16px; font-size: 15px; font-weight: 700; text-align: center; line-height: 1.4; }
+.match-cell.subject { background: var(--bg); border: 1.5px solid var(--border); color: var(--text); }
+.match-cell.verb { background: var(--blue); border: 1.5px solid var(--blue); color: white; font-size: 18px; }
+.match-arrow { font-size: 16px; font-weight: 700; color: var(--blue); text-align: center; }
+.match-row.highlight .match-cell.subject { background: var(--blue-light); border-color: var(--blue); color: var(--blue); font-size: 17px; }
+.match-row.highlight .match-cell.verb { font-size: 24px; padding: 16px; }
+.match-row.highlight .match-arrow { font-size: 20px; }
+
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* 判断フロー */
+.flow-box { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 16px; padding: 22px 26px; display: flex; flex-direction: column; gap: 14px; }
+.flow-title { font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; }
+.flow-steps { display: flex; align-items: center; gap: 8px; }
+.flow-step { background: var(--blue); color: white; border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 700; line-height: 1.4; text-align: center; flex: 1; }
+.flow-arrow { font-size: 18px; font-weight: 700; color: var(--blue); flex-shrink: 0; }
+.flow-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.flow-branch { border-radius: 10px; padding: 10px 6px; font-size: 12px; font-weight: 700; text-align: center; line-height: 1.5; border: 1.5px solid #B3E5FC; background: white; color: var(--text); }
+.flow-branch span { display: block; font-size: 17px; font-weight: 700; color: var(--blue); margin-top: 4px; }
+
+/* ミニクイズ */
+.mini-quiz { border: 2px solid var(--blue); border-radius: 16px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+.mini-quiz-label { font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; }
+.mini-quiz-q { font-size: 17px; font-weight: 700; line-height: 1.6; }
+.mini-blank { color: var(--blue); font-size: 20px; }
+.mini-btns { display: flex; gap: 10px; }
+.mini-btn { flex: 1; padding: 12px 8px; border-radius: 10px; border: 1.5px solid var(--border); background: white; font-size: 16px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; color: var(--text); }
+.mini-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); }
+.mini-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.mini-btn.wrong   { background: #FFEBEE; border-color: #C62828; color: #C62828; text-decoration: line-through; }
+.mini-btn:disabled { cursor: default; }
+.mini-fb { font-size: 13px; font-weight: 700; display: none; padding: 10px 14px; border-radius: 8px; line-height: 1.5; }
+.mini-fb.show { display: block; }
+.mini-fb.ok { background: var(--green-light); color: var(--green); }
+.mini-fb.ng { background: #FFEBEE; color: #C62828; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.star-item { border-color: var(--blue); background: var(--blue-light); }
+.summary-item.star-item .summary-num { background: var(--blue); }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+/* ── embed モード ── */
+body.embedded nav { display: none; }
+body.embedded .bottom-nav { display: none; }
+body.embedded main { padding: 0; }
+body.embedded { background: transparent; }
+body.embedded .slide-card { flex: none; }
+body.embedded .slide { flex: none; }
+
 @media (max-width: 600px) {
-  body { padding: 24px 20px 36px; gap: 20px; }
-  .concept-text { font-size: 24px; }
-  .ex-row { grid-template-columns: 1fr; }
-  .ex-en { border-right: none; border-bottom: 1px solid var(--border); }
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .flow-branches { grid-template-columns: 1fr; }
+  .flow-steps { flex-direction: column; }
+  .be-badge { font-size: 18px; padding: 10px 18px; }
 }
 </style>
 </head>
 <body>
 
-<div class="slide-label">be動詞の基本 · スライド 1</div>
-
-<div class="concept-block">
-  <div class="concept-title">このスライドで学ぶこと</div>
-  <div class="concept-text">be動詞って何？</div>
-  <div style="font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px;">
-    ※ このレッスンでは「＝（イコール）」の意味に絞って学びます。「いる・ある」の意味は別のレッスンで扱います。
+<nav>
+  <a href="lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 1 · be動詞ってなに？</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
   </div>
-</div>
+  <a href="learning.html?lesson=lesson1" class="btn-exit">← ホーム</a>
+</nav>
 
-<div class="diagram">
-  <div class="diagram-title">be動詞の役割</div>
-  <div style="font-size:15px;color:var(--sub);line-height:1.8;margin-bottom:8px;">
-    英語で <strong style="color:var(--text)">「A は B だ」</strong> と言いたいとき、A と B をつなぐのが <strong style="color:var(--blue)">be動詞</strong> です。
+<main>
+
+  <!-- スライド 1：be動詞って何？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="question-title"><span class="accent">be動詞</span>って何？</div>
+
+      <!-- am / is / are の3つ → まとめて「be動詞」 -->
+      <div class="be-group">
+        <div class="be-group-label">be動詞の仲間たち</div>
+        <div class="be-badges">
+          <div class="be-badge">am</div>
+          <div class="be-badge">is</div>
+          <div class="be-badge">are</div>
+        </div>
+        <div class="be-group-caption">この3つをまとめて「be動詞」と呼ぶ</div>
+      </div>
+
+      <!-- be動詞の意味 ＝ イコールで説明 -->
+      <div class="eq-row">
+        <div class="eq-item">be動詞の意味は</div>
+        <div class="eq-main">
+          <div class="eq-sign">＝</div>
+          <div class="eq-meaning">「〜です」／「〜にいる」</div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="hl">am</span> a student.</div>
+          <div class="jp">私 ＝ 生徒です。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">She <span class="hl">is</span> in the park.</div>
+          <div class="jp">彼女 ＝ 公園にいる。</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
   </div>
 
-  <div class="eq-row">
-    <div class="eq-cell">A<br><span style="font-size:11px;color:var(--sub);font-weight:400;">（主語）</span></div>
-    <div class="eq-cell be">am<br>is<br>are</div>
-    <div class="eq-cell">B<br><span style="font-size:11px;color:var(--sub);font-weight:400;">（説明）</span></div>
-  </div>
-  <div class="eq-label">「A は B です」という文の形</div>
-</div>
+  <!-- スライド 2：am / is / are の使い分け -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="question-title">主語を見て <span class="accent">am / is / are</span> を選ぶ！</div>
 
-<div class="examples">
-  <div class="diagram-title">例文で確認</div>
-  <div class="ex-row">
-    <div class="ex-en">I <span class="be">am</span> Yuki.</div>
-    <div class="ex-jp">私はゆきです。</div>
-  </div>
-  <div class="ex-row">
-    <div class="ex-en">She <span class="be">is</span> a student.</div>
-    <div class="ex-jp">彼女は学生です。</div>
-  </div>
-  <div class="ex-row">
-    <div class="ex-en">They <span class="be">are</span> friends.</div>
-    <div class="ex-jp">彼らは友達です。</div>
-  </div>
-</div>
+      <div class="match-table">
+        <div class="match-row highlight">
+          <div class="match-cell subject">I（私）</div>
+          <div class="match-arrow">→</div>
+          <div class="match-cell verb">am</div>
+        </div>
+        <div class="match-row">
+          <div class="match-cell subject">You・We・They<br><span style="font-size:12px;font-weight:500">（あなた・複数）</span></div>
+          <div class="match-arrow">→</div>
+          <div class="match-cell verb">are</div>
+        </div>
+        <div class="match-row">
+          <div class="match-cell subject">He / She / It<br><span style="font-size:12px;font-weight:500">（1人・1つ）</span></div>
+          <div class="match-arrow">→</div>
+          <div class="match-cell verb">is</div>
+        </div>
+      </div>
 
-<div class="point-box">💡 be動詞は「つなぎ役」。主語と説明をイコールで結びます。</div>
+      <div class="notice-box">⚠️ ここミスる人多い！「I」だけが特別で <strong>am</strong>。<br>「I is」「I are」は絶対NG！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
 
-<script src="../../ai-chat.js"></script>
+  <!-- スライド 3：判断フロー ＋ ミニクイズ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="question-title"><span class="accent">判断の流れ</span>をマスターしよう！</div>
+
+      <div class="flow-box">
+        <div class="flow-title">判断フロー</div>
+        <div class="flow-steps">
+          <div class="flow-step">① 主語を確認する</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">② 3つに分類する</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">③ be動詞を決める</div>
+        </div>
+        <div class="flow-branches">
+          <div class="flow-branch">I<span>am</span></div>
+          <div class="flow-branch">You / 複数<span>are</span></div>
+          <div class="flow-branch">1人・1つ<span>is</span></div>
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">⚡ ちょっと考えてみよう！</div>
+        <div class="mini-quiz-q">She <span class="mini-blank">（　）</span> happy. → どれが入る？</div>
+        <div class="mini-btns" id="mq-btns">
+          <button class="mini-btn" data-ans="wrong">am</button>
+          <button class="mini-btn" data-ans="correct">is</button>
+          <button class="mini-btn" data-ans="wrong">are</button>
+        </div>
+        <div class="mini-fb" id="mq-fb"></div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">am・is・are の3つをまとめて <strong>be動詞</strong> と呼ぶ</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">be動詞は「<strong>＝（イコール）</strong>」のはたらき。「〜です」「〜にいる」を表す</div>
+        </div>
+        <div class="summary-item star-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">超重要！ <strong>I → am</strong>　／　<strong>You・複数 → are</strong>　／　<strong>1人・1つ → is</strong></div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav cta" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  (function() {
+    var btns = document.querySelectorAll('#mq-btns .mini-btn');
+    var fb = document.getElementById('mq-fb');
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btns.forEach(function(b) {
+          b.disabled = true;
+          if (b.dataset.ans === 'correct') b.classList.add('correct');
+        });
+        var isOk = btn.dataset.ans === 'correct';
+        if (!isOk) btn.classList.add('wrong');
+        fb.classList.add('show', isOk ? 'ok' : 'ng');
+        fb.textContent = isOk
+          ? '✓ 正解！She は「1人」だから is だね！'
+          : '✗ 惜しい！She は「1人」→ is が正解。判断フローで確認しよう！';
+      });
+    });
+  })();
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'learning.html?lesson=lesson1q'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+
+  // ── embed モード ──
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const isEmbedded = params.get('embed') === '1';
+    if (isEmbedded) {
+      document.body.classList.add('embedded');
+      const pageParam = params.get('page');
+      if (pageParam) {
+        const pageNum = Math.max(0, parseInt(pageParam) - 1);
+        if (pageNum >= 0 && pageNum < TOTAL) { go(pageNum); }
+      }
+    }
+  })();
+</script>
+
 </body>
 </html>

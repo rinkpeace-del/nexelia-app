@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXELIA — Unit 13 レッスン1</title>
+<title>NEXELIA — Unit 13 レッスン2</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,10 +23,12 @@
   --border: #E8E8E8;
   --white: #FFFFFF;
   --bg: #F9F9F9;
-  --brown: #4E342E;
-  --brown-light: #EFEBE9;
-  --accent: #4E342E;
-  --accent-light: #EFEBE9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
 }
 
 body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
@@ -28,7 +38,7 @@ nav { background: var(--white); border-bottom: 1px solid var(--border); height: 
 .nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
 .lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
 .nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.nav-fill { height: 100%; background: var(--brown); border-radius: 2px; transition: width 0.4s ease; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
 .nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
 .btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
 .btn-exit:hover { border-color: #aaa; color: var(--text); }
@@ -39,97 +49,158 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 
 .slide.active { display: flex; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
 
-.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--brown); }
-.concept-text { font-size: 26px; font-weight: 700; line-height: 1.4; }
-.concept-text .accent { color: var(--accent); }
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.question-title .accent { color: var(--accent); }
 
-.compare-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.compare-col { border-radius: 14px; padding: 20px 22px; }
-.compare-col.past { background: #FFF8E1; border: 1px solid #FFE082; }
-.compare-col.perf { background: var(--brown-light); border: 1px solid #BCAAA4; }
-.compare-col .c-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 10px; }
-.compare-col.past .c-label { color: #F57F17; }
-.compare-col.perf .c-label { color: var(--brown); }
-.compare-col .c-en { font-size: 15px; font-weight: 700; line-height: 1.6; margin-bottom: 8px; }
-.compare-col .c-jp { font-size: 13px; color: var(--sub); line-height: 1.6; }
+/* 意味カード */
+.meaning-card { border-radius: 14px; padding: 20px 24px; display: flex; gap: 20px; align-items: center; background: var(--blue-light); border: 1px solid #B3E5FC; }
+.meaning-word { font-size: 20px; font-weight: 700; color: var(--blue); min-width: 80px; white-space: nowrap; }
+.meaning-body { display: flex; flex-direction: column; gap: 5px; }
+.meaning-main { font-size: 16px; font-weight: 700; }
+.meaning-note { font-size: 13px; color: var(--sub); font-weight: 500; }
+.meaning-extra { font-size: 13px; font-weight: 700; color: var(--blue); margin-top: 2px; }
 
-.formula-box { border-radius: 14px; padding: 28px 24px; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; background: var(--brown-light); }
-.formula-box .f-part { background: var(--white); border-radius: 10px; padding: 12px 20px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #BCAAA4; color: var(--brown); }
-.formula-box .f-part.key { background: var(--brown-light); border-color: var(--brown); }
-.formula-box .f-plus { font-size: 20px; font-weight: 700; color: var(--brown); }
-.formula-box .f-label { font-size: 11px; font-weight: 600; text-align: center; display: block; margin-top: 6px; color: var(--sub); line-height: 1.6; }
+/* 公式ボックス */
+.formula-box { border-radius: 14px; padding: 20px 24px; display: flex; align-items: flex-start; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.f-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); line-height: 1.4; }
+.f-part.key { background: var(--blue); color: white; border-color: var(--blue); }
+.f-part.green-part { background: #1B873B; color: white; border-color: #1B873B; font-size: 16px; padding: 11px 20px; }
+.f-plus { font-size: 18px; font-weight: 700; color: var(--blue); margin-top: 10px; }
+.f-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--sub); }
+.f-label.green-label { color: #1B873B; font-weight: 700; font-size: 12px; }
 
+/* キーワードカード */
+.keyword-cards { display: flex; flex-direction: column; gap: 10px; }
+.kw-card { border-radius: 12px; padding: 14px 18px; display: flex; align-items: flex-start; gap: 16px; border: 1.5px solid #B3E5FC; background: var(--blue-light); }
+.kw-word { font-size: 18px; font-weight: 700; color: var(--blue); min-width: 72px; padding-top: 2px; }
+.kw-body { display: flex; flex-direction: column; gap: 4px; }
+.kw-mean { font-size: 14px; font-weight: 700; line-height: 1.4; }
+.kw-pos  { font-size: 12px; font-weight: 700; color: var(--blue); background: var(--white); border-radius: 4px; padding: 1px 7px; display: inline-block; margin-bottom: 2px; }
+.kw-note { font-size: 12px; color: var(--sub); font-weight: 500; font-style: italic; }
+.kw-card.never-card { border-color: var(--warn); background: var(--warn-light); }
+.kw-card.never-card .kw-word { color: var(--warn); }
+.kw-card.never-card .kw-pos { color: var(--warn); background: var(--white); }
+
+/* 位置ルールボックス */
+.pos-rule { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+.pos-rule-title { font-size: 12px; font-weight: 700; color: var(--sub); letter-spacing: 0.06em; }
+.pos-row { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; }
+.pos-tag { font-size: 12px; font-weight: 700; color: var(--blue); background: var(--blue-light); border-radius: 5px; padding: 2px 8px; white-space: nowrap; }
+.pos-tag.warn-tag { color: var(--warn); background: var(--warn-light); }
+.pos-arrow { color: var(--sub); font-size: 14px; }
+
+/* Q&A ブロック */
+.qa-block { display: flex; flex-direction: column; gap: 10px; }
+.qa-row { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.qa-q { padding: 13px 18px; font-size: 15px; font-weight: 700; background: var(--blue-light); color: var(--blue); border-bottom: 1px solid #B3E5FC; line-height: 1.5; }
+.qa-a { padding: 11px 18px; font-size: 14px; font-weight: 600; background: var(--white); color: var(--text); line-height: 1.5; }
+.qa-jp { padding: 8px 18px; font-size: 12px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); }
+.hl-green { color: #1B873B; font-weight: 700; }
+
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* 例文 */
 .ex-list { display: flex; flex-direction: column; gap: 10px; }
 .ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-.ex-single .en { padding: 18px 22px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
-.ex-single .jp { padding: 12px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
-.hl { color: var(--brown); }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); }
 
-.summary-list { display: flex; flex-direction: column; gap: 12px; }
-.summary-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
-.summary-num { width: 28px; height: 28px; background: var(--brown); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
 .summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
 
-.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--brown); font-weight: 600; line-height: 1.8; margin-top: auto; }
+/* 判断フロー */
+.flow-box { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 14px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+.flow-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 2px; }
+.flow-step { display: flex; align-items: center; gap: 12px; }
+.flow-num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.flow-text { font-size: 14px; font-weight: 700; color: var(--blue); line-height: 1.4; }
+.flow-arrow { font-size: 16px; color: var(--blue); padding-left: 36px; }
 
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
 .bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
 .btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
 .btn-nav:hover { border-color: #aaa; color: var(--text); }
-.btn-nav.primary { background: var(--brown); border-color: var(--brown); color: white; }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
 .btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
 
 .dots { display: flex; gap: 6px; align-items: center; }
 .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
-.dot.done   { background: rgba(78,52,46,0.3); }
-.dot.active { background: var(--brown); width: 20px; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+body.embedded nav { display: none; }
+body.embedded main { padding: 20px 16px; }
+body.embedded .btn-nav { display: none; }
+body.embedded .bottom-nav { display: none; }
 
 @media (max-width: 600px) {
   nav { padding: 0 16px; }
   .nav-center { display: none; }
   main { padding: 20px 16px; }
   .slide-card { padding: 28px 20px; gap: 20px; }
-  .compare-box { grid-template-columns: 1fr; }
+  .question-title { font-size: 18px; }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <a href="lessons.html" class="nav-logo">NEXELIA</a>
   <div class="nav-center">
-    <span class="lesson-name">Unit 13 · 現在完了とは</span>
+    <span class="lesson-name">Unit 13 · 経験用法</span>
     <div class="nav-track">
-      <div class="nav-fill" id="nav-fill" style="width:33%"></div>
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
     </div>
-    <span class="nav-count" id="nav-count">1 / 3</span>
+    <span class="nav-count" id="nav-count">1 / 5</span>
   </div>
-  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+  <a href="learning.html?lesson=lesson46" class="btn-exit">← レッスン1</a>
 </nav>
 
 <main>
 
-  <!-- スライド 1：現在完了とは -->
+  <!-- スライド 1：経験用法とは？（①具体イメージ1行追加） -->
   <div class="slide active" id="s0">
     <div class="slide-card">
-      <div class="slide-label">Unit 13 · レッスン1 · スライド 1</div>
-      <div class="concept-text">現在完了って<span class="accent">どんな文？</span></div>
+      <div class="slide-label">Unit 13 · レッスン2 · スライド 1</div>
+      <div class="question-title">経験用法は「<span class="accent">〜したことがある</span>」！</div>
 
-      <div class="compare-box">
-        <div class="compare-col past">
-          <div class="c-label">過去形</div>
-          <div class="c-en">I visited Kyoto.</div>
-          <div class="c-jp">京都に行った。<br>（過去の一点）</div>
-        </div>
-        <div class="compare-col perf">
-          <div class="c-label">現在完了</div>
-          <div class="c-en">I have visited Kyoto.</div>
-          <div class="c-jp">京都に行ったことがある。<br>（今の自分の経験）</div>
+      <div class="meaning-card">
+        <div class="meaning-word">経験用法</div>
+        <div class="meaning-body">
+          <div class="meaning-main">過去の経験を「今持っている」と伝える</div>
+          <div class="meaning-extra">→ 今までの人生の中での経験</div>
+          <div class="meaning-note">「今まで〜したことがある」という自分の経験値を表す</div>
         </div>
       </div>
 
-      <div class="point-box">💡 現在完了は「過去の出来事が<strong>今の自分とつながっている</strong>」ときに使うよ！</div>
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="hl">have visited</span> Kyoto.</div>
+          <div class="jp">私は（今までに）京都を訪れたことがある。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">She <span class="hl">has tried</span> sushi before.</div>
+          <div class="jp">彼女は以前、寿司を食べたことがある。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 形は <strong>have / has ＋ 過去分詞</strong>。<br>「今の自分がその経験を持っている」イメージ！</div>
     </div>
     <div class="bottom-nav">
       <button class="btn-nav" style="visibility:hidden">←</button>
@@ -138,41 +209,40 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 
     </div>
   </div>
 
-  <!-- スライド 2：have / has + 過去分詞 -->
+  <!-- スライド 2：ever・never・before ＋ 語順ルール（②③追加） -->
   <div class="slide" id="s1">
     <div class="slide-card">
-      <div class="slide-label">Unit 13 · レッスン1 · スライド 2</div>
-      <div class="concept-text"><span class="accent">have / has</span> ＋ 過去分詞</div>
+      <div class="slide-label">Unit 13 · レッスン2 · スライド 2</div>
+      <div class="question-title">キーワードと<span class="accent">置く位置</span>を覚えよう！</div>
 
-      <div class="formula-box">
-        <div style="text-align:center">
-          <div class="f-part key">have</div>
-          <span class="f-label">I / You / We / They</span>
+      <div class="keyword-cards">
+        <div class="kw-card">
+          <div class="kw-word">ever</div>
+          <div class="kw-body">
+            <div class="kw-pos">have / has の直後</div>
+            <div class="kw-mean">「今までに」— 疑問文で使う</div>
+            <div class="kw-note">Have you <strong>ever</strong> been to Paris? → have <u>ever</u> been</div>
+          </div>
         </div>
-        <div class="f-plus">／</div>
-        <div style="text-align:center">
-          <div class="f-part key">has</div>
-          <span class="f-label">He / She / It</span>
+        <div class="kw-card never-card">
+          <div class="kw-word">never</div>
+          <div class="kw-body">
+            <div class="kw-pos warn-tag">have / has の直後</div>
+            <div class="kw-mean">「一度も〜ない」— 否定の意味を持つ</div>
+            <div class="kw-note">I have <strong>never</strong> eaten natto. → have <u>never</u> eaten</div>
+          </div>
         </div>
-        <div class="f-plus">＋</div>
-        <div style="text-align:center">
-          <div class="f-part">過去分詞</div>
-          <span class="f-label">動詞の第3形</span>
+        <div class="kw-card">
+          <div class="kw-word">before</div>
+          <div class="kw-body">
+            <div class="kw-pos">文末に置く</div>
+            <div class="kw-mean">「以前に」— 文の一番後ろ</div>
+            <div class="kw-note">I have seen this movie <strong>before</strong>. → 文末に <u>before</u></div>
+          </div>
         </div>
       </div>
 
-      <div class="ex-list">
-        <div class="ex-single">
-          <div class="en">I <span class="hl">have visited</span> Kyoto.</div>
-          <div class="jp">私は京都を訪れたことがある。</div>
-        </div>
-        <div class="ex-single">
-          <div class="en">She <span class="hl">has visited</span> Kyoto.</div>
-          <div class="jp">彼女は京都を訪れたことがある。</div>
-        </div>
-      </div>
-
-      <div class="point-box">💡 He / She / It のときだけ <strong>has</strong>。それ以外はすべて <strong>have</strong> だよ！</div>
+      <div class="notice-box">⚠️ ever・never は <strong>have / has の直後</strong>！<br>before だけは <strong>文末</strong>（have の後ろには置かない）。</div>
     </div>
     <div class="bottom-nav">
       <button class="btn-nav" id="back1">← もどる</button>
@@ -181,40 +251,144 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 
     </div>
   </div>
 
-  <!-- スライド 3：まとめ -->
+  <!-- スライド 3：疑問文の作り方（⑤分割：疑問文のみ） -->
   <div class="slide" id="s2">
     <div class="slide-card">
-      <div class="slide-label">Unit 13 · レッスン1 · まとめ</div>
-      <div class="concept-text">まとめ</div>
+      <div class="slide-label">Unit 13 · レッスン2 · スライド 3</div>
+      <div class="question-title">「経験を聞く」疑問文は<span class="accent">Have you ever…?</span></div>
 
-      <div class="summary-list">
-        <div class="summary-item">
-          <div class="summary-num">1</div>
-          <div class="summary-text">現在完了は「過去が今の自分とつながっている」表現</div>
+      <div class="formula-box">
+        <div class="f-col">
+          <div class="f-part key">Have / Has</div>
+          <span class="f-label">文頭に出す</span>
         </div>
-        <div class="summary-item">
-          <div class="summary-num">2</div>
-          <div class="summary-text">形は <strong>have / has ＋ 過去分詞</strong></div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">主語</div>
+          <span class="f-label">you / he …</span>
         </div>
-        <div class="summary-item">
-          <div class="summary-num">3</div>
-          <div class="summary-text">He / She / It → <strong>has</strong>、それ以外 → <strong>have</strong></div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part green-part">ever</div>
+          <span class="f-label green-label">have / has の直後！</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">過去分詞 ?</div>
+          <span class="f-label"></span>
         </div>
       </div>
 
-      <div class="point-box">💡 次のレッスンでは「経験用法（〜したことがある）」を学ぶよ！</div>
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="hl">Have</span> you <span class="hl-green">ever</span> <span class="hl">been</span> to Hokkaido?</div>
+          <div class="jp">北海道に行ったことがありますか？</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="hl">Has</span> she <span class="hl-green">ever</span> <span class="hl">tried</span> skiing?</div>
+          <div class="jp">彼女はスキーをしたことがありますか？</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ 中学では <strong>Have you ever…?</strong> を使う。<br>「Did you ever…?」は中学では扱わない形なので注意！</div>
     </div>
     <div class="bottom-nav">
       <button class="btn-nav" id="back2">← もどる</button>
       <div class="dots" id="d2"></div>
-      <button class="btn-nav primary" id="n2">演習へ →</button>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：答え方（⑤分割：答えのみ） -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 13 · レッスン2 · スライド 4</div>
+      <div class="question-title">答えるときは<span class="accent">Yes, I have. / No, I haven't.</span></div>
+
+      <div class="qa-block">
+        <div class="qa-row">
+          <div class="qa-q">Have you ever been to Hokkaido?</div>
+          <div class="qa-a">✅ Yes, I <span class="hl">have</span>.</div>
+          <div class="qa-jp">はい、あります。</div>
+        </div>
+        <div class="qa-row">
+          <div class="qa-q">Have you ever been to Hokkaido?</div>
+          <div class="qa-a">✅ No, I <span class="hl">have never</span> been there.<br>　 No, I <span class="hl">haven't</span>.</div>
+          <div class="qa-jp">いいえ、一度もありません。 / いいえ、ありません。</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ 「Yes, I <strong>did</strong>.」は NG！did は過去形の答え方。<br>現在完了には <strong>have / has</strong> で答える！</div>
+
+      <div class="point-box">💡 質問が Have で始まったら → 答えも <strong>have / has</strong> で返す！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ＋判断フロー（⑥追加） -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 13 · レッスン2 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">経験用法 ＝ <strong>have / has ＋ 過去分詞</strong>で「今までに〜したことがある」</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text"><strong>ever・never は have / has の直後</strong>、<strong>before は文末</strong></div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">経験を聞く疑問文は <strong>Have you ever…?</strong>（中学では Did you ever は使わない）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">答えは <strong>Yes, I have. / No, I haven't.</strong>（Yes, I did. は NG！）</div>
+        </div>
+      </div>
+
+      <!-- 判断フロー -->
+      <div class="flow-box">
+        <div class="flow-title">⚡ 経験用法の判断フロー</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">「今までに〜した経験か？」→ YES</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text">have / has ＋ 過去分詞 を使う</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-text">ever（疑問）/ never（否定）/ before（文末）を確認</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
     </div>
   </div>
 
 </main>
 
 <script>
-  const TOTAL = 3;
+  const TOTAL = 5;
   let cur = 0;
 
   function renderDots(id) {
@@ -239,11 +413,29 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 
 
   document.getElementById('n0').addEventListener('click', function() { go(1); });
   document.getElementById('n1').addEventListener('click', function() { go(2); });
-  document.getElementById('n2').addEventListener('click', function() { location.href = 'nexelia-unit13-lesson1-exercise.html'; });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'nexelia-unit13-lesson2-exercise.html'; });
   document.getElementById('back1').addEventListener('click', function() { go(0); });
   document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
 
   renderDots(0);
+
+  // Embedded functionality
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+    const pageParam = params.get('page');
+    if (pageParam) {
+      const pageNum = Math.max(0, parseInt(pageParam) - 1);
+      if (pageNum < TOTAL && pageNum >= 0) {
+        go(pageNum);
+      }
+    }
+  }
 </script>
 
 </body>

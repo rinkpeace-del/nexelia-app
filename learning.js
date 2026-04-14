@@ -22,6 +22,7 @@ const progressRowEl = document.querySelector(".progress-row");
 const fullscreenToggleEl = document.getElementById("fullscreenToggle");
 const slideProgressEl = document.getElementById("slideProgress");
 const slideProgressFillEl = document.getElementById("slideProgressFill");
+const slideAiBtnEl = document.getElementById("slideAiBtn");
 
 let lesson = null;
 let steps = [];
@@ -75,14 +76,65 @@ function getExerciseLessonIdFromUrl() {
   if (currentLessonId === "lesson1") {
     return "lesson1q";
   }
-  if (currentLessonId === "lesson2") {
-    return "lesson2q";
-  }
   if (currentLessonId === "lesson3") {
     return "lesson3q";
   }
   if (currentLessonId === "lesson6") {
     return "lesson6q";
+  }
+  if (currentLessonId === "lesson87") {
+    return "lesson87q";
+  }
+  if (currentLessonId === "lesson4") {
+    return "lesson4q";
+  }
+  if (currentLessonId === "lesson7") {
+    return "lesson7q";
+  }
+  if (currentLessonId === "lesson8") {
+    return "lesson8q";
+  }
+  if (currentLessonId === "lesson9") {
+    return "lesson9q";
+  }
+  if (currentLessonId === "lesson89") {
+    return "lesson89q";
+  }
+  if (currentLessonId === "lesson10") {
+    return "lesson10q";
+  }
+  if (currentLessonId === "lesson12") {
+    return "lesson12q";
+  }
+  if (currentLessonId === "lesson13") {
+    return "lesson13q";
+  }
+  if (currentLessonId === "lesson91") {
+    return "lesson91q";
+  }
+  if (currentLessonId === "lesson47") {
+    return "lesson47q";
+  }
+  if (currentLessonId === "lesson48") {
+    return "lesson48q";
+  }
+  if (currentLessonId === "lesson49") {
+    return "lesson49q";
+  }
+  if (currentLessonId === "lesson111") {
+    return "lesson111q";
+  }
+  if (currentLessonId === "lesson14") {
+    return "lesson14q";
+  }
+  if (currentLessonId === "lesson15") {
+    return "lesson15q";
+  }
+  if (currentLessonId === "lesson16") {
+    return "lesson16q";
+  }
+  if (currentLessonId === "lesson17") {
+    return "lesson17q";
   }
   if (currentLessonId === "lesson5") {
     return "lesson5q";
@@ -113,9 +165,12 @@ function normalizeStep(step) {
     return {
       type: "question",
       question: step.question || "\u554f\u984c",
+      subText: step.subText || step.hint || "",
+      sentence: step.sentence || "",
       choices: Array.isArray(step.choices) ? step.choices : [],
       answer: Number.isFinite(Number(step.answer)) ? Number(step.answer) : Number(step.answerIndex || 0),
       explanation: step.explanation || "",
+      wrongExplanation: step.wrongExplanation || step.hint || step.explanation || "",
       hint: step.hint || ""
     };
   }
@@ -268,6 +323,11 @@ function setSlideProgress(value) {
 
   slideProgressFillEl.style.width = `${clamped}%`;
   slideProgressEl.setAttribute("aria-valuenow", String(Math.round(clamped)));
+
+  // デバッグ用コンソール出力
+  if (typeof console !== 'undefined') {
+    // console.log(`進捗バー更新: ${Math.round(clamped)}%`);
+  }
 }
 function shortenLabel(text, maxLength = 26) {
   const normalized = String(text || "").replace(/\s+/g, " ").trim();
@@ -334,27 +394,12 @@ function getCustomTocEntries() {
       href: "learning.html?lesson=lesson1b&step=1"
     },
     {
-      label: "⑤演習Ⅱ",
-      active: false,
-      href: "exercise.html?lesson=lesson1e"
-    },
-    {
-      label: "⑥演習Ⅲ",
-      active: false,
-      href: "exercise.html?lesson=lesson1f"
-    },
-    {
-      label: "\u2466You / They \u306e\u3068\u304d\u306ebe\u52d5\u8a5e",
+      label: "⑤ You / They のときのbe動詞",
       active: lesson.id === "lesson1g" && stepIndex === 0,
       href: "learning.html?lesson=lesson1g&step=1"
     },
     {
-      label: "\u2467\u6f14\u7fd2\u2163",
-      active: false,
-      href: "exercise.html?lesson=lesson1h"
-    },
-    {
-      label: "\u2468He / She / It \u306e\u3068\u304d\u306ebe\u52d5\u8a5e",
+      label: "⑥ He / She / It のときのbe動詞",
       active: lesson.id === "lesson1g" && stepIndex === 1,
       href: "learning.html?lesson=lesson1g&step=2"
     }
@@ -575,83 +620,110 @@ function renderQuestionText(target, text) {
 }
 function buildQuestionStep(step) {
   const wrap = document.createElement("section");
+  wrap.className = "q-card-wrap";
 
-  const question = document.createElement("p");
-  question.className = "question-text";
-  renderQuestionText(question, step.question || "\u554f\u984c");
+  // 問題文
+  const qText = document.createElement("p");
+  qText.className = "q-card-text";
+  qText.textContent = step.question || "問題";
+  wrap.appendChild(qText);
 
-  const form = document.createElement("form");
-  form.noValidate = true;
+  // サブテキスト
+  if (step.subText) {
+    const qSub = document.createElement("p");
+    qSub.className = "q-card-sub";
+    qSub.textContent = step.subText;
+    wrap.appendChild(qSub);
+  }
 
-  const choices = document.createElement("div");
-  choices.className = "choices";
+  // 文（青いボックス）
+  if (step.sentence) {
+    const qFocus = document.createElement("div");
+    qFocus.className = "q-card-focus";
+    if (step.sentence.includes("___")) {
+      const parts = step.sentence.split("___");
+      qFocus.innerHTML = `${parts[0]}<span class="q-card-blank"></span>${parts[1] || ""}`;
+    } else {
+      qFocus.textContent = step.sentence;
+    }
+    wrap.appendChild(qFocus);
+  }
+
+  // 選択肢グリッド
+  const choicesDiv = document.createElement("div");
+  choicesDiv.className = "q-card-choices";
 
   const randomizedChoices = shuffleArray(step.choices.map((choice, idx) => ({ choice, idx })));
 
   randomizedChoices.forEach(({ choice, idx }) => {
-    const id = `choice_${stepIndex}_${idx}`;
-    const label = document.createElement("label");
-    label.className = "choice-item";
-
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = `question_${stepIndex}`;
-    input.value = String(idx);
-    input.id = id;
-
-    label.htmlFor = id;
-    label.append(input, `${choice}`);
-    choices.appendChild(label);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "q-card-opt";
+    btn.textContent = choice;
+    btn.dataset.idx = String(idx);
+    choicesDiv.appendChild(btn);
   });
 
-  const submitBtn = document.createElement("button");
-  submitBtn.type = "submit";
-  submitBtn.className = "btn-primary";
-  submitBtn.textContent = "\u56de\u7b54\u3059\u308b";
+  wrap.appendChild(choicesDiv);
 
-  const inlineExplanation = document.createElement("p");
-  inlineExplanation.className = "inline-explanation";
-  inlineExplanation.textContent = "";
+  // フィードバック
+  const fb = document.createElement("div");
+  fb.className = "q-card-feedback";
+  wrap.appendChild(fb);
 
+  // アクション行（navRow配置用）
   const actionRow = document.createElement("div");
   actionRow.className = "question-actions";
-  actionRow.append(submitBtn, inlineExplanation);
+  wrap.appendChild(actionRow);
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  // クリックイベント
+  choicesDiv.querySelectorAll(".q-card-opt").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (answeredMap[stepIndex]) return;
+      answeredMap[stepIndex] = true;
 
-    const selected = form.querySelector("input:checked");
-    if (!selected) {
-      inlineExplanation.classList.remove("ok", "ng");
-      inlineExplanation.classList.add("ng");
-      inlineExplanation.textContent = "\u9078\u629e\u80a2\u3092\u9078\u3093\u3067\u304f\u3060\u3055\u3044\u3002";
+      const selectedIdx = Number(btn.dataset.idx);
+      const isCorrect = selectedIdx === Number(step.answer);
+      correctAnswerMap[stepIndex] = isCorrect;
+
+      // 全ボタン無効化＋正解/不正解表示
+      choicesDiv.querySelectorAll(".q-card-opt").forEach((b) => {
+        b.disabled = true;
+        if (Number(b.dataset.idx) === Number(step.answer)) b.classList.add("correct");
+        else if (b === btn && !isCorrect) b.classList.add("wrong");
+      });
+
+      // フィードバック表示
+      fb.classList.add("show", isCorrect ? "ok" : "ng");
+      fb.textContent = isCorrect
+        ? `✓ 正解！${step.explanation || ""}`
+        : `✗ 惜しい！${step.wrongExplanation || step.explanation || ""}`;
+
+      // AIボタン (一時無効)
+      if (false && !actionRow.querySelector(".btn-ask-ai")) {
+        const selectedChoice = step.choices[selectedIdx] || "";
+        const correctChoice = step.choices[Number(step.answer)] || "";
+        const aiBtn = document.createElement("button");
+        aiBtn.type = "button";
+        aiBtn.className = "btn-ask-ai";
+        aiBtn.textContent = "🤖 AIに質問";
+        aiBtn.addEventListener("click", () => {
+          openAiPanel({
+            question: step.question || "",
+            selected: selectedChoice,
+            correct: correctChoice,
+            isCorrect,
+            explanation: isCorrect ? step.explanation : (step.wrongExplanation || step.explanation),
+          });
+        });
+        actionRow.appendChild(aiBtn);
+      }
+
       setFeedback("");
-      return;
-    }
-
-    const selectedIndex = Number(selected.value);
-    const isCorrect = selectedIndex === Number(step.answer);
-    answeredMap[stepIndex] = true;
-    correctAnswerMap[stepIndex] = isCorrect;
-
-    const explanation = getQuestionExplanation(step);
-    const hint = getQuestionHint(step);
-    inlineExplanation.classList.remove("ok", "ng");
-
-    if (isCorrect) {
-      inlineExplanation.classList.add("ok");
-      inlineExplanation.textContent = `\u6b63\u89e3\u3067\u3059\u3002 ${explanation}`;
-    } else {
-      inlineExplanation.classList.add("ng");
-      inlineExplanation.textContent = `\u4e0d\u6b63\u89e3\u3067\u3059\u3002 ${hint}`;
-    }
-
-    setFeedback("");
-    saveProgress();
+      saveProgress();
+    });
   });
 
-  form.append(choices, actionRow);
-  wrap.append(question, form);
   return wrap;
 }
 
@@ -850,13 +922,30 @@ function renderStep() {
   stageWrapEl.dataset.stepType = isSlideStep ? "slide" : "question";
 
   updateHeaderAndButtons();
+  updateProgress();  // 進捗を更新
   renderToc();
   setFeedback("");
 
   stepContentEl.replaceChildren(step.type === "question" ? buildQuestionStep(step) : buildSlideStep(step));
+  stepContentEl.classList.toggle('has-iframe-slide', !!stepContentEl.querySelector('.slide-embed'));
   placeNavRowForStep(step);
   playSlideTransition(isSlideStep);
   navDirection = 0;
+
+  // AIボタンのコンテキストを更新（常時表示）
+  if (slideAiBtnEl) {
+    slideAiBtnEl.onclick = () => {
+      if (typeof window.openAiPanel === "function") {
+        window.openAiPanel({
+          slideTitle: step.title || "",
+          lessonTitle: lessonTitleEl ? lessonTitleEl.textContent : "",
+          isSlide: isSlideStep,
+          stepType: step.type,
+        });
+      }
+    };
+  }
+
   saveProgress();
 }
 
@@ -942,6 +1031,23 @@ function goToNextStep(options = {}) {
 }
 function goToExercise() {
   goToNextStep({ allowExerciseTransition: true });
+}
+
+// 進捗を更新する関数
+function updateProgress() {
+  if (!lesson || !steps.length) return;
+
+  // 現在のステップ進捗を計算（0～1の値）
+  const stepProgress = (stepIndex + 1) / steps.length;
+  const lessonProgress = Math.round(stepProgress * 100);
+
+  const progressMap = readJSON(PROGRESS_KEY, {});
+
+  // より高い進捗値を保存する（進捗は後退しない）
+  const currentProgress = progressMap[lesson.id] || 0;
+  progressMap[lesson.id] = Math.max(currentProgress, lessonProgress);
+
+  writeJSON(PROGRESS_KEY, progressMap);
 }
 function isTextInputFocused(target) {
   if (!target || !(target instanceof HTMLElement)) return false;
@@ -1035,6 +1141,96 @@ async function init() {
 }
 
 init();
+
+// ── AI Chat Panel ──
+(function () {
+  const panel = document.getElementById("aiChatPanel");
+  const overlay = document.getElementById("aiOverlay");
+  const closeBtn = document.getElementById("aiPanelClose");
+  const contextEl = document.getElementById("aiPanelContext");
+  const messagesEl = document.getElementById("aiPanelMessages");
+  const formEl = document.getElementById("aiPanelForm");
+  const questionInput = document.getElementById("aiPanelQuestion");
+  const sendBtn = document.getElementById("aiPanelSend");
+  if (!panel) return;
+
+  let currentContext = "";
+
+  function openPanel(ctx) {
+    currentContext = ctx || "";
+    contextEl.innerHTML = ctx || "";
+    messagesEl.innerHTML = "";
+    panel.classList.add("open");
+    overlay.classList.add("open");
+    document.body.classList.add("ai-open");
+    setTimeout(() => questionInput.focus(), 350);
+  }
+
+  function closePanel() {
+    panel.classList.remove("open");
+    overlay.classList.remove("open");
+    document.body.classList.remove("ai-open");
+  }
+
+  closeBtn.addEventListener("click", closePanel);
+  overlay.addEventListener("click", closePanel);
+
+  formEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const q = questionInput.value.trim();
+    if (!q) return;
+
+    const userMsg = document.createElement("div");
+    userMsg.className = "ai-msg user";
+    userMsg.textContent = q;
+    messagesEl.appendChild(userMsg);
+
+    questionInput.value = "";
+    sendBtn.disabled = true;
+
+    const loadingMsg = document.createElement("div");
+    loadingMsg.className = "ai-msg assistant loading";
+    loadingMsg.textContent = "回答を生成中...";
+    messagesEl.appendChild(loadingMsg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    try {
+      const res = await fetch("/.netlify/functions/ai-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: q,
+          context: currentContext,
+        }),
+      });
+      const data = await res.json();
+      loadingMsg.classList.remove("loading");
+      loadingMsg.textContent = data.answer || "回答を取得できませんでした。";
+    } catch {
+      loadingMsg.classList.remove("loading");
+      loadingMsg.textContent = "エラーが発生しました。もう一度お試しください。";
+    }
+
+    sendBtn.disabled = false;
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  });
+
+  window.openAiPanel = function (info) {
+    let ctx, contextText;
+    if (info && info.isSlide) {
+      ctx = `<strong>レッスン:</strong> ${info.lessonTitle}<br><strong>スライド:</strong> ${info.slideTitle}`;
+      contextText = `レッスン: ${info.lessonTitle} / スライド: ${info.slideTitle}`;
+    } else if (info) {
+      ctx = `<strong>問題:</strong> ${info.question}<br><strong>あなたの回答:</strong> ${info.selected}<br><strong>正解:</strong> ${info.correct}<br><strong>結果:</strong> ${info.isCorrect ? "正解" : "不正解"}`;
+      contextText = `問題: ${info.question} / あなたの回答: ${info.selected} / 正解: ${info.correct} / 結果: ${info.isCorrect ? "正解" : "不正解"}`;
+    } else {
+      ctx = "";
+      contextText = "NEXELIA 学習ページ";
+    }
+    currentContext = contextText;
+    openPanel(ctx);
+  };
+})();
 
 
 

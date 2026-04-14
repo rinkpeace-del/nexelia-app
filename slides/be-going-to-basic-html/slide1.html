@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 9 レッスン3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.5; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* 意味カード */
+.meaning-card { border-radius: 14px; padding: 22px 26px; display: flex; gap: 20px; align-items: center; background: var(--blue-light); border: 1px solid #B3E5FC; }
+.meaning-word { font-size: 19px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+.meaning-body { display: flex; flex-direction: column; gap: 6px; }
+.meaning-main { font-size: 17px; font-weight: 700; }
+.meaning-note { font-size: 13px; color: var(--sub); font-weight: 500; }
+
+/* 公式ボックス */
+.formula-box { border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); line-height: 1.5; }
+.f-part.key { background: var(--blue); color: white; border-color: var(--blue); }
+.f-plus { font-size: 18px; font-weight: 700; color: var(--blue); }
+.f-label { font-size: 11px; font-weight: 600; text-align: center; display: block; margin-top: 4px; color: var(--sub); }
+
+/* be動詞グリッド */
+.be-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.be-card { border-radius: 12px; padding: 14px 10px; border: 1.5px solid var(--border); background: var(--white); text-align: center; }
+.be-subject { font-size: 12px; font-weight: 700; color: var(--sub); margin-bottom: 6px; }
+.be-verb { font-size: 20px; font-weight: 700; color: var(--blue); }
+
+/* 変換ボックス */
+.transform-box { display: flex; flex-direction: column; gap: 10px; }
+.tf-row { display: flex; align-items: center; gap: 12px; }
+.tf-label { font-size: 11px; font-weight: 700; color: var(--sub); width: 36px; flex-shrink: 0; }
+.tf-sent { flex: 1; padding: 14px 18px; border-radius: 12px; font-size: 15px; font-weight: 700; line-height: 1.5; border: 1.5px solid var(--border); background: var(--white); }
+.tf-sent.key { background: var(--blue-light); border-color: #B3E5FC; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 11px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); }
+
+/* 場面カード */
+.scene-cards { display: flex; flex-direction: column; gap: 12px; }
+.scene-card { border-radius: 14px; padding: 18px 22px; border: 1px solid var(--border); background: var(--white); display: flex; align-items: flex-start; gap: 14px; }
+.scene-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+.scene-body { display: flex; flex-direction: column; gap: 4px; }
+.scene-title { font-size: 13px; font-weight: 700; color: var(--blue); }
+.scene-text { font-size: 15px; font-weight: 600; line-height: 1.5; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+
+/* 埋め込み時 */
+body.embedded { background: transparent; min-height: auto; }
+body.embedded nav, body.embedded .bottom-nav { display: none; }
+body.embedded main { max-width: none; width: 100%; margin: 0; padding: 0; }
+body.embedded .slide { animation: none; }
+body.embedded .slide-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  padding: 44px 52px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 9 · be going to の基本</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="../../learning.html?lesson=lesson34" class="btn-exit">← レッスンへ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：be going to とは？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 9 · レッスン3 · スライド 1</div>
+      <div class="question-title">予定を言うには<span class="accent"> be going to </span>を使う！</div>
+
+      <div class="meaning-card">
+        <div class="meaning-word">be going to</div>
+        <div class="meaning-body">
+          <div class="meaning-main">「〜するつもりだ」「〜する予定だ」</div>
+          <div class="meaning-note">前もって決めていた計画・予定を表す</div>
+        </div>
+      </div>
+
+      <div class="scene-cards">
+        <div class="scene-card">
+          <div class="scene-icon">📅</div>
+          <div class="scene-body">
+            <div class="scene-title">前から決めていた予定</div>
+            <div class="scene-text">I <strong>am going to</strong> visit Kyoto next week.<br>（来週、京都に行く予定だよ。）</div>
+          </div>
+        </div>
+        <div class="scene-card">
+          <div class="scene-icon">📅</div>
+          <div class="scene-body">
+            <div class="scene-title">前から決めていた予定</div>
+            <div class="scene-text">She <strong>is going to</strong> join the team.<br>（彼女はそのチームに入る予定だよ。）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 核となるルール：<strong>be going to ＋ 動詞の原形</strong> で予定を表す！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：be 動詞の使い分け -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 9 · レッスン3 · スライド 2</div>
+      <div class="question-title">be は主語で変わる。<span class="accent">going to は変わらない！</span></div>
+
+      <div style="background:var(--blue-light); border:1px solid #B3E5FC; border-radius:12px; padding:16px 20px; font-size:14px; font-weight:700; color:var(--blue);">
+        I → <strong>am</strong> &nbsp;／&nbsp; he / she / it → <strong>is</strong> &nbsp;／&nbsp; you / we / they → <strong>are</strong>
+      </div>
+
+      <div class="formula-box">
+        <div style="text-align:center">
+          <div class="f-part">主語</div>
+          <span class="f-label">だれが</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part key">am / is / are</div>
+          <span class="f-label">主語で変わる</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part" style="border-width:2px; border-color:var(--blue);">going to</div>
+          <span class="f-label" style="color:var(--blue); font-weight:800;">常にそのまま！</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part">動詞の原形</div>
+          <span class="f-label">〜する</span>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="hl">am going to</span> study tonight.</div>
+          <div class="jp">今夜勉強するつもりだよ。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">She <span class="hl">is going to</span> cook dinner.</div>
+          <div class="jp">彼女は夕食を作る予定だよ。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 <strong>going to</strong> は主語が変わっても絶対そのまま！変わるのは be 動詞だけ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：否定文・疑問文 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 9 · レッスン3 · スライド 3</div>
+      <div class="question-title">否定文も疑問文も<span class="accent"> be 動詞</span>を動かすだけ！</div>
+
+      <div style="background:var(--blue-light); border:1px solid #B3E5FC; border-radius:14px; padding:20px 24px; text-align:center;">
+        <div style="font-size:13px; font-weight:700; color:var(--sub); margin-bottom:8px;">ポイント</div>
+        <div style="font-size:22px; font-weight:700; color:var(--blue);">be 動詞を動かすだけ！</div>
+        <div style="font-size:13px; font-weight:600; color:var(--sub); margin-top:6px;">否定 → not を入れる　／　疑問 → 文頭へ移動</div>
+      </div>
+
+      <div class="transform-box">
+        <div class="tf-row">
+          <div class="tf-label">肯定文</div>
+          <div class="tf-sent">She <span class="hl">is</span> going to come.</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="tf-label"></div>
+          <div style="font-size:13px; font-weight:700; color:var(--sub); padding-left:4px;">is のあとに not ↓</div>
+        </div>
+        <div class="tf-row">
+          <div class="tf-label">否定文</div>
+          <div class="tf-sent key">She <span class="hl">is not</span> going to come.</div>
+        </div>
+      </div>
+
+      <div class="transform-box">
+        <div class="tf-row">
+          <div class="tf-label">肯定文</div>
+          <div class="tf-sent">You <span class="hl">are</span> going to go.</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="tf-label"></div>
+          <div style="font-size:13px; font-weight:700; color:var(--sub); padding-left:4px;">Are を文頭へ ↓</div>
+        </div>
+        <div class="tf-row">
+          <div class="tf-label">疑問文</div>
+          <div class="tf-sent key"><span class="hl">Are</span> you going to go? — Yes, I am. / No, I'm not.</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 won't や Will は使わない！be going to は <strong>be 動詞</strong>を動かして否定・疑問を作る。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 9 · レッスン3 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">予定・計画：<strong>am / is / are going to ＋ 動詞の原形</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text"><strong>going to</strong> は変化しない！変わるのは be 動詞だけ</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">否定・疑問は <strong>be 動詞</strong>を動かすだけ（won't・Will は使わない！）</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 ルールはバッチリ？ここからが本番！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav cta" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  const requestedPage = Number(params.get('page') || 1);
+  if (isEmbedded) document.body.classList.add('embedded');
+  if (!isEmbedded) {
+    document.getElementById('n0').addEventListener('click', function() { go(1); });
+    document.getElementById('n1').addEventListener('click', function() { go(2); });
+    document.getElementById('n2').addEventListener('click', function() { go(3); });
+    document.getElementById('n3').addEventListener('click', function() { location.href = '../../nexelia-unit09-lesson3-exercise.html'; });
+    document.getElementById('back1').addEventListener('click', function() { go(0); });
+    document.getElementById('back2').addEventListener('click', function() { go(1); });
+    document.getElementById('back3').addEventListener('click', function() { go(2); });
+  }
+  const initialPage = Number.isFinite(requestedPage) ? requestedPage : 1;
+  renderDots(0);
+  go(initialPage - 1);
+</script>
+
+</body>
+</html>

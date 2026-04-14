@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 4 レッスン2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+body.embedded {
+  background: transparent;
+  min-height: auto;
+}
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.35; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+.q-sub { font-size: 14px; color: var(--sub); font-weight: 500; line-height: 1.6; }
+
+/* 現在→過去の比較ブロック */
+.compare-block { display: flex; flex-direction: column; gap: 10px; }
+.compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cmp-box { border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+.cmp-box.now  { background: var(--bg); border: 1.5px solid var(--border); }
+.cmp-box.past { background: var(--blue-light); border: 1.5px solid #B3E5FC; }
+.cmp-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--sub); }
+.cmp-box.past .cmp-label { color: var(--blue); }
+.cmp-en { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.cmp-box.past .cmp-en { color: var(--blue); }
+.cmp-jp { font-size: 12px; color: var(--sub); font-weight: 500; }
+
+/* -ed パターンカード */
+.pattern-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pattern-card { border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; background: var(--white); border: 1.5px solid var(--border); }
+.pattern-card.warn { background: var(--warn-light); border-color: var(--warn); }
+.p-rule { font-size: 12px; font-weight: 700; color: var(--sub); }
+.pattern-card.warn .p-rule { color: var(--warn); }
+.p-key { font-size: 15px; font-weight: 700; color: var(--blue); line-height: 1.5; }
+.pattern-card.warn .p-key { color: var(--warn); }
+.p-ex { font-size: 13px; color: var(--sub); font-weight: 600; line-height: 1.6; }
+
+/* 公式ボックス */
+.formula-box { border-radius: 14px; padding: 20px 24px; display: flex; align-items: flex-start; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.formula-box.warn-formula { background: var(--warn-light); }
+.f-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); line-height: 1.4; }
+.f-part.key      { background: var(--blue); color: white; border-color: var(--blue); }
+.f-part.warn-key { background: var(--warn); color: white; border-color: var(--warn); }
+.f-part.warn-border { border-color: #FFCC80; color: var(--warn); }
+.f-plus { font-size: 18px; font-weight: 700; color: var(--blue); margin-top: 10px; }
+.f-plus.warn-plus { color: var(--warn); }
+.f-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--sub); }
+.f-label.warn-label { color: var(--warn); font-weight: 700; }
+
+/* Q&A ブロック */
+.qa-block { display: flex; flex-direction: column; gap: 10px; }
+.qa-row { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.qa-q { padding: 13px 18px; font-size: 15px; font-weight: 700; background: var(--blue-light); color: var(--blue); border-bottom: 1px solid #B3E5FC; line-height: 1.5; }
+.qa-q.warn-q { background: var(--warn-light); color: var(--warn); border-bottom-color: #FFCC80; }
+.qa-a { padding: 12px 18px; font-size: 14px; font-weight: 700; background: var(--white); color: var(--text); line-height: 1.6; }
+.qa-jp { padding: 8px 18px; font-size: 12px; color: var(--sub); background: var(--bg); }
+.hl      { color: var(--blue); }
+.hl-warn { color: var(--warn); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+
+/* ミニクイズ（reveal） */
+.choice-q { font-size: 15px; font-weight: 700; color: var(--blue); background: var(--blue-light); border-radius: 10px; padding: 14px 18px; line-height: 1.6; }
+.choice-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ch-btn { padding: 14px 12px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.4; transition: all 0.15s; color: var(--text); }
+.ch-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.ch-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.ch-btn.wrong   { background: #FFEBEE; border-color: #C62828; color: #C62828; text-decoration: line-through; }
+.ch-btn:disabled { cursor: default; transform: none; }
+.ch-feedback { padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.6; }
+.ch-feedback.show { display: block; }
+.ch-feedback.ok { background: var(--green-light); color: var(--green); }
+.ch-feedback.ng { background: #FFEBEE; color: #C62828; }
+
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.s-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item .s-num { background: var(--warn); }
+.s-text { font-size: 15px; font-weight: 600; line-height: 1.7; flex: 1; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+body.embedded nav,
+body.embedded .bottom-nav {
+  display: none;
+}
+
+body.embedded main {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.embedded .slide {
+  animation: none;
+}
+
+body.embedded .slide-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  padding: 44px 52px;
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .compare-row { grid-template-columns: 1fr; }
+  .pattern-grid { grid-template-columns: 1fr; }
+  .choice-opts { grid-template-columns: 1fr; }
+  .question-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 4 · 規則動詞の過去形</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <a href="learning.html?lesson=lesson15" class="btn-exit">← レッスンへ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：一般動詞の過去形とは？（現在形との比較） -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン2 · スライド 1</div>
+      <div class="question-title">一般動詞の過去形は<span class="accent">基本、語尾に -ed をつける！</span></div>
+      <div class="q-sub">be動詞（was / were）と違って、多くの一般動詞は -ed をつけて過去形にする。</div>
+
+      <div class="compare-block">
+        <div class="compare-row">
+          <div class="cmp-box now">
+            <div class="cmp-label">現在形（三単現あり）</div>
+            <div class="cmp-en">I <strong>play</strong> / He <strong>play<span style="color:var(--warn)">s</span></strong></div>
+            <div class="cmp-jp">する / する（He）</div>
+          </div>
+          <div class="cmp-box past">
+            <div class="cmp-label">過去形（全員同じ！）</div>
+            <div class="cmp-en">I / He <strong>play<span style="color:var(--warn)">ed</span></strong> <strong><span style="color:var(--blue)">yesterday</span></strong>.</div>
+            <div class="cmp-jp"><strong>昨日</strong>した。← 主語に関係なく同じ形</div>
+          </div>
+        </div>
+        <div class="compare-row">
+          <div class="cmp-box now">
+            <div class="cmp-label">現在形（三単現あり）</div>
+            <div class="cmp-en">I <strong>study</strong> / She <strong>stud<span style="color:var(--warn)">ies</span></strong></div>
+            <div class="cmp-jp">勉強する / する（She）</div>
+          </div>
+          <div class="cmp-box past">
+            <div class="cmp-label">過去形（全員同じ！）</div>
+            <div class="cmp-en">I / She <strong>stud<span style="color:var(--warn)">ied</span></strong> <strong><span style="color:var(--blue)">last&nbsp;night</span></strong>.</div>
+            <div class="cmp-jp"><strong>昨夜</strong>勉強した。← 主語に関係なく同じ形</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 主語が He / She / It でも過去形の形は同じ！<br>三単現の s は関係なし。<strong>played / watched</strong> — みんな同じ形。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：-ed のつけ方パターン（ミニクイズ先行） -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン2 · スライド 2</div>
+      <div class="question-title">-ed のつけ方、<span class="accent">4つのパターン</span>がある！</div>
+
+      <div class="choice-q">🤔 study の過去形はどっち？</div>
+      <div class="choice-opts" id="ch1">
+        <button class="ch-btn" data-correct="false">studyed</button>
+        <button class="ch-btn" data-correct="true">studied</button>
+      </div>
+      <div class="ch-feedback" id="ch1-fb"></div>
+
+      <div class="pattern-grid">
+        <div class="pattern-card" style="background:var(--blue-light);border-color:#B3E5FC;grid-column:1/-1;">
+          <div class="p-rule" style="color:var(--blue);">① そのまま ＋ ed　／　8割の動詞はこれ！</div>
+          <div class="p-key" style="color:var(--blue);">play → play<strong>ed</strong>　　watch → watch<strong>ed</strong>　　visit → visit<strong>ed</strong></div>
+          <div class="p-ex">まずこれを基本と覚える。迷ったらとりあえず ed ！</div>
+        </div>
+        <div class="pattern-card warn">
+          <div class="p-rule">② e で終わる → d だけ</div>
+          <div class="p-key">like → like<strong>d</strong><br>use → use<strong>d</strong></div>
+          <div class="p-ex">すでに e があるから d だけ！</div>
+        </div>
+        <div class="pattern-card warn">
+          <div class="p-rule">③ 子音＋ y で終わる → ied</div>
+          <div class="p-key">study → stud<strong>ied</strong><br>try → tr<strong>ied</strong></div>
+          <div class="p-ex">y を i に変えて ed（三単現と同じ！）</div>
+        </div>
+        <div class="pattern-card warn" style="grid-column:1/-1;">
+          <div class="p-rule">④ 短い音＋子音字で終わる一部の動詞 → 最後の文字を重ねて ed</div>
+          <div class="p-key">stop → stop<strong>ped</strong>　　plan → plan<strong>ned</strong></div>
+          <div class="p-ex">出てきたら「重ねる動詞」として例ごと覚えよう！</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：否定文（didn't ＋ 動詞の原形） -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン2 · スライド 3</div>
+      <div class="question-title">否定文は<span class="accent">didn't ＋ 動詞の原形</span>！</div>
+
+      <div class="formula-box warn-formula">
+        <div class="f-col">
+          <div class="f-part">主語</div>
+          <span class="f-label"></span>
+        </div>
+        <div class="f-plus warn-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part warn-key">didn't</div>
+          <span class="f-label warn-label">did not の短縮形</span>
+        </div>
+        <div class="f-plus warn-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part warn-border">動詞の原形</div>
+          <span class="f-label warn-label">⚠ -ed はつけない！</span>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="qa-row">
+          <div class="qa-q">I <span class="hl">played</span> tennis yesterday.</div>
+          <div class="qa-a">→ I <span class="hl-warn">didn't</span> <span class="hl-green">play</span> tennis yesterday.</div>
+          <div class="qa-jp">私は昨日テニスをしなかった。</div>
+        </div>
+        <div class="qa-row">
+          <div class="qa-q">She <span class="hl">watched</span> TV last night.</div>
+          <div class="qa-a">→ She <span class="hl-warn">didn't</span> <span class="hl-green">watch</span> TV last night.</div>
+          <div class="qa-jp">彼女は昨夜テレビを見なかった。</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ didn't のあとは必ず原形！<br>「didn't <u>played</u>」は NG → 「didn't <strong>play</strong>」が正しい。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：疑問文（Did ＋ 主語 ＋ 動詞の原形？） -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン2 · スライド 4</div>
+      <div class="question-title">疑問文は<span class="accent">Did を文頭</span>に出す！</div>
+
+      <div class="formula-box">
+        <div class="f-col">
+          <div class="f-part key">Did</div>
+          <span class="f-label">文頭に出す</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">主語</div>
+          <span class="f-label"></span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">動詞の原形</div>
+          <span class="f-label warn-label" style="color:var(--warn)">⚠ -ed はつけない！</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">?</div>
+          <span class="f-label"></span>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="qa-row">
+          <div class="qa-q"><span class="hl">Did</span> you <span class="hl-green">play</span> soccer yesterday?</div>
+          <div class="qa-a">
+            ✅ Yes, I <span class="hl">did</span>.<br>
+            ✅ No, I <span class="hl">didn't</span>.
+          </div>
+          <div class="qa-jp">昨日サッカーをしましたか？ — はい／いいえ</div>
+        </div>
+        <div class="qa-row">
+          <div class="qa-q"><span class="hl">Did</span> she <span class="hl-green">study</span> last night?</div>
+          <div class="qa-a">
+            ✅ Yes, she <span class="hl">did</span>.<br>
+            ✅ No, she <span class="hl">didn't</span>.
+          </div>
+          <div class="qa-jp">彼女は昨夜勉強しましたか？ — はい／いいえ</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ Did で聞かれたら <strong>did / didn't</strong> で答える！<br>「Did she <u>studied</u>?」は NG → Did のあとは原形 <strong>study</strong>。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン2 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">規則動詞の過去形を<span class="accent">整理しよう！</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="s-num">1</div>
+          <div class="s-text">肯定文 → 動詞に <span style="color:var(--blue);font-weight:700;">-ed</span> をつける（play → <strong>played</strong>）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="s-num">2</div>
+          <div class="s-text">e で終わる → <span style="color:var(--warn);font-weight:700;">d</span> だけ（like → <strong>liked</strong>）　／　子音字＋y → <span style="color:var(--warn);font-weight:700;">ied</span>（study → <strong>studied</strong>）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="s-num">3</div>
+          <div class="s-text">否定文 → <span style="color:var(--warn);font-weight:700;">didn't</span> ＋ 動詞の<span style="color:var(--warn);font-weight:700;">原形</span>（-ed はつけない！）</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-num">4</div>
+          <div class="s-text">疑問文 → <span style="color:var(--blue);font-weight:700;">Did</span> ＋ 主語 ＋ 動詞の<span style="color:var(--blue);font-weight:700;">原形</span> ?　答えは <strong>did / didn't</strong></div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="s-num">5</div>
+          <div class="s-text">主語が He / She / It でも形は同じ！三単現の s は<span style="color:var(--warn);font-weight:700;">関係なし</span></div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  // スライド2：study → studied クイズ
+  var ch1done = false;
+  document.querySelectorAll('#ch1 .ch-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (ch1done) return;
+      ch1done = true;
+      var isCorrect = btn.dataset.correct === 'true';
+      document.querySelectorAll('#ch1 .ch-btn').forEach(function(b) {
+        b.disabled = true;
+        if (b.dataset.correct === 'true') b.classList.add('correct');
+      });
+      if (!isCorrect) btn.classList.add('wrong');
+      var fb = document.getElementById('ch1-fb');
+      fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+      fb.textContent = isCorrect
+        ? '✓ 正解！子音字（d）＋ y で終わるから y を i に変えて studied！'
+        : '✗ 惜しい！y の前が子音字のときは y → i に変えて ed。studyed ではなく studied！';
+    });
+  });
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'learning.html?lesson=lesson15q'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  // embed mode
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+    const pageParam = params.get('page');
+    if (pageParam) {
+      const pageNum = Math.max(0, parseInt(pageParam) - 1);
+      if (pageNum < TOTAL && pageNum >= 0) { go(pageNum); }
+    }
+  } else {
+    renderDots(0);
+  }
+</script>
+
+</body>
+</html>

@@ -1,6 +1,14 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -63,7 +71,6 @@ main {
 /* SLIDE CARD */
 .slide-card {
   background: var(--white);
-  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 44px 52px;
   flex: 1;
@@ -189,10 +196,8 @@ main {
 </head>
 <body>
 <main>
-  <div class="slide active">
-    <div class="slide-card">
-      <div class="slide-label">一般動詞 · スライド 2</div>
-      <div>
+  <div class="slide-card">
+    <div>
         <div class="concept-title">このスライドで学ぶこと</div>
         <div class="concept-text">よく使う<span class="accent">一般動詞</span></div>
       </div>
@@ -217,9 +222,7 @@ main {
       </div>
 
       <div class="point-box">💡 動作（する・行く）や状態（好き・持っている）を表す動詞が一般動詞！</div>
-    </div>
   </div>
 </main>
-<script src="../../ai-chat.js"></script>
 </body>
 </html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 3 まとめ＆総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+body.embedded {
+  background: transparent;
+  min-height: auto;
+}
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; white-space: nowrap; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.35; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.question-title .accent { color: var(--accent); }
+
+/* 3列まとめカード */
+.lesson-cards { display: flex; flex-direction: column; gap: 10px; }
+.lc-card { border-radius: 14px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 16px; }
+.lc-card.l1 { background: var(--blue-light); border: 1.5px solid #B3E5FC; }
+.lc-card.l2 { background: var(--warn-light); border: 1.5px solid var(--warn); }
+.lc-card.l3 { background: var(--green-light); border: 1.5px solid #A5D6A7; }
+.lc-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; margin-top: 2px; }
+.l1 .lc-num { background: var(--blue); }
+.l2 .lc-num { background: var(--warn); }
+.l3 .lc-num { background: var(--green); }
+.lc-body { display: flex; flex-direction: column; gap: 4px; }
+.lc-title { font-size: 14px; font-weight: 700; }
+.l1 .lc-title { color: var(--blue); }
+.l2 .lc-title { color: var(--warn); }
+.l3 .lc-title { color: var(--green); }
+.lc-desc { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.5; }
+
+/* 大きな公式まとめ */
+.formula-summary { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 14px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+.fs-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; }
+.fs-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.fs-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+.fs-tag.base { background: var(--bg); color: var(--sub); border: 1px solid var(--border); }
+.fs-tag.q    { background: var(--blue); color: white; }
+.fs-tag.neg  { background: var(--warn); color: white; }
+.fs-sent { font-size: 15px; font-weight: 700; line-height: 1.5; }
+.hl      { color: var(--blue); }
+.hl-warn { color: var(--warn); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+
+/* ing形パターン早見表 */
+.ing-table { display: flex; flex-direction: column; gap: 8px; }
+.ing-row { display: grid; grid-template-columns: 80px 1fr 1fr; gap: 10px; align-items: center; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--white); }
+.ing-pat { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 20px; text-align: center; }
+.ing-pat.p1 { background: var(--blue-light); color: var(--blue); }
+.ing-pat.p2 { background: var(--warn-light); color: var(--warn); }
+.ing-pat.p3 { background: var(--green-light); color: var(--green); }
+.ing-rule { font-size: 13px; font-weight: 700; color: var(--sub); }
+.ing-ex { font-size: 14px; font-weight: 700; }
+
+/* よくあるミスリスト */
+.mistake-list { display: flex; flex-direction: column; gap: 10px; }
+.mk-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: 12px; background: var(--warn-light); border: 1.5px solid var(--warn); }
+.mk-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.mk-text { font-size: 14px; font-weight: 600; color: var(--warn); line-height: 1.6; }
+.mk-text s { opacity: 0.6; }
+
+/* 判断フロー */
+.flow-box { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 14px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+.flow-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 2px; }
+.flow-step { display: flex; align-items: center; gap: 12px; }
+.flow-num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.flow-text { font-size: 14px; font-weight: 700; color: var(--blue); line-height: 1.4; }
+.flow-arrow { font-size: 16px; color: var(--blue); padding-left: 36px; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+body.embedded nav,
+body.embedded .bottom-nav {
+  display: none;
+}
+
+body.embedded main {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.embedded .slide {
+  animation: none;
+}
+
+body.embedded .slide-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  padding: 44px 52px;
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .question-title { font-size: 18px; white-space: normal; }
+  .ing-row { grid-template-columns: 60px 1fr; }
+  .ing-ex { display: none; }
+  .fs-row { gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 3 · まとめ＆総合演習</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <a href="../../learning.html?lesson=lesson91" class="btn-exit">← レッスンへ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：Unit 3 で学んだこと -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 3 · レッスン4 · スライド 1</div>
+      <div class="question-title">Unit 3 で<span class="accent">何を学んだ？</span></div>
+
+      <div class="lesson-cards">
+        <div class="lc-card l1">
+          <div class="lc-num">L1</div>
+          <div class="lc-body">
+            <div class="lc-title">現在進行形の基本</div>
+            <div class="lc-desc">be動詞 ＋ 動詞ing ＝「今まさに〜している」<br>am / is / are は主語で決まる</div>
+          </div>
+        </div>
+        <div class="lc-card l2">
+          <div class="lc-num">L2</div>
+          <div class="lc-body">
+            <div class="lc-title">ing形の作り方</div>
+            <div class="lc-desc">①そのまま ②e を取る ③最後を重ねる（3パターン）</div>
+          </div>
+        </div>
+        <div class="lc-card l3">
+          <div class="lc-num">L3</div>
+          <div class="lc-body">
+            <div class="lc-title">疑問文と否定文</div>
+            <div class="lc-desc">疑問文 → be動詞を文頭へ　否定文 → be動詞の直後に not</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 この3つが組み合わさって「現在進行形」が完成！<br>次のスライドで全部まとめて確認しよう。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：3つの文型を並べて整理 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 3 · レッスン4 · スライド 2</div>
+      <div class="question-title">3つの文型を<span class="accent">並べて確認！</span></div>
+
+      <div class="formula-summary">
+        <div class="fs-title">📋 現在進行形 — 文型まとめ</div>
+        <div class="fs-row">
+          <span class="fs-tag base">ふつうの文</span>
+          <span class="fs-sent">She <span class="hl">is</span> play<span class="hl">ing</span> tennis.</span>
+        </div>
+        <div class="fs-row">
+          <span class="fs-tag q">疑問文</span>
+          <span class="fs-sent"><span class="hl">Is</span> she play<span class="hl">ing</span> tennis? — Yes, she <span class="hl">is</span>.</span>
+        </div>
+        <div class="fs-row">
+          <span class="fs-tag neg">否定文</span>
+          <span class="fs-sent">She <span class="hl-warn">isn't</span> play<span class="hl">ing</span> tennis.</span>
+        </div>
+      </div>
+
+      <div class="formula-summary" style="background:var(--green-light); border-color:#A5D6A7;">
+        <div class="fs-title" style="color:var(--green);">📋 They（are）バージョン</div>
+        <div class="fs-row">
+          <span class="fs-tag base">ふつうの文</span>
+          <span class="fs-sent">They <span class="hl-green">are</span> run<span class="hl-green">ning</span>.</span>
+        </div>
+        <div class="fs-row">
+          <span class="fs-tag q">疑問文</span>
+          <span class="fs-sent"><span class="hl-green">Are</span> they run<span class="hl-green">ning</span>? — Yes, they <span class="hl-green">are</span>.</span>
+        </div>
+        <div class="fs-row">
+          <span class="fs-tag neg">否定文</span>
+          <span class="fs-sent">They <span class="hl-warn">aren't</span> run<span class="hl-green">ning</span>.</span>
+        </div>
+      </div>
+
+      <div class="point-box">💡 ing形はふつう文・疑問文・否定文どれでも変わらない！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：ing形 早見表 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 3 · レッスン4 · スライド 3</div>
+      <div class="question-title">ing形<span class="accent">早見表</span>で総チェック！</div>
+
+      <div class="ing-table">
+        <div class="ing-row" style="background:var(--bg); border-color:var(--border);">
+          <div style="font-size:11px; font-weight:700; color:var(--sub);">パターン</div>
+          <div style="font-size:11px; font-weight:700; color:var(--sub);">ルール</div>
+          <div style="font-size:11px; font-weight:700; color:var(--sub);">例</div>
+        </div>
+        <div class="ing-row">
+          <div class="ing-pat p1">①</div>
+          <div class="ing-rule">そのまま ing</div>
+          <div class="ing-ex" style="color:var(--blue);">play → playing<br>eat → eating</div>
+        </div>
+        <div class="ing-row">
+          <div class="ing-pat p2">②</div>
+          <div class="ing-rule">e を取って ing</div>
+          <div class="ing-ex" style="color:var(--warn);">make → making<br>write → writing</div>
+        </div>
+        <div class="ing-row">
+          <div class="ing-pat p3">③</div>
+          <div class="ing-rule">最後を重ねて ing</div>
+          <div class="ing-ex" style="color:var(--green);">run → running<br>swim → swimming</div>
+        </div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">⚡ ing形の最短判断ルール</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">語尾が e で終わる？ → e を取って ing（②）</div>
+        </div>
+        <div class="flow-arrow">↓ NO</div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text">「短母音＋子音」で終わる？ → 最後を重ねて ing（③）</div>
+        </div>
+        <div class="flow-arrow">↓ NO</div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-text">それ以外 → そのまま ing（①）</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：よくあるミス TOP 5 -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 3 · レッスン4 · スライド 4</div>
+      <div class="question-title">これだけは<span class="accent">やらかさない</span>！</div>
+
+      <div class="mistake-list">
+        <div class="mk-item">
+          <div class="mk-icon">❌</div>
+          <div class="mk-text"><s>I is playing</s> → <strong>I am playing</strong>（I には am！）</div>
+        </div>
+        <div class="mk-item">
+          <div class="mk-icon">❌</div>
+          <div class="mk-text"><s>We is running</s> → <strong>We are running</strong>（We には are！）</div>
+        </div>
+        <div class="mk-item">
+          <div class="mk-icon">❌</div>
+          <div class="mk-text"><s>She is makeing</s> → <strong>She is making</strong>（e を取る！）</div>
+        </div>
+        <div class="mk-item">
+          <div class="mk-icon">❌</div>
+          <div class="mk-text"><s>He is runing</s> → <strong>He is running</strong>（n を重ねる！）</div>
+        </div>
+        <div class="mk-item">
+          <div class="mk-icon">❌</div>
+          <div class="mk-text"><s>Are you running? — Yes, I do.</s> → <strong>Yes, I am.</strong>（be動詞で返す！）</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：全体まとめ ＋ 総合演習へ -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 3 · レッスン4 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">Unit 3 総まとめ</div>
+        <div class="question-title">現在進行形の<span class="accent">全ルール</span></div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">⚡ 現在進行形 — 最短判断フロー</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">「今まさに〜している」 → 現在進行形（be動詞 ＋ ing）</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text">主語に合う be動詞（am / is / are）を選ぶ</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-text">ing形のパターンを確認（①そのまま ②e取る ③重ねる）</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-text">疑問文 → be動詞を前へ　否定文 → be動詞の直後に not</div>
+        </div>
+      </div>
+
+      <div class="point-box">🎉 おつかれさま！Unit 3 を全部学んだ！<br>総合演習で実力を確かめよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">総合演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  const requestedPage = Number(params.get('page') || 1);
+
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    const target = Math.max(0, Math.min(TOTAL - 1, idx));
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = target;
+    document.getElementById('s' + cur).classList.add('active');
+    const navFill = document.getElementById('nav-fill');
+    const navCount = document.getElementById('nav-count');
+    if (navFill) navFill.style.width = ((cur + 1) / TOTAL * 100) + '%';
+    if (navCount) navCount.textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  if (!isEmbedded) {
+    document.getElementById('n0').addEventListener('click', function() { go(1); });
+    document.getElementById('n1').addEventListener('click', function() { go(2); });
+    document.getElementById('n2').addEventListener('click', function() { go(3); });
+    document.getElementById('n3').addEventListener('click', function() { go(4); });
+    document.getElementById('n4').addEventListener('click', function() { location.href = '../../learning.html?lesson=lesson91q'; });
+    document.getElementById('back1').addEventListener('click', function() { go(0); });
+    document.getElementById('back2').addEventListener('click', function() { go(1); });
+    document.getElementById('back3').addEventListener('click', function() { go(2); });
+    document.getElementById('back4').addEventListener('click', function() { go(3); });
+  }
+
+  const initialPage = Number.isFinite(requestedPage) ? requestedPage : 1;
+  go(initialPage - 1);
+</script>
+
+</body>
+</html>

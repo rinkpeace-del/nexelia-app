@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 8 Lesson 4 · 演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --blue: #0277BD; --blue-light: #E1F5FE;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+
+.q-header { display: flex; align-items: center; justify-content: space-between; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); }
+.q-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: var(--blue-light); color: var(--blue); letter-spacing: 0.04em; }
+
+.q-text     { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub      { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.q-highlight { font-size: 18px; color: var(--blue); font-weight: 700; line-height: 1.6; }
+
+/* 縦並び選択肢 */
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
+.opt { padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt:disabled { cursor: default; transform: none; }
+
+/* 2×2 カード型選択肢 */
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
+.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 20px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.3; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 80px; }
+.opt-card .card-sub { font-size: 12px; font-weight: 600; color: var(--sub); }
+.opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt-card.correct .card-sub { color: var(--green); opacity: 0.8; }
+.opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt-card:disabled { cursor: default; transform: none; }
+
+/* 3択カード型 */
+.options-grid3 { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
+.opt-card3 { padding: 16px 20px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: left; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; gap: 14px; }
+.opt-card3 .card-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; background: var(--bg); color: var(--sub); border: 1px solid var(--border); white-space: nowrap; flex-shrink: 0; }
+.opt-card3:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt-card3.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt-card3.correct .card-badge { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt-card3.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt-card3:disabled { cursor: default; transform: none; }
+
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.75; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+.dots { display: flex; gap: 7px; align-items: center; }
+.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 22px; }
+
+/* 結果画面 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 52px; margin-bottom: 20px; }
+.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.score-badge { font-size: 34px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 32px; }
+.complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cbtn { padding: 13px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+.cbtn.primary { background: var(--blue); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+.recap-box { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; font-size: 14px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-bottom: 24px; text-align: left; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .quiz-card { padding: 24px 18px; }
+}
+
+/* AI Chat Panel Styles */
+.ai-overlay {
+  position: fixed; inset: 0; background: transparent;
+  z-index: 999; pointer-events: none;
+}
+.ai-overlay.open { pointer-events: auto; }
+
+.ai-panel {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 300px; max-width: 90vw;
+  background: var(--white); box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+  z-index: 1000; display: flex; flex-direction: column;
+  transform: translateX(-100%); transition: transform 0.3s ease;
+}
+.ai-panel.open { transform: translateX(0); }
+body.ai-open { padding-left: 300px; transition: padding-left 0.3s ease; }
+
+.ai-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.ai-panel-title { font-size: 15px; font-weight: 700; }
+.ai-panel-close {
+  width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--white); font-size: 14px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; color: var(--sub);
+  transition: border-color 0.15s, color 0.15s;
+}
+.ai-panel-close:hover { border-color: #aaa; color: var(--text); }
+
+.ai-panel-context {
+  padding: 14px 20px; background: #f8f9fa; border-bottom: 1px solid var(--border);
+  font-size: 13px; line-height: 1.7; color: var(--sub); flex-shrink: 0;
+}
+.ai-panel-context strong { color: var(--text); font-weight: 600; }
+
+.ai-panel-messages {
+  flex: 1; overflow-y: auto; padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.ai-msg { padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.75; }
+.ai-msg.user { background: var(--blue-light); color: var(--text); align-self: flex-end; max-width: 85%; }
+.ai-msg.assistant { background: #f0f0f0; color: var(--text); align-self: flex-start; max-width: 95%; white-space: pre-wrap; }
+.ai-msg.loading { color: var(--sub); font-style: italic; }
+
+.ai-panel-input {
+  padding: 12px 16px; border-top: 1px solid var(--border); flex-shrink: 0;
+  display: flex; gap: 8px; align-items: flex-end;
+}
+.ai-panel-input textarea {
+  flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; font-family: 'Noto Sans JP', sans-serif; resize: none;
+}
+.ai-panel-send {
+  padding: 8px 16px; background: var(--blue); color: white; border: none;
+  border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans JP', sans-serif;
+}
+.ai-panel-send:hover { background: #0277BD; }
+
+.btn-ask-ai {
+  display: block; margin-top: 16px; padding: 10px 16px;
+  background: white; border: 1.5px solid var(--blue);
+  border-radius: 8px; color: var(--blue); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Noto Sans JP', sans-serif;
+  transition: all 0.15s;
+}
+.btn-ask-ai:hover { background: var(--blue-light); }
+
+/* AI一時非表示 */ .btn-ask-ai { display: none !important; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 8 · Lesson 4 · Let's の文 · 演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:20%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <a href="learning.html?lesson=lesson30d" class="btn-exit">← スライドへ</a>
+</nav>
+
+<main>
+
+  <!-- Q1：超簡単 — 命令文 vs Let's（3択・引っかけ入り） -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-header">
+        <div class="q-label">問題 1 / 5</div>
+        <div class="q-tag">使い分け</div>
+      </div>
+      <div class="q-text">「一緒に帰ろう。」を英語にするとどれ？</div>
+      <div class="q-highlight">「（自分も一緒に）帰ろう。」</div>
+      <div class="q-sub">命令文と Let's の違いを思い出そう！</div>
+      <div class="options" id="o0">
+        <button class="opt" data-correct="false">Go home.</button>
+        <button class="opt" data-correct="false">Let's goes home.</button>
+        <button class="opt" data-correct="true">Let's go home.</button>
+        <button class="opt" data-correct="false">Let's going home.</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：超簡単 — Let's のあとの動詞の形（4択） -->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-header">
+        <div class="q-label">問題 2 / 5</div>
+        <div class="q-tag">原形</div>
+      </div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">Let's （　　） lunch together.</div>
+      <div class="q-sub">「一緒にランチを食べよう。」Let's のあとの動詞の形に注目！</div>
+      <div class="options-grid" id="o1">
+        <button class="opt-card" data-correct="false">eats</button>
+        <button class="opt-card" data-correct="false">eating</button>
+        <button class="opt-card" data-correct="false">ate</button>
+        <button class="opt-card" data-correct="true">eat</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：普通 — 修正問題（間違いを見つける） -->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-header">
+        <div class="q-label">問題 3 / 5</div>
+        <div class="q-tag">修正</div>
+      </div>
+      <div class="q-text">この文の間違いはどこ？</div>
+      <div class="q-highlight">Let's plays soccer after school.</div>
+      <div class="q-sub">間違っている部分を選んでね！</div>
+      <div class="options" id="o2">
+        <button class="opt" data-correct="false">Let's の位置が間違い → 文末に置くべき</button>
+        <button class="opt" data-correct="true">plays が間違い → 原形の play にすべき</button>
+        <button class="opt" data-correct="false">after school が間違い → after schools にすべき</button>
+        <button class="opt" data-correct="false">どこも間違っていない</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：普通 — Let's not を選ぶ（4択） -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-header">
+        <div class="q-label">問題 4 / 5</div>
+        <div class="q-tag">Let's not</div>
+      </div>
+      <div class="q-text">日本語に合う英文はどれ？</div>
+      <div class="q-highlight">「（一緒に）遅刻するのはやめよう。」</div>
+      <div class="q-sub">「一緒に〜やめよう」の形をよく考えて！</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false">Don't be late.</button>
+        <button class="opt" data-correct="false">Let's not late.</button>
+        <button class="opt" data-correct="true">Let's not be late.</button>
+        <button class="opt" data-correct="false">Not let's be late.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5：総合 — 命令文 vs Let's vs Let's not の判断（4択） -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-header">
+        <div class="q-label">問題 5 / 5</div>
+        <div class="q-tag">総合</div>
+      </div>
+      <div class="q-text">場面に合う英文はどれ？</div>
+      <div class="q-highlight">先生が生徒全員に向かって「静かにしましょう。（私も含めて）」と言っている。</div>
+      <div class="q-sub">命令文・Let's・Let's not — どれが「自分も含めた誘いかけ」？</div>
+      <div class="options" id="o4">
+        <button class="opt" data-correct="false">Be quiet.</button>
+        <button class="opt" data-correct="false">Don't be noisy.</button>
+        <button class="opt" data-correct="true">Let's be quiet.</button>
+        <button class="opt" data-correct="false">Let's not quiet.</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon" id="c-icon"></div>
+    <h1 id="c-title"></h1>
+    <div class="score-badge" id="c-score"></div>
+    <div class="recap-box">💡 判断軸：<strong>命令文</strong>（相手だけへの指示）vs <strong>Let's</strong>（自分も一緒に〜しよう）vs <strong>Let's not</strong>（一緒に〜やめよう）<br>Let's のあとは必ず<strong>動詞の原形</strong>！</div>
+    <p id="c-msg"></p>
+    <div class="complete-btns">
+      <a href="learning.html?lesson=lesson30d" class="cbtn secondary">← スライドへ</a>
+      <a href="nexelia-unit08-lesson5.html" class="cbtn primary">次のレッスンへ →</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+  let correct = 0;
+  const answered = {};
+
+  const FB = [
+    {
+      ok: '✓ 正解！「Let\'s go home.」— Let\'s のあとは動詞の原形（go）だよ。Let\'s goes のように s をつけるのはよくある間違いだから注意！',
+      ng: '✗ 惜しい！「一緒に」帰るから Let\'s を使うよ。Go home. は相手だけへの命令になるし、Let\'s goes は動詞に s がついて NG。「Let\'s go home.」が正解！'
+    },
+    {
+      ok: '✓ 正解！Let\'s のあとの動詞は必ず原形（eat）だよ。eats・eating・ate はどれも命令文では使えないよ！',
+      ng: '✗ 惜しい！Let\'s のあとは必ず動詞の原形を使うよ。「Let\'s eat lunch together.」の eat が正解！三単現の s や ing・過去形はつけないよ。'
+    },
+    {
+      ok: '✓ 正解！plays が間違いだよ。Let\'s のあとは動詞の原形（play）を使う。三単現の s をつけてしまうのはよくある間違いだよ！',
+      ng: '✗ 惜しい！間違いは plays だよ。Let\'s のあとは動詞の原形（play）を使うよ。命令文と同じで、三単現の s はつけないのがポイント！'
+    },
+    {
+      ok: '✓ 正解！「一緒に〜やめよう」は Let\'s not ＋ 動詞の原形（be）だよ。Don\'t は相手だけへの命令になるから使えないよ！',
+      ng: '✗ 惜しい！「一緒に〜やめよう」は「Let\'s not ＋ 動詞の原形」だよ。「Let\'s not be late.」が正解。Don\'t を使うと相手だけへの命令になるよ。Let\'s not late. は動詞の原形が抜けているから NG！'
+    },
+    {
+      ok: '✓ 正解！「自分も含めた誘いかけ」だから Let\'s を使うよ。Be quiet. は相手だけへの命令。Don\'t be noisy. も命令文だよ。Let\'s not quiet. は動詞の原形が抜けているから NG！',
+      ng: '✗ 惜しい！「私も含めて静かにしましょう」と誘っているから Let\'s を使うよ。Be quiet. や Don\'t be noisy. は相手だけへの命令。「Let\'s be quiet.」が正解！Let\'s のあとは be 動詞の原形（be）だよ。'
+    }
+  ];
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s' + cur).classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+    document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
+
+    if (correct === 5) {
+      document.getElementById('c-icon').textContent = '🎉';
+      document.getElementById('c-title').textContent = '全問正解！';
+      document.getElementById('c-msg').innerHTML = 'Let\'s の使い方、完璧にマスターしたね！<br>次のレッスンへ進もう！';
+    } else if (correct >= 3) {
+      document.getElementById('c-icon').textContent = '👍';
+      document.getElementById('c-title').textContent = 'もう少し！';
+      document.getElementById('c-msg').innerHTML = 'あと一歩！命令文と Let\'s の違いを<br>スライドで確認してから再チャレンジしよう。';
+    } else {
+      document.getElementById('c-icon').textContent = '📖';
+      document.getElementById('c-title').textContent = 'スライドを見直そう';
+      document.getElementById('c-msg').innerHTML = '命令文・Let\'s・Let\'s not の判断軸を<br>スライドで確認してから再チャレンジしよう！';
+    }
+  }
+
+  for (var q = 0; q < TOTAL; q++) {
+    (function(qIdx) {
+      const container = document.getElementById('o' + qIdx);
+      const opts = container.querySelectorAll('.opt, .opt-card, .opt-card3');
+      opts.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (answered[qIdx]) return;
+          answered[qIdx] = true;
+          const isCorrect = btn.dataset.correct === 'true';
+          if (isCorrect) correct++;
+          opts.forEach(function(b) {
+            b.disabled = true;
+            if (b.dataset.correct === 'true') b.classList.add('correct');
+          });
+          if (!isCorrect) btn.classList.add('wrong');
+          const fb = document.getElementById('f' + qIdx);
+          fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+          fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
+          // Add "AIに質問" button after feedback
+          if (!document.getElementById('aiBtn_' + qIdx)) {
+            const aiBtn = document.createElement('button');
+            aiBtn.id = 'aiBtn_' + qIdx;
+            aiBtn.className = 'btn-ask-ai';
+            aiBtn.type = 'button';
+            aiBtn.textContent = '🤖 AIに質問';
+            fb.parentElement.insertBefore(aiBtn, fb.nextSibling);
+
+            const optButtons = document.querySelectorAll('#o' + qIdx + ' .opt, #o' + qIdx + ' .opt-card');
+            let selectedText = '';
+            optButtons.forEach(function(b) {
+              if (b.classList.contains('wrong') || (b.classList.contains('correct') && !isCorrect)) {
+                selectedText = b.textContent;
+              }
+            });
+            if (!selectedText && isCorrect) {
+              optButtons.forEach(function(b) {
+                if (b.classList.contains('correct')) {
+                  selectedText = b.textContent;
+                }
+              });
+            }
+
+            aiBtn.addEventListener('click', function() {
+              const qText = document.querySelector('#s' + qIdx + ' .q-text') ?
+                document.querySelector('#s' + qIdx + ' .q-text').textContent : '';
+              const correctBtn = document.querySelector('#o' + qIdx + ' .opt[data-correct="true"], #o' + qIdx + ' .opt-card[data-correct="true"]');
+              const correctText = correctBtn ? correctBtn.textContent : '';
+              openExerciseAiPanel({
+                question: qText,
+                selected: selectedText,
+                correct: correctText,
+                isCorrect: isCorrect
+              });
+            });
+          }
+
+          document.getElementById('n' + qIdx).disabled = false;
+        });
+      });
+    })(q);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { finish(); });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+
+  function openExerciseAiPanel(info) {
+    const panel = document.getElementById('aiChatPanel');
+    const overlay = document.getElementById('aiOverlay');
+    const closeBtn = document.getElementById('aiPanelClose');
+    const contextEl = document.getElementById('aiPanelContext');
+    const messagesEl = document.getElementById('aiPanelMessages');
+    const formEl = document.getElementById('aiPanelForm');
+    const questionInput = document.getElementById('aiPanelQuestion');
+    const sendBtn = document.getElementById('aiPanelSend');
+
+    if (!panel) return;
+
+    let currentContext = '';
+
+    const ctx = `<strong>問題:</strong> ${info.question}<br><strong>あなたの回答:</strong> ${info.selected}<br><strong>正解:</strong> ${info.correct}<br><strong>結果:</strong> ${info.isCorrect ? '正解' : '不正解'}`;
+    const contextText = `問題: ${info.question} / あなたの回答: ${info.selected} / 正解: ${info.correct} / 結果: ${info.isCorrect ? '正解' : '不正解'}`;
+
+    currentContext = contextText;
+    contextEl.innerHTML = ctx;
+    messagesEl.innerHTML = '';
+    panel.classList.add('open');
+    overlay.classList.add('open');
+    document.body.classList.add('ai-open');
+
+    closeBtn.onclick = function() {
+      panel.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.classList.remove('ai-open');
+    };
+
+    overlay.onclick = closeBtn.onclick;
+
+    formEl.onsubmit = async function(e) {
+      e.preventDefault();
+      const q = questionInput.value.trim();
+      if (!q) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'ai-msg user';
+      userMsg.textContent = q;
+      messagesEl.appendChild(userMsg);
+
+      questionInput.value = '';
+      sendBtn.disabled = true;
+
+      const loadingMsg = document.createElement('div');
+      loadingMsg.className = 'ai-msg assistant loading';
+      loadingMsg.textContent = '回答を生成中...';
+      messagesEl.appendChild(loadingMsg);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      try {
+        const res = await fetch('/.netlify/functions/ai-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: q,
+            context: currentContext,
+          }),
+        });
+        const data = await res.json();
+        loadingMsg.classList.remove('loading');
+        loadingMsg.textContent = data.answer || '回答を取得できませんでした。';
+      } catch {
+        loadingMsg.classList.remove('loading');
+        loadingMsg.textContent = 'エラーが発生しました。もう一度お試しください。';
+      }
+
+      sendBtn.disabled = false;
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    };
+
+    setTimeout(() => questionInput.focus(), 350);
+  }
+
+</script>
+
+<!-- AI Chat Side Panel -->
+<div class="ai-overlay" id="aiOverlay"></div>
+<aside class="ai-panel" id="aiChatPanel">
+  <div class="ai-panel-header">
+    <span class="ai-panel-title">🤖 AIに質問</span>
+    <button class="ai-panel-close" id="aiPanelClose" type="button" aria-label="閉じる">✕</button>
+  </div>
+  <div class="ai-panel-context" id="aiPanelContext"></div>
+  <div class="ai-panel-messages" id="aiPanelMessages"></div>
+  <form class="ai-panel-input" id="aiPanelForm">
+    <textarea id="aiPanelQuestion" placeholder="質問を入力してください..." rows="2"></textarea>
+    <button type="submit" class="ai-panel-send" id="aiPanelSend">送信</button>
+  </form>
+</aside>
+
+</body>
+</html>

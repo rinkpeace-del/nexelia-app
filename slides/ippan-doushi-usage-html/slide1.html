@@ -1,244 +1,431 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 2 三単現の s</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --red: #D32F2F;
-  --blue: #1A56DB;
-  --blue-dark: #1446B8;
-  --blue-light: #E8F0FE;
   --text: #1A1A1A;
   --sub: #888;
   --border: #E8E8E8;
   --white: #FFFFFF;
   --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
   --green: #1B873B;
   --green-light: #E6F4EA;
-  --orange: #E65100;
-  --orange-light: #FFF3E0;
 }
 
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-nav {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  height: 60px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px; flex-shrink: 0;
-}
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
 .nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
 .nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
 .lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
 .nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
 .nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
 .nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
-.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
 .btn-exit:hover { border-color: #aaa; color: var(--text); }
 
-main {
-  flex: 1; display: flex; flex-direction: column;
-  max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px;
-}
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
 
 .slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
 .slide.active { display: flex; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.slide-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 44px 52px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
 
-.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
-.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
-.concept-text  { font-size: 26px; font-weight: 700; line-height: 1.4; }
-.concept-text .accent { color: var(--blue); }`r`n/* 変換図 */
-.transform-row {
-  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-}
-.transform-box {
-  padding: 14px 22px; border-radius: 12px;
-  font-size: 17px; font-weight: 700; text-align: center;
-}
-.transform-box.before { background: #F3F4F6; color: var(--text); }
-.transform-box.after  { background: var(--orange-light); color: var(--orange); }
-.transform-arrow { font-size: 22px; color: var(--sub); }
-.transform-label { font-size: 12px; color: var(--sub); font-weight: 600; display: block; margin-bottom: 4px; }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.35; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+.q-sub { font-size: 14px; color: var(--sub); font-weight: 500; line-height: 1.6; }
 
-/* 例文リスト */
+/* 主語グループ表示 */
+.subject-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.subj-box { border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+.subj-box.plain { background: var(--bg); border: 1.5px solid var(--border); }
+.subj-box.special { background: var(--warn-light); border: 1.5px solid var(--warn); }
+.subj-head { font-size: 13px; font-weight: 700; }
+.subj-box.plain .subj-head { color: var(--sub); }
+.subj-box.special .subj-head { color: var(--warn); }
+.subj-names { font-size: 18px; font-weight: 700; line-height: 1.6; }
+.subj-box.plain .subj-names { color: var(--text); }
+.subj-box.special .subj-names { color: var(--warn); }
+.subj-rule { font-size: 13px; font-weight: 600; }
+.subj-box.plain .subj-rule { color: var(--sub); }
+.subj-box.special .subj-rule { color: var(--warn); }
+
+/* s のつけ方ルール表 */
+.rules-table { display: flex; flex-direction: column; gap: 8px; }
+.rule-row { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 0; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); }
+.rule-row.header { border-color: transparent; background: transparent; border-radius: 0; }
+.rule-cell { padding: 12px 16px; font-size: 14px; font-weight: 700; }
+.rule-row.header .rule-cell { font-size: 11px; font-weight: 700; color: var(--sub); letter-spacing: 0.06em; padding-bottom: 6px; }
+.rule-cell.cond { background: var(--bg); color: var(--text); border-right: 1.5px solid var(--border); }
+.rule-cell.how  { background: var(--blue-light); color: var(--blue); border-right: 1.5px solid #B3E5FC; }
+.rule-cell.ex   { background: var(--white); color: var(--sub); font-style: italic; }
+.rule-cell.how.warn-cell { background: var(--warn-light); color: var(--warn); border-right: 1.5px solid #FFCC80; }
+
+/* ミニクイズ */
+.mini-quiz { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; }
+.mini-quiz-q { padding: 16px 20px; background: var(--bg); font-size: 15px; font-weight: 700; border-bottom: 1.5px solid var(--border); }
+.mini-quiz-q .sentence { font-size: 18px; color: var(--blue); margin-top: 6px; }
+.mini-quiz-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 16px 20px; background: var(--white); }
+.mq-btn { padding: 11px 8px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s; color: var(--text); }
+.mq-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); }
+.mq-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.mq-btn.wrong { background: #FFEBEE; border-color: #C62828; color: #C62828; text-decoration: line-through; }
+.mq-btn:disabled { cursor: default; }
+.mq-feedback { padding: 12px 20px; font-size: 13px; font-weight: 600; display: none; border-top: 1.5px solid var(--border); line-height: 1.6; }
+.mq-feedback.show { display: block; }
+.mq-feedback.ok { color: var(--green); background: var(--green-light); }
+.mq-feedback.ng { color: #C62828; background: #FFEBEE; }
+
+/* 例文 */
 .ex-list { display: flex; flex-direction: column; gap: 10px; }
-.ex-single {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-}
-.ex-single .en {
-  padding: 16px 22px;
-  font-size: 19px; font-weight: 700;
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  letter-spacing: 0.02em;
-}
-.ex-single .en .subj { color: var(--orange); }
-.ex-single .en .verb { color: var(--green); }
-.ex-single .en .s    { color: var(--red); }
-.ex-single .jp {
-  padding: 12px 22px;
-  font-size: 14px; color: var(--sub);
-  background: var(--bg);
-}
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); }
+.hl-warn { color: var(--warn); font-weight: 700; }
 
-/* sのルール表 */
-.rule-list { display: flex; flex-direction: column; gap: 10px; }
-.rule-item {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.rule-cond {
-  padding: 14px 16px;
-  background: #F3F4F6;
-  font-size: 13px; font-weight: 700;
-  border-right: 1px solid var(--border);
-  display: flex; align-items: center;
-}
-.rule-ex {
-  padding: 14px 16px;
-  font-size: 14px; font-weight: 600;
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-}
-.rule-ex .arrow { color: var(--sub); }
-.rule-ex .result { color: var(--orange); font-weight: 700; }
-
-/* ポイントボックス */
-.point-box {
-  background: var(--orange-light);
-  border-radius: 12px;
-  padding: 18px 22px;
-  font-size: 15px; color: var(--orange);
-  font-weight: 600; line-height: 1.7;
-  margin-top: auto;
-}
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
 
 /* まとめリスト */
-.summary-list { display: flex; flex-direction: column; gap: 12px; }
-.summary-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 16px 20px; background: var(--white);
-  border: 1px solid var(--border); border-radius: 12px;
-}
-.summary-num {
-  width: 26px; height: 26px; background: var(--blue); color: white;
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; flex-shrink: 0;
-}
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
 .summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
 
-/* BOTTOM NAV */
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
 .bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
 .btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
 .btn-nav:hover { border-color: #aaa; color: var(--text); }
 .btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
-.btn-nav.primary:hover { background: var(--blue-dark); }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
 
 .dots { display: flex; gap: 6px; align-items: center; }
 .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
-.dot.done   { background: rgba(26,86,219,0.3); }
+.dot.done   { background: rgba(2,119,189,0.3); }
 .dot.active { background: var(--blue); width: 20px; }
+
+/* 埋め込みモード */
+body.embedded nav { display: none; }
+body.embedded .bottom-nav { display: none; }
+body.embedded main { padding: 0; }
+body.embedded { background: transparent; }
+body.embedded .slide-card { flex: none; }
+body.embedded .slide { flex: none; }
 
 @media (max-width: 600px) {
   nav { padding: 0 16px; }
   .nav-center { display: none; }
   main { padding: 20px 16px; }
   .slide-card { padding: 28px 20px; gap: 20px; }
-  .rule-item { grid-template-columns: 1fr; }
-  .rule-cond { border-right: 0; border-bottom: 1px solid var(--border); }
-}
-
-html, body { background: #fff; }
-body {
-  min-height: 0;
-  padding: 24px;
-  display: block;
-}
-main {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-.slide { display: block !important; }
-.slide-card {
-  flex: none;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
+  .subject-split { grid-template-columns: 1fr; }
+  .question-title { font-size: 18px; }
+  .rule-cell { font-size: 12px; padding: 10px 10px; }
 }
 </style>
 </head>
 <body>
+
+<nav>
+  <a href="lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 2 · 三単現の s</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <a href="learning.html?lesson=lesson7" class="btn-exit">← もどる</a>
+</nav>
+
 <main>
-  <div class="slide active">
+
+  <!-- スライド 1：He / She のとき何かが変わる？ -->
+  <div class="slide active" id="s0">
     <div class="slide-card">
-<div class="slide-label">三単現のs · スライド 1</div>
-      <div>
-        <div class="concept-title">このスライドで学ぶこと</div>
-        <div class="concept-text"><span class="accent">三単現のs</span>とは？</div>
-      </div>
+      <div class="question-title">He / She のとき、<span class="accent">動詞はどう変わる？</span></div>
 
-      <div style="font-size:14px; color:var(--sub); line-height:1.8;">
-        三単現とは、<strong style="color:var(--text)">三人称・単数・現在形</strong> のこと。<br>
-        He / She / It のほか、Tom や my sister など「自分でも相手でもない1人・1つ」が主語のとき、動詞に <strong style="color:var(--red)">s</strong> をつける。
-      </div>
-
-      <div class="transform-row">
-        <div class="transform-box before">
-          <span class="transform-label">I / You / We / They のとき</span>
-          like
+      <div class="subject-split">
+        <div class="subj-box plain">
+          <div class="subj-head">変化なし</div>
+          <div class="subj-names">I / You<br>We / They</div>
+          <div class="subj-rule">動詞は原形のまま</div>
         </div>
-        <div class="transform-arrow">→</div>
-        <div class="transform-box after">
-          <span class="transform-label">He / She / It など のとき</span>
-          like<strong>s</strong>
+        <div class="subj-box special">
+          <div class="subj-head">⚠ 変化する！</div>
+          <div class="subj-names">He / She / It</div>
+          <div class="subj-rule">動詞に s がつく！</div>
         </div>
       </div>
 
       <div class="ex-list">
         <div class="ex-single">
-          <div class="en"><span class="subj">He</span> <span class="verb">like<span class="s">s</span></span> music.</div>
-          <div class="jp">彼は音楽が好きです。</div>
-        </div>
-        <div class="ex-single">
-          <div class="en"><span class="subj">She</span> <span class="verb">play<span class="s">s</span></span> tennis.</div>
-          <div class="jp">彼女はテニスをします。</div>
+          <div class="en">I <span class="hl">like</span> soccer. → He <span class="hl-warn">likes</span> soccer.</div>
+          <div class="jp">私はサッカーが好き。→ 彼はサッカーが好き。</div>
         </div>
       </div>
 
-      <div class="point-box">💡 主語が He / She / It など のとき、動詞の末尾に s をつける！</div>
+      <div class="notice-box">⚠️ He / She / It が主語のとき<strong>だけ</strong>動詞に s がつく。<br>これを「三単現の s」という！</div>
+
+      <div class="point-box">💡 「三単現」＝ 三人称（He / She / It）・単数・現在形 の略！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
     </div>
   </div>
+
+  <!-- スライド 2：s のつけ方ルール、全部で何パターン？ -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="question-title">s のつけ方、<span class="accent">パターンはいくつある？</span></div>
+
+      <div class="rules-table">
+        <div class="rule-row header">
+          <div class="rule-cell">動詞の語尾</div>
+          <div class="rule-cell">つけ方</div>
+          <div class="rule-cell">例</div>
+        </div>
+        <div class="rule-row">
+          <div class="rule-cell cond">ふつう</div>
+          <div class="rule-cell how">そのまま + s</div>
+          <div class="rule-cell ex">like → <strong>likes</strong></div>
+        </div>
+        <div class="rule-row">
+          <div class="rule-cell cond">s / sh / ch / x / o で終わる</div>
+          <div class="rule-cell how">+ es</div>
+          <div class="rule-cell ex">go → <strong>goes</strong><br>teach → <strong>teaches</strong></div>
+        </div>
+        <div class="rule-row">
+          <div class="rule-cell cond">子音 + y で終わる</div>
+          <div class="rule-cell how warn-cell">y → ies</div>
+          <div class="rule-cell ex">study → <strong>studies</strong></div>
+        </div>
+        <div class="rule-row">
+          <div class="rule-cell cond">have</div>
+          <div class="rule-cell how warn-cell">→ has（別形）</div>
+          <div class="rule-cell ex">have → <strong>has</strong></div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ <strong>have → has</strong> は形ごと変わる！<br>「haves」にはならないので注意。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：study → studies、なぜ？（クイズ先行） -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="question-title">study の s 形、<span class="accent">どれが正しい？</span></div>
+      <div class="q-sub">She ___ English every day. — 正しい形を選ぼう！</div>
+
+      <div class="mini-quiz" id="mq1">
+        <div class="mini-quiz-q">
+          🤔 study に s をつけるとどうなる？
+          <div class="sentence">She ___ English every day.</div>
+        </div>
+        <div class="mini-quiz-choices">
+          <button class="mq-btn" data-correct="false" data-mq="1">studys</button>
+          <button class="mq-btn" data-correct="true"  data-mq="1">studies</button>
+          <button class="mq-btn" data-correct="false" data-mq="1">studyes</button>
+        </div>
+        <div class="mq-feedback" id="mq1-fb"></div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">study → stud<span class="hl-warn">ies</span></div>
+          <div class="jp">子音（d）+ y → y を取って ies をつける！</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">play → play<span class="hl">s</span></div>
+          <div class="jp">母音（a）+ y → そのまま s をつける（ies にしない！）</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ y の前が<strong>母音（a / e / i / o / u）</strong>なら → そのまま s<br>y の前が<strong>子音</strong>なら → y を取って ies</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：例文で確認 -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="question-title">例文で<span class="accent">三単現の s</span> を確認しよう！</div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">She <span class="hl-warn">likes</span> music.</div>
+          <div class="jp">彼女は音楽が好きだ。（like → likes）</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">He <span class="hl-warn">goes</span> to school by bike.</div>
+          <div class="jp">彼は自転車で学校に行く。（go → goes）</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">She <span class="hl-warn">studies</span> math every day.</div>
+          <div class="jp">彼女は毎日数学を勉強する。（study → studies）</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">He <span class="hl-warn">has</span> a dog.</div>
+          <div class="jp">彼は犬を飼っている。（have → has）</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 He / She / It → 必ず動詞の形を変える！<br>原形のままにするのが<strong>最大のミス</strong>。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">三単現の s、<span class="accent">全部言える？</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text"><strong>He / She / It</strong> が主語のとき → 動詞に <strong>s / es</strong> をつける</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text"><strong>子音 + y</strong> で終わる動詞 → <strong>y を取って ies</strong>（study → studies）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text"><strong>have</strong> だけは特別 → <strong>has</strong>（haves にしない！）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">I / You / We / They のときは<strong>原形のまま</strong>（s をつけない！）</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
+    </div>
+  </div>
+
 </main>
-<script src="../../ai-chat.js"></script>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  // ミニクイズ
+  document.querySelectorAll('.mq-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var mq = btn.dataset.mq;
+      var siblings = document.querySelectorAll('.mq-btn[data-mq="' + mq + '"]');
+      var fb = document.getElementById('mq' + mq + '-fb');
+      if (fb.classList.contains('show')) return;
+      var isCorrect = btn.dataset.correct === 'true';
+      siblings.forEach(function(b) {
+        b.disabled = true;
+        if (b.dataset.correct === 'true') b.classList.add('correct');
+      });
+      if (!isCorrect) btn.classList.add('wrong');
+      fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+      fb.textContent = isCorrect
+        ? '✓ 正解！study は 子音(d) + y → y を取って ies。「studies」が正しい形！'
+        : '✗ 惜しい！study の y の前は子音(d) → y を取って ies をつける。正解は「studies」！';
+    });
+  });
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'learning.html?lesson=lesson7q'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var isEmbedded = params.get('embed') === '1';
+    if (isEmbedded) {
+      document.body.classList.add('embedded');
+      var pageParam = params.get('page');
+      if (pageParam) {
+        var pageNum = Math.max(0, parseInt(pageParam) - 1);
+        if (pageNum >= 0 && pageNum < TOTAL) { go(pageNum); }
+      }
+    }
+  })();
+</script>
+
 </body>
 </html>

@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 5 レッスン1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+body.embedded { background: transparent; min-height: auto; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.5; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+.meaning-display { background: var(--blue-light); border-radius: 16px; padding: 32px 24px; text-align: center; display: flex; flex-direction: column; gap: 10px; }
+.meaning-display .en { font-size: 32px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; }
+.meaning-display .arrow { font-size: 22px; color: var(--sub); }
+.meaning-display .jp { font-size: 24px; font-weight: 700; color: var(--text); }
+.meaning-display .note { font-size: 13px; color: var(--sub); font-weight: 500; margin-top: 4px; }
+
+.formula-box { border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.formula-box .f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); }
+.formula-box .f-part.key { background: var(--blue-light); border-color: var(--blue); }
+.formula-box .f-plus { font-size: 18px; font-weight: 700; color: var(--blue); }
+.formula-box .f-label { font-size: 11px; font-weight: 600; text-align: center; display: block; margin-top: 4px; color: var(--sub); }
+
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 11px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); }
+
+.caution-box { border-radius: 14px; padding: 20px 24px; background: #FFF8E1; border: 1px solid #FFE082; }
+.caution-box .c-title { font-size: 12px; font-weight: 700; color: #F57F17; letter-spacing: 0.06em; margin-bottom: 12px; }
+.caution-box .c-row { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+.caution-box .c-row:last-child { margin-bottom: 0; }
+.c-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 8px; flex-shrink: 0; }
+.c-badge.ng { background: #FFCDD2; color: #C62828; }
+.c-badge.ok { background: #C8E6C9; color: #2E7D32; }
+.c-text { font-size: 14px; font-weight: 600; }
+
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+body.embedded nav,
+body.embedded .bottom-nav { display: none; }
+
+body.embedded main { max-width: none; width: 100%; margin: 0; padding: 0; }
+
+body.embedded .slide { animation: none; }
+
+body.embedded .slide-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  padding: 44px 52px;
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 5 · can の基本（肯定文）</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="../../lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：can ってどういう意味？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 5 · レッスン1 · スライド 1</div>
+      <div class="question-title">「<span class="accent">can</span>」ってどういう意味？</div>
+
+      <div class="meaning-display">
+        <div class="en">can</div>
+        <div class="arrow">↓</div>
+        <div class="jp">〜できる</div>
+        <div class="note">能力や可能性を表す言葉だよ</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="hl">can</span> swim.</div>
+          <div class="jp">私は泳ぐことができます。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 <strong>can ＝「〜できる」</strong><br>自分にできること、相手にできることを伝えるときに使うよ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：can の公式 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 5 · レッスン1 · スライド 2</div>
+      <div class="question-title">can のあとの動詞、<span class="accent">どんな形</span>にする？</div>
+
+      <div class="formula-box">
+        <div style="text-align:center">
+          <div class="f-part">主語</div>
+          <span class="f-label">だれが</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part key">can</div>
+          <span class="f-label">〜できる</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part key">動詞の原形</div>
+          <span class="f-label">play / run / swim…</span>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">She <span class="hl">can</span> play the piano.</div>
+          <div class="jp">彼女はピアノを弾くことができます。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 <strong>can のあとは必ず動詞の原形！</strong><br>この順番さえ覚えれば、もう文が作れる 😊</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：ここでミスる人が多い！ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 5 · レッスン1 · スライド 3</div>
+      <div class="question-title">簡単そうで、<span class="accent">ここでミスる人が多い！</span></div>
+
+      <div class="caution-box">
+        <div class="c-title">⚠️ he / she のときも原形のまま！ -s はつけない！</div>
+        <div class="c-row">
+          <span class="c-badge ng">✗ NG</span>
+          <span class="c-text">She can <span style="color:#C62828;text-decoration:line-through">plays</span> the guitar.</span>
+        </div>
+        <div class="c-row">
+          <span class="c-badge ok">✓ OK</span>
+          <span class="c-text">She can <span style="color:#2E7D32">play</span> the guitar.</span>
+        </div>
+        <div class="c-row" style="margin-top:6px">
+          <span class="c-badge ng">✗ NG</span>
+          <span class="c-text">He can <span style="color:#C62828;text-decoration:line-through">runs</span> fast.</span>
+        </div>
+        <div class="c-row">
+          <span class="c-badge ok">✓ OK</span>
+          <span class="c-text">He can <span style="color:#2E7D32">run</span> fast.</span>
+        </div>
+      </div>
+
+      <div class="point-box">💡 普段は he → plays のように -s をつけるけど、<strong>can のあとは絶対つけない！</strong><br>ここ超重要、テストにもよく出るよ 🔥</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 5 · レッスン1 · まとめ</div>
+      <div class="question-title">今日の<span class="accent">まとめ</span></div>
+
+      <div class="formula-box" style="flex-direction:column; gap:14px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
+          <div style="text-align:center"><div class="f-part">主語</div></div>
+          <div class="f-plus">＋</div>
+          <div style="text-align:center"><div class="f-part key">can</div></div>
+          <div class="f-plus">＋</div>
+          <div style="text-align:center"><div class="f-part key">動詞の原形</div></div>
+          <div class="f-plus" style="font-size:15px;">＝「〜できる」</div>
+        </div>
+        <div style="font-size:13px;color:var(--sub);font-weight:600;text-align:center;">
+          he / she でも、can のあとは原形のまま！-s はつけない！
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">My brother <span class="hl">can</span> play soccer very well.</div>
+          <div class="jp">私の兄はサッカーをとても上手にできます。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">Our dog <span class="hl">can</span> catch a ball.</div>
+          <div class="jp">私たちの犬はボールをキャッチできます。</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 理解できた？ここで差がつく。演習で確かめよう！</div>
+
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav cta" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  const requestedPage = Number(params.get('page') || 1);
+
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    const target = Math.max(0, Math.min(TOTAL - 1, idx));
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = target;
+    document.getElementById('s' + cur).classList.add('active');
+    const navFill = document.getElementById('nav-fill');
+    const navCount = document.getElementById('nav-count');
+    if (navFill) navFill.style.width = ((cur + 1) / TOTAL * 100) + '%';
+    if (navCount) navCount.textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  if (!isEmbedded) {
+    document.getElementById('n0').addEventListener('click', function() { go(1); });
+    document.getElementById('n1').addEventListener('click', function() { go(2); });
+    document.getElementById('n2').addEventListener('click', function() { go(3); });
+    document.getElementById('n3').addEventListener('click', function() { location.href = '../../nexelia-unit05-lesson1-exercise.html'; });
+    document.getElementById('back1').addEventListener('click', function() { go(0); });
+    document.getElementById('back2').addEventListener('click', function() { go(1); });
+    document.getElementById('back3').addEventListener('click', function() { go(2); });
+  }
+
+  const initialPage = Number.isFinite(requestedPage) ? requestedPage : 1;
+  go(initialPage - 1);
+</script>
+
+</body>
+</html>

@@ -2,24 +2,17 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "auth-server",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["auth-server.js"],
-      "port": 5001,
-      "autoPort": true
-    },
-    {
-      "name": "ai-proxy-server",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["ai-chat-proxy.js"],
-      "port": 5000,
-      "autoPort": true
-    },
-    {
       "name": "netlify-dev",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["netlify", "dev", "--port", "8888"],
       "port": 8888
+    },
+    {
+      "name": "static-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["preview-server.js"],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }

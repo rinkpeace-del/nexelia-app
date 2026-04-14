@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — 過去形の否定文</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --blue: #1A56DB;
+  --blue-dark: #1446B8;
+  --blue-light: #E8F0FE;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --orange: #E65100;
+  --orange-light: #FFF3E0;
+  --teal: #00796B;
+  --teal-light: #E0F2F1;
+  --wrong: #C62828;
+  --wrong-light: #FFEBEE;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.embedded {
+  background: transparent;
+  min-height: auto;
+}
+
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; flex-shrink: 0;
+}
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--wrong); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main {
+  flex: 1; display: flex; flex-direction: column;
+  max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px;
+}
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 52px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--wrong); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text  { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--wrong); }
+
+/* 語順ボックス */
+.order-row {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+}
+.order-chip {
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 16px; font-weight: 700;
+  border: 2px solid var(--border);
+  background: var(--white);
+  color: var(--text);
+}
+.order-chip.wrong-chip { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); }
+.order-chip.teal-chip  { background: var(--teal-light); border-color: var(--teal); color: var(--teal); }
+.order-chip.subj-chip  { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
+.order-plus { font-size: 18px; font-weight: 700; color: var(--sub); }
+
+/* 注意ボックス */
+.point-box {
+  background: var(--wrong-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 15px; color: var(--wrong);
+  font-weight: 600; line-height: 1.7;
+  margin-top: auto;
+}
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.ex-single .en {
+  padding: 16px 22px;
+  font-size: 19px; font-weight: 700;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.02em;
+}
+.ex-single .en .didnt { color: var(--wrong); }
+.ex-single .en .verb  { color: var(--teal); }
+.ex-single .jp {
+  padding: 12px 22px;
+  font-size: 14px; color: var(--sub);
+  background: var(--bg);
+}
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 12px;
+}
+.summary-num {
+  width: 26px; height: 26px; background: var(--wrong); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* BOTTOM NAV */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--wrong); border-color: var(--wrong); color: white; }
+.btn-nav.primary:hover { background: #a82020; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(198,40,40,0.3); }
+.dot.active { background: var(--wrong); width: 20px; }
+
+body.embedded nav,
+body.embedded .bottom-nav {
+  display: none;
+}
+
+body.embedded main {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.embedded .slide {
+  animation: none;
+}
+
+body.embedded .slide-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  padding: 44px 52px;
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">過去形の否定文</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:33%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 3</span>
+  </div>
+  <a href="lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- ══ スライド 1: 否定文の作り方 ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">過去形の否定文 · スライド 1</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">否定文の<span class="accent">作り方</span></div>
+      </div>
+
+      <div style="font-size:14px; color:var(--sub); line-height:1.8;">
+        過去形の否定文は <strong style="color:var(--wrong)">didn't（did not）+ 動詞の原形</strong> で作ります。現在形で don't / doesn't を使うように、過去形では主語に関係なく <strong style="color:var(--wrong)">didn't</strong> を使います。
+      </div>
+
+      <div class="order-row">
+        <div class="order-chip subj-chip">主語</div>
+        <div class="order-plus">＋</div>
+        <div class="order-chip wrong-chip">didn't</div>
+        <div class="order-plus">＋</div>
+        <div class="order-chip teal-chip">動詞の原形</div>
+        <div class="order-plus">＋</div>
+        <div class="order-chip">残り</div>
+      </div>
+
+      <div class="point-box">
+        ⚠️ didn't のあとの動詞は必ず<strong>原形</strong>に戻ります。<br>
+        ❌ She didn't <strong>played</strong>. → ✅ She didn't <strong>play</strong>.
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ スライド 2: 例文で確認 ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">過去形の否定文 · スライド 2</div>
+      <div>
+        <div class="concept-title">このスライドで学ぶこと</div>
+        <div class="concept-text">例文で<span class="accent">確認</span>しよう</div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="didnt">didn't</span> <span class="verb">play</span> soccer yesterday.</div>
+          <div class="jp">私は昨日サッカーをしませんでした。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">He <span class="didnt">didn't</span> <span class="verb">go</span> to school last week.</div>
+          <div class="jp">彼は先週、学校に行きませんでした。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">They <span class="didnt">didn't</span> <span class="verb">eat</span> lunch.</div>
+          <div class="jp">彼らは昼食を食べませんでした。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 主語が I でも He でも They でも、過去の否定は全部 <strong>didn't</strong> を使う。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ══ まとめ ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">過去形の否定文 · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">過去形の否定文は <strong style="color:var(--wrong)">didn't + 動詞の原形</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">主語に関係なく（I・He・They 全て）<strong style="color:var(--wrong)">didn't</strong> を使う</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">didn't のあとの動詞は <strong style="color:var(--teal)">s なしの原形</strong> に戻る</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 この3つが頭に入ったら演習に進もう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 3;
+  let cur = 0;
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  const requestedPage = Number(params.get('page') || 1);
+
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    const target = Math.max(0, Math.min(TOTAL - 1, idx));
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = target;
+    document.getElementById('s' + cur).classList.add('active');
+    const navFill = document.getElementById('nav-fill');
+    const navCount = document.getElementById('nav-count');
+    if (navFill) navFill.style.width = ((cur + 1) / TOTAL * 100) + '%';
+    if (navCount) navCount.textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  if (!isEmbedded) {
+    document.getElementById('n0').addEventListener('click', function() { go(1); });
+    document.getElementById('n1').addEventListener('click', function() { go(2); });
+    document.getElementById('n2').addEventListener('click', function() { location.href = 'exercise.html?lesson=lesson17'; });
+    document.getElementById('back1').addEventListener('click', function() { go(0); });
+    document.getElementById('back2').addEventListener('click', function() { go(1); });
+  }
+
+  const initialPage = Number.isFinite(requestedPage) ? requestedPage : 1;
+  go(initialPage - 1);
+</script>
+
+</body>
+</html>

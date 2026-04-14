@@ -1,6 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXELIA — 次世代の英語学習体験</title>
@@ -72,6 +80,22 @@ nav {
   display: inline-block;
 }
 .btn-blue:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+.btn-ghost {
+  padding: 12px 26px;
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: border-color 0.15s, color 0.15s;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: #aaa; color: var(--text); }
 
 /* ── HERO ── */
 .hero {
