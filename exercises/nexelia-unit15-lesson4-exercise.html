@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 15 総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --blue: #0277BD; --blue-light: #E1F5FE;
+  --warn: #E65100; --warn-light: #FFF3E0;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-spacer { width: 80px; flex-shrink: 0; }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); }
+.q-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); background: var(--blue-light); border-radius: 6px; padding: 3px 10px; margin-top: 2px; }
+.q-text  { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub   { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.q-highlight { font-size: 18px; color: var(--blue); font-weight: 700; line-height: 1.6; }
+
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
+.opt { padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt:disabled { cursor: default; transform: none; }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
+.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 68px; }
+.opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt-card:disabled { cursor: default; transform: none; }
+
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+.dots { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; max-width: 240px; justify-content: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; flex-shrink: 0; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 18px; }
+
+/* 結果画面 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 56px; margin-bottom: 16px; }
+.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+.score-badge { font-size: 38px; font-weight: 700; color: var(--blue); margin-bottom: 6px; }
+
+/* ランクバッジ */
+.rank-badge { display: inline-block; font-size: 22px; font-weight: 700; padding: 6px 24px; border-radius: 30px; margin-bottom: 20px; letter-spacing: 0.1em; }
+.rank-S { background: #FFF8E1; color: #F57F17; border: 2px solid #FFD54F; }
+.rank-A { background: var(--green-light); color: var(--green); border: 2px solid #81C784; }
+.rank-B { background: var(--blue-light); color: var(--blue); border: 2px solid #81D4FA; }
+.rank-C { background: var(--warn-light); color: var(--warn); border: 2px solid #FFCC80; }
+
+.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 24px; }
+.recap-box { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; font-size: 14px; color: var(--blue); font-weight: 600; line-height: 1.8; margin-bottom: 16px; text-align: left; width: 100%; max-width: 480px; }
+.mistake-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 13px; color: var(--warn); font-weight: 600; line-height: 1.8; margin-bottom: 24px; text-align: left; width: 100%; max-width: 480px; }
+.mistake-box .mistake-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.my-mistakes { background: var(--wrong-light); border: 1.5px solid var(--wrong); border-radius: 12px; padding: 16px 20px; font-size: 13px; color: var(--wrong); font-weight: 600; line-height: 1.8; margin-bottom: 24px; text-align: left; width: 100%; max-width: 480px; display: none; }
+.my-mistakes .mistake-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cbtn { padding: 13px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+.cbtn.primary { background: var(--blue); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .quiz-card { padding: 24px 18px; }
+  .opt-card { font-size: 13px; min-height: 60px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 15 · 総合演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:10%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 10</span>
+  </div>
+  <div class="nav-spacer"></div>
+</nav>
+
+<main>
+
+  <!-- Q1：ing のつけ方 — run → running -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-label">問題 1 / 10</div>
+      <div class="q-tag">ing のつけ方</div>
+      <div class="q-text">「run」の動名詞の形はどれ？</div>
+      <div class="q-highlight">run → （　　）</div>
+      <div class="q-sub">ing のつけ方のルールを思い出そう！</div>
+      <div class="options-grid" id="o0">
+        <button class="opt-card" data-correct="false">runing</button>
+        <button class="opt-card" data-correct="true">running</button>
+        <button class="opt-card" data-correct="false">runeing</button>
+        <button class="opt-card" data-correct="false">runs</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：動名詞が主語 — 単数扱い -->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-label">問題 2 / 10</div>
+      <div class="q-tag">主語になる</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">Cooking （　　） her hobby.</div>
+      <div class="q-sub">動名詞が主語のとき、動詞は単数？複数？</div>
+      <div class="options-grid" id="o1">
+        <button class="opt-card" data-correct="true">is</button>
+        <button class="opt-card" data-correct="false">are</button>
+        <button class="opt-card" data-correct="false">was</button>
+        <button class="opt-card" data-correct="false">were</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：前置詞の後 — be interested in -->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-label">問題 3 / 10</div>
+      <div class="q-tag">前置詞の後</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">I'm interested in （　　） English.</div>
+      <div class="q-sub">in は前置詞——前置詞の後の形は？</div>
+      <div class="options-grid" id="o2">
+        <button class="opt-card" data-correct="false">to learn</button>
+        <button class="opt-card" data-correct="true">learning</button>
+        <button class="opt-card" data-correct="false">learn</button>
+        <button class="opt-card" data-correct="false">learned</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：enjoy — 動名詞のみ -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">問題 4 / 10</div>
+      <div class="q-tag">動名詞のみOK</div>
+      <div class="q-text">日本語に合う正しい英文はどれ？</div>
+      <div class="q-highlight">「私は絵を描くことを楽しんでいる。」</div>
+      <div class="q-sub">enjoy の後に来る形はどちら？</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="true">I enjoy drawing pictures.</button>
+        <button class="opt" data-correct="false">I enjoy to draw pictures.</button>
+        <button class="opt" data-correct="false">I enjoy draw pictures.</button>
+        <button class="opt" data-correct="false">I enjoying drawing pictures.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5：finish — 動名詞のみ -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">問題 5 / 10</div>
+      <div class="q-tag">動名詞のみOK</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">She finished （　　） the dishes.</div>
+      <div class="q-sub">finish の後に来る形は？</div>
+      <div class="options-grid" id="o4">
+        <button class="opt-card" data-correct="true">washing</button>
+        <button class="opt-card" data-correct="false">to wash</button>
+        <button class="opt-card" data-correct="false">wash</button>
+        <button class="opt-card" data-correct="false">washed</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q6：like — 両方OK の確認 -->
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label">問題 6 / 10</div>
+      <div class="q-tag">両方OKな動詞</div>
+      <div class="q-text">文法的に<strong>正しい</strong>英文はどれ？（2つある）</div>
+      <div class="q-highlight">「私は音楽を聴くことが好きだ。」</div>
+      <div class="q-sub">like の後に来られる形をすべて選ぼう！</div>
+      <div class="options" id="o5">
+        <button class="opt" data-correct="false">I like listen to music.</button>
+        <button class="opt" data-correct="true">I like listening to music.</button>
+        <button class="opt" data-correct="true">I like to listen to music.</button>
+        <button class="opt" data-correct="false">I like listened to music.</button>
+      </div>
+      <div class="feedback" id="f5"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back5">← もどる</button>
+      <div class="dots" id="d5"></div>
+      <button class="btn-nav primary" id="n5" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q7：誤文発見（前置詞 for の後に to不定詞） -->
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label">問題 7 / 10</div>
+      <div class="q-tag">🔍 誤文発見</div>
+      <div class="q-text">文法的に<strong>まちがっている</strong>英文はどれ？</div>
+      <div class="q-sub">ing の形・前置詞・動詞の種類すべてに注目！</div>
+      <div class="options" id="o6">
+        <button class="opt" data-correct="false">I'm good at speaking English.</button>
+        <button class="opt" data-correct="false">He loves playing basketball.</button>
+        <button class="opt" data-correct="true">Thank you for to invite me.</button>
+        <button class="opt" data-correct="false">She started singing a song.</button>
+      </div>
+      <div class="feedback" id="f6"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back6">← もどる</button>
+      <div class="dots" id="d6"></div>
+      <button class="btn-nav primary" id="n6" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q8：日本語→英文選択（総合） -->
+  <div class="slide" id="s7">
+    <div class="quiz-card">
+      <div class="q-label">問題 8 / 10</div>
+      <div class="q-tag">日本語→英文</div>
+      <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-highlight">「走ることは体に良い。」</div>
+      <div class="q-sub">主語・動詞の形・単数扱いを全部チェック！</div>
+      <div class="options" id="o7">
+        <button class="opt" data-correct="false">Run is good for your health.</button>
+        <button class="opt" data-correct="false">Running are good for your health.</button>
+        <button class="opt" data-correct="true">Running is good for your health.</button>
+        <button class="opt" data-correct="false">To running is good for your health.</button>
+      </div>
+      <div class="feedback" id="f7"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back7">← もどる</button>
+      <div class="dots" id="d7"></div>
+      <button class="btn-nav primary" id="n7" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q9：mind の応用 -->
+  <div class="slide" id="s8">
+    <div class="quiz-card">
+      <div class="q-label">問題 9 / 10</div>
+      <div class="q-tag">応用</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">Would you mind （　　） the door?</div>
+      <div class="q-sub">mind の後に来る形は？Would you mind〜? は丁寧なお願いの表現！</div>
+      <div class="options-grid" id="o8">
+        <button class="opt-card" data-correct="false">to open</button>
+        <button class="opt-card" data-correct="true">opening</button>
+        <button class="opt-card" data-correct="false">open</button>
+        <button class="opt-card" data-correct="false">opened</button>
+      </div>
+      <div class="feedback" id="f8"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back8">← もどる</button>
+      <div class="dots" id="d8"></div>
+      <button class="btn-nav primary" id="n8" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q10：総合 — 正しい英文を選ぶ -->
+  <div class="slide" id="s9">
+    <div class="quiz-card">
+      <div class="q-label">問題 10 / 10</div>
+      <div class="q-tag">総合判断</div>
+      <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-highlight">「彼女は毎朝歌うことが大好きだ。」</div>
+      <div class="q-sub">love の後の形・主語・動詞——全部正確に！</div>
+      <div class="options" id="o9">
+        <button class="opt" data-correct="false">She love singing every morning.</button>
+        <button class="opt" data-correct="false">She loves sing every morning.</button>
+        <button class="opt" data-correct="true">She loves singing every morning.</button>
+        <button class="opt" data-correct="false">She loves to singing every morning.</button>
+      </div>
+      <div class="feedback" id="f9"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back9">← もどる</button>
+      <div class="dots" id="d9"></div>
+      <button class="btn-nav cta" id="n9" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon" id="c-icon"></div>
+    <h1 id="c-title"></h1>
+    <div class="score-badge" id="c-score"></div>
+    <div class="rank-badge" id="c-rank"></div>
+    <div class="recap-box">
+      💡 <strong>動名詞 総まとめ</strong><br>
+      ① 形：動詞 ＋ ing（e省略 / 子音重ねに注意）<br>
+      ② 働き：主語・目的語・<strong>前置詞の後（必ず ing）</strong><br>
+      ③ enjoy / finish / mind → <strong>ing のみ</strong><br>
+      ④ like / love / start → <strong>ing でも to でも OK</strong>
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-title">⚠ よくあるミス TOP 3</div>
+      1. run → <u>runing</u> → <strong>running</strong>（子音を重ねる！）<br>
+      2. enjoyed <u>to play</u> → enjoyed <strong>playing</strong>（enjoy は ing のみ！）<br>
+      3. Cooking <u>are</u> → Cooking <strong>is</strong>（動名詞主語は単数！）
+    </div>
+    <div class="my-mistakes" id="my-mistakes">
+      <div class="mistake-title">📝 あなたが間違えた問題</div>
+      <div id="my-mistakes-list"></div>
+    </div>
+    <p id="c-msg"></p>
+    <div class="complete-btns">
+      <a href="nexelia-unit15-lesson4.html" class="cbtn secondary">← まとめへ</a>
+      <button class="cbtn primary" id="retry-btn">もう一度挑戦</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 10;
+  let cur = 0;
+  let correct = 0;
+  const answered = {};
+  const wrongQuestions = [];
+
+  // Q6は複数選択なので専用管理
+  const multiQ = { 5: { needed: 2, got: 0, done: false } };
+
+  const FB = [
+    {
+      ok: '✓ 正解！run は短母音＋子音で終わるから n を重ねて running。',
+      ng: '✗ 惜しい！run → running。短母音＋子音で終わる動詞は子音を重ねてから ing をつける！'
+    },
+    {
+      ok: '✓ 正解！動名詞が主語のときは単数扱い（is）。「料理すること」全体で1つ！',
+      ng: '✗ 惜しい！動名詞が主語のとき動詞は単数（is）。Cooking は「料理すること」という1つのことを表すから！'
+    },
+    {
+      ok: '✓ 正解！in は前置詞。前置詞の後は必ず動名詞（ing 形）。learning が正解！',
+      ng: '✗ 惜しい！in は前置詞。前置詞の後には動名詞（〜ing）を置く。to learn（to不定詞）は前置詞の後には来られない！'
+    },
+    {
+      ok: '✓ 正解！enjoy の後は動名詞のみ。I enjoy drawing pictures. が正しい！',
+      ng: '✗ 惜しい！enjoy の後は動名詞（〜ing）のみ。I enjoy to draw. は NG。正解は I enjoy drawing pictures.！'
+    },
+    {
+      ok: '✓ 正解！finish の後は動名詞のみ。finished washing が正しい！',
+      ng: '✗ 惜しい！finish の後は動名詞（〜ing）のみ。finished to wash は NG。正解は finished washing！'
+    },
+    {
+      ok: '✓ 正解！like は動名詞（listening）でも to不定詞（to listen）でもどちらもOK！',
+      ng: '✗ 惜しい！like の後は動名詞（listening）でも to不定詞（to listen）でも両方OK。原形（listen）や過去形（listened）は NG！'
+    },
+    {
+      ok: '✓ 正解！for は前置詞なので後ろに to不定詞は来られない。正しくは Thank you for inviting me.！',
+      ng: '✗ 惜しい！まちがいは「Thank you for to invite me.」。for は前置詞なので後ろには動名詞（inviting）を置く！'
+    },
+    {
+      ok: '✓ 正解！Running is good — 動名詞が主語で is（単数扱い）。完璧！',
+      ng: '✗ 惜しい！Running is good for your health. が正解。Running（動名詞）が主語 → is（単数）。Run（原形）は主語になれない。are（複数）も間違い！'
+    },
+    {
+      ok: '✓ 正解！mind の後は動名詞のみ。Would you mind opening〜? が正しい丁寧表現！',
+      ng: '✗ 惜しい！mind の後は動名詞（〜ing）のみ。Would you mind to open. は NG。正解は Would you mind opening the door?！'
+    },
+    {
+      ok: '✓ 完璧！She loves singing — loves（三単現の s）＋ singing（動名詞）で正しい！',
+      ng: '✗ 惜しい！正解は She loves singing every morning.。love → loves（三単現の s）＋ singing（動名詞）。to singing は存在しない形！'
+    }
+  ];
+
+  const Q_LABELS = [
+    'Q1：run → ?',
+    'Q2：Cooking （　） her hobby.',
+    'Q3：interested in （　）',
+    'Q4：enjoy の後の形',
+    'Q5：finish の後の形',
+    'Q6：like の後（複数選択）',
+    'Q7：誤文発見',
+    'Q8：Running is…',
+    'Q9：Would you mind （　）',
+    'Q10：She loves…'
+  ];
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s' + cur).classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+    document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
+
+    let rank, icon, title, msg;
+    if (correct === 10) {
+      rank = 'S'; icon = '🏆'; title = '満点！Unit 15 完全制覇！';
+      msg = '動名詞のすべてを完璧に理解した証明！<br>次の Unit へ進もう！';
+    } else if (correct >= 8) {
+      rank = 'A'; icon = '🎉'; title = 'すばらしい！';
+      msg = '動名詞はほぼマスター！<br>ミスした問題だけ確認しよう。';
+    } else if (correct >= 6) {
+      rank = 'B'; icon = '👍'; title = 'もう少し！';
+      msg = 'enjoy・finish・mind の後の形と<br>前置詞のルールをもう一度確認しよう！';
+    } else {
+      rank = 'C'; icon = '📖'; title = 'スライドを見直そう';
+      msg = 'Lesson 1〜3 のスライドを確認してから<br>再チャレンジしよう！';
+    }
+
+    document.getElementById('c-icon').textContent = icon;
+    document.getElementById('c-title').textContent = title;
+    document.getElementById('c-msg').innerHTML = msg;
+    const rb = document.getElementById('c-rank');
+    rb.textContent = 'ランク ' + rank;
+    rb.className = 'rank-badge rank-' + rank;
+
+    if (wrongQuestions.length > 0) {
+      const box = document.getElementById('my-mistakes');
+      box.style.display = 'block';
+      document.getElementById('my-mistakes-list').innerHTML =
+        wrongQuestions.map(i => Q_LABELS[i]).join('<br>');
+    }
+  }
+
+  // Q6 以外の通常問題
+  [0,1,2,3,4,7,8,9].forEach(function(qIdx) {
+    const container = document.getElementById('o' + qIdx);
+    const opts = container.querySelectorAll('.opt, .opt-card');
+    opts.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered[qIdx]) return;
+        answered[qIdx] = true;
+        const isCorrect = btn.dataset.correct === 'true';
+        if (isCorrect) correct++;
+        else wrongQuestions.push(qIdx);
+        opts.forEach(function(b) {
+          b.disabled = true;
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+        });
+        if (!isCorrect) btn.classList.add('wrong');
+        const fb = document.getElementById('f' + qIdx);
+        fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+        fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
+        document.getElementById('n' + qIdx).disabled = false;
+      });
+    });
+  });
+
+  // Q6：複数正解あり（正しいもの2つを両方選んで初めて正解）
+  (function() {
+    const qIdx = 5;
+    const container = document.getElementById('o' + qIdx);
+    const opts = container.querySelectorAll('.opt');
+    let selectedCorrect = 0;
+    let selectedWrong = false;
+    let clickCount = 0;
+    const correctCount = 2;
+
+    opts.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (answered[qIdx]) return;
+        if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
+
+        clickCount++;
+        if (btn.dataset.correct === 'true') {
+          btn.classList.add('correct');
+          btn.disabled = true;
+          selectedCorrect++;
+        } else {
+          btn.classList.add('wrong');
+          btn.disabled = true;
+          selectedWrong = true;
+          // 不正解を選んだら即終了
+          answered[qIdx] = true;
+          opts.forEach(function(b) {
+            b.disabled = true;
+            if (b.dataset.correct === 'true') b.classList.add('correct');
+          });
+          wrongQuestions.push(qIdx);
+          const fb = document.getElementById('f' + qIdx);
+          fb.classList.add('show', 'ng');
+          fb.textContent = FB[qIdx].ng;
+          document.getElementById('n' + qIdx).disabled = false;
+          return;
+        }
+
+        if (selectedCorrect === correctCount) {
+          answered[qIdx] = true;
+          opts.forEach(function(b) { b.disabled = true; });
+          correct++;
+          const fb = document.getElementById('f' + qIdx);
+          fb.classList.add('show', 'ok');
+          fb.textContent = FB[qIdx].ok;
+          document.getElementById('n' + qIdx).disabled = false;
+        }
+      });
+    });
+  })();
+
+  // Q4（index 3）は選択肢が .opt なので Q6 と混ざらないよう確認済み
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { go(5); });
+  document.getElementById('n5').addEventListener('click', function() { go(6); });
+  document.getElementById('n6').addEventListener('click', function() { go(7); });
+  document.getElementById('n7').addEventListener('click', function() { go(8); });
+  document.getElementById('n8').addEventListener('click', function() { go(9); });
+  document.getElementById('n9').addEventListener('click', function() { finish(); });
+
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+  document.getElementById('back5').addEventListener('click', function() { go(4); });
+  document.getElementById('back6').addEventListener('click', function() { go(5); });
+  document.getElementById('back7').addEventListener('click', function() { go(6); });
+  document.getElementById('back8').addEventListener('click', function() { go(7); });
+  document.getElementById('back9').addEventListener('click', function() { go(8); });
+
+  document.getElementById('retry-btn').addEventListener('click', function() { location.reload(); });
+
+  renderDots(0);
+</script>
+</body>
+</html>
