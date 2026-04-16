@@ -1,4 +1,4 @@
-const DATA_URL = "lessons-data.json";
+const DATA_URL = "data/lessons-data.json";
 const PROGRESS_KEY = "nexeliaLessonProgress";
 const LAST_LESSON_KEY = "nexeliaLastLesson";
 const STEP_STATE_KEY = "nexeliaLessonStep";
