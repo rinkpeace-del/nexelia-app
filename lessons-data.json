@@ -2352,6 +2352,222 @@
           "embedUrl": "slides/present-perfect-duration-html/slide1.html?embed=1&page=5"
         }
       ]
+    },
+    {
+      "id": "lesson50",
+      "title": "不定詞の名詞的用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson51",
+      "title": "不定詞の副詞的用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson52",
+      "title": "不定詞の形容詞的用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson53",
+      "title": "3用法の見分け方",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson113",
+      "title": "まとめ＋総合演習",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson54",
+      "title": "動名詞とは？",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (1/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (2/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (3/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (4/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (5/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=5"
+        }
+      ]
     }
   ]
 }

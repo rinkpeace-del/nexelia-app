@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -106,7 +106,7 @@
       flex-shrink: 0;
     }
 
-    .btn-exit {
+    .btn-exit { visibility: hidden; pointer-events: none;
       padding: 8px 18px;
       border-radius: 8px;
       border: 1.5px solid var(--border);
@@ -416,6 +416,10 @@
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
+      background: transparent;
+      border-bottom: none;
+      height: auto;
+      padding: 0;
     }
 
     /* ── DOTS ── */
@@ -453,7 +457,7 @@
       cursor: pointer;
       transition: all 0.15s;
       border: 1.5px solid var(--border);
-      background: var(--white);
+      background: transparent;
       color: var(--sub);
       white-space: nowrap;
     }

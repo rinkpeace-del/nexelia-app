@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -63,7 +63,7 @@ nav {
 .nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
 .nav-fill { height: 100%; background: var(--wrong); border-radius: 2px; transition: width 0.4s ease; }
 .nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
-.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+.btn-exit { visibility: hidden; pointer-events: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
 .btn-exit:hover { border-color: #aaa; color: var(--text); }
 
 main {
@@ -157,7 +157,7 @@ main {
 
 /* BOTTOM NAV */
 .bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
-.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--sub); }
 .btn-nav:hover { border-color: #aaa; color: var(--text); }
 .btn-nav.primary { background: var(--wrong); border-color: var(--wrong); color: white; }
 .btn-nav.primary:hover { background: #a82020; }

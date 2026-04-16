@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -25,7 +25,7 @@ nav { background: var(--white); border-bottom: 1px solid var(--border); height: 
 .nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
 .nav-fill { height: 100%; background: var(--indigo); border-radius: 2px; transition: width 0.5s ease; }
 .nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
-.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit { visibility: hidden; pointer-events: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
 .btn-exit:hover { border-color: #aaa; color: var(--text); }
 .unit-banner { background: var(--indigo); color: white; text-align: center; padding: 12px 24px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; flex-shrink: 0; }
 .unit-banner strong { font-size: 15px; }
@@ -50,7 +50,7 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .feedback.ok { background: var(--green-light); color: var(--green); }
 .feedback.ng { background: var(--wrong-light); color: var(--wrong); }
 .bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
-.btn-nav { padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav { padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--sub); }
 .btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
 .btn-nav.primary { background: var(--indigo); border-color: var(--indigo); color: white; }
 .btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }

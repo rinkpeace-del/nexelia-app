@@ -124,6 +124,24 @@ function getExerciseLessonIdFromUrl() {
   if (currentLessonId === "lesson111") {
     return "lesson111q";
   }
+  if (currentLessonId === "lesson50") {
+    return "lesson50q";
+  }
+  if (currentLessonId === "lesson51") {
+    return "lesson51q";
+  }
+  if (currentLessonId === "lesson52") {
+    return "lesson52q";
+  }
+  if (currentLessonId === "lesson53") {
+    return "lesson53q";
+  }
+  if (currentLessonId === "lesson113") {
+    return "lesson113q";
+  }
+  if (currentLessonId === "lesson54") {
+    return "lesson54q";
+  }
   if (currentLessonId === "lesson14") {
     return "lesson14q";
   }
