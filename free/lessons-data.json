@@ -1,0 +1,2573 @@
+{
+  "lessons": [
+    {
+      "id": "lesson1",
+      "title": "be動詞の基本",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "(1/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "(2/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "(3/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "(4/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson1b",
+      "title": "be動詞の基本（続き）",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "Q1-2 slide",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic/20.png"
+        }
+      ]
+    },
+    {
+      "id": "lesson1c",
+      "title": "be動詞の基本（主語で決まる）",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "Q1-3 slide",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic/14.png"
+        },
+        {
+          "type": "slide",
+          "title": "Q1-3 extra",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic/4.png"
+        }
+      ]
+    },
+    {
+      "id": "lesson1d",
+      "title": "Q1-4 まとめ",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "Q1-4 summary",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic/19.png"
+        }
+      ]
+    },
+    {
+      "id": "lesson1g",
+      "title": "You / They / He / She / It のとき",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "You / They",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic/21.png"
+        },
+        {
+          "type": "slide",
+          "title": "He / She / It",
+          "text": "",
+          "embedUrl": "slides/be-doushi-basic/22.svg"
+        }
+      ]
+    },
+    {
+      "id": "lesson3",
+      "title": "be動詞の否定文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "(1/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-2-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "(2/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-2-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "(3/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-2-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "(4/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-2-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson6",
+      "title": "be動詞の疑問文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "(1/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-question-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "(2/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-question-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "(3/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-question-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "(4/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-question-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson87",
+      "title": "まとめ＋総合演習",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "(1/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-matome-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "(2/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-matome-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "(3/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-matome-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "(4/4)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-matome-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson4",
+      "title": "一般動詞とは？",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "(1/4)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "(2/4)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "(3/4)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "(4/4)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-basic-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson7",
+      "title": "三単現のｓ",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "三単現のｓ (1/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-usage-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "三単現のｓ (2/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-usage-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "三単現のｓ (3/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-usage-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "三単現のｓ (4/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-usage-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "三単現のｓ (5/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-usage-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson8",
+      "title": "否定文の作り方",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "否定文の作り方 (1/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-negative-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "否定文の作り方 (2/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-negative-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "否定文の作り方 (3/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-negative-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "否定文の作り方 (4/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-negative-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "否定文の作り方 (5/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-negative-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson9",
+      "title": "疑問文の作り方",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "疑問文の作り方 (1/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-question-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文の作り方 (2/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-question-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文の作り方 (3/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-question-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文の作り方 (4/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-question-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文の作り方 (5/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-question-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson89",
+      "title": "まとめ＋総合演習",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (1/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-matome-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (2/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-matome-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (3/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-matome-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (4/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-matome-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (5/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-matome-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson10",
+      "title": "現在進行形の基本",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "現在進行形の基本 (1/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "現在進行形の基本 (2/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "現在進行形の基本 (3/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "現在進行形の基本 (4/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-basic-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "現在進行形の基本 (5/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-basic-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson12",
+      "title": "ing形の作り方",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "ing形の作り方 (1/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-negative-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "ing形の作り方 (2/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-negative-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "ing形の作り方 (3/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-negative-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "ing形の作り方 (4/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-negative-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "ing形の作り方 (5/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-negative-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson13",
+      "title": "疑問文と否定文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "疑問文と否定文 (1/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-question-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文と否定文 (2/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-question-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文と否定文 (3/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-question-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文と否定文 (4/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-question-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "疑問文と否定文 (5/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-question-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson91",
+      "title": "まとめ＋総合演習",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (1/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-matome-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (2/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-matome-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (3/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-matome-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (4/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-matome-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (5/5)",
+          "text": "",
+          "embedUrl": "slides/shinkoukei-matome-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson14",
+      "title": "be動詞の過去形",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "be動詞の過去形 (1/5)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-past-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "be動詞の過去形 (2/5)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-past-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "be動詞の過去形 (3/5)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-past-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "be動詞の過去形 (4/5)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-past-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "be動詞の過去形 (5/5)",
+          "text": "",
+          "embedUrl": "slides/be-doushi-past-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson1q",
+      "title": "be動詞の基本 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "be動詞の意味は何？",
+          "subText": "am・is・are に共通する、たった1つの意味を選ぼう",
+          "choices": [
+            "〜する（動作）",
+            "＝（イコール）・A は B だ",
+            "〜できる（可能）",
+            "〜だった（過去）"
+          ],
+          "answer": 1,
+          "explanation": "be動詞の意味は「＝（イコール）」のたった1つだけです。",
+          "wrongExplanation": "be動詞の意味は「＝（イコール）」だけです。スライドをもう一度確認してみよう。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞はどれ？",
+          "subText": "主語が「I」のとき、使うbe動詞を選ぼう",
+          "sentence": "I ___ Yuki.",
+          "choices": [
+            "is",
+            "are",
+            "am",
+            "be"
+          ],
+          "answer": 2,
+          "explanation": "主語が I のとき、be動詞は am です。「I am Yuki.（私はゆきです）」",
+          "wrongExplanation": "主語が I のときは am を使います。am は I 専用のbe動詞です。"
+        },
+        {
+          "type": "question",
+          "question": "「He is a doctor.」の意味はどれ？",
+          "subText": "be動詞「is」が＝の役割をしていることに注目しよう",
+          "choices": [
+            "彼は医者になりたい。",
+            "彼は医者です。",
+            "彼は医者だった。",
+            "彼は医者に会った。"
+          ],
+          "answer": 1,
+          "explanation": "is は「＝」の意味なので「He ＝ a doctor」→「彼は医者です」となります。",
+          "wrongExplanation": "be動詞は「＝（イコール）」の意味です。「He is a doctor」は「彼 ＝ 医者」→「彼は医者です」です。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞はどれ？",
+          "subText": "主語が「She」のとき、使うbe動詞を選ぼう",
+          "sentence": "She ___ a student.",
+          "choices": [
+            "am",
+            "are",
+            "be",
+            "is"
+          ],
+          "answer": 3,
+          "explanation": "主語が She のとき、be動詞は is です。「She is a student.（彼女は学生です）」",
+          "wrongExplanation": "I・you 以外の1人・1つのときは is を使います。She は「1人」なので is です。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞はどれ？",
+          "subText": "主語に注目して、am・is・are のどれを使うか考えよう",
+          "sentence": "Ken and Yuki ___ classmates.",
+          "choices": [
+            "am",
+            "is",
+            "are",
+            "be"
+          ],
+          "answer": 2,
+          "explanation": "「Ken and Yuki（ケンとゆき）」は2人いるので複数です。複数のときは are を使います。",
+          "wrongExplanation": "「Ken and Yuki」は2人いる＝複数なので are です。「〜と〜」のように2人以上のときは are を使います。"
+        }
+      ]
+    },
+    {
+      "id": "lesson3q",
+      "title": "be動詞の否定文 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "be動詞の否定文の作り方は？",
+          "subText": "正しいルールを選ぼう",
+          "choices": [
+            "be動詞の前にnotを置く",
+            "be動詞の後ろにnotを置く",
+            "文の末尾にnotを置く",
+            "notをbe動詞に変える"
+          ],
+          "answer": 1,
+          "explanation": "be動詞の後ろに not を置きます。例：He is not happy.",
+          "wrongExplanation": "not は be動詞の後ろに置きます（前ではありません）。例：He is not happy."
+        },
+        {
+          "type": "question",
+          "question": "次の肯定文を否定文にすると？",
+          "subText": "「She is busy.」→ 否定文はどれ？",
+          "choices": [
+            "She not is busy.",
+            "She is not busy.",
+            "Not she is busy.",
+            "She is busy not."
+          ],
+          "answer": 1,
+          "explanation": "be動詞（is）の後ろに not を置きます。She is not busy.",
+          "wrongExplanation": "not は be動詞の後ろです。She is not busy. が正解。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "正しい語順を選ぼう",
+          "sentence": "I am ___ a student.",
+          "choices": [
+            "no",
+            "don't",
+            "not",
+            "isn't"
+          ],
+          "answer": 2,
+          "explanation": "be動詞（am）の後ろに not を置きます。I am not a student.",
+          "wrongExplanation": "be動詞の否定は not を使います。I am not a student."
+        }
+      ]
+    },
+    {
+      "id": "lesson6q",
+      "title": "be動詞II｜be動詞の疑問文 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "正しい疑問文はどれ？",
+          "subText": "次の文を疑問文にしよう",
+          "sentence": "He is your friend.",
+          "choices": [
+            "He is your friend?",
+            "Your friend is he?",
+            "Is he your friend?"
+          ],
+          "answer": 2,
+          "explanation": "be動詞 is を文頭に出して、Is he your friend? とします。",
+          "wrongExplanation": "be動詞を文頭に出すのがルールです。正しくは Is he your friend?"
+        },
+        {
+          "type": "question",
+          "question": "「Yes」で答えるとき、正しいのはどれ？",
+          "subText": "答え方に注目して選ぼう",
+          "sentence": "Are you a student?",
+          "choices": [
+            "Yes, I'm.",
+            "Yes, I am.",
+            "Yes, am I."
+          ],
+          "answer": 1,
+          "explanation": "Yes の答えは「主語 + be動詞」の形で、Yes, I am. が正解です。",
+          "wrongExplanation": "「Yes, I am.」と「主語 + be動詞」で答えます。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞を選ぼう",
+          "subText": "疑問文の語順と主語に注目",
+          "sentence": "___ she happy?",
+          "choices": [
+            "Am",
+            "Is",
+            "Are",
+            "Be"
+          ],
+          "answer": 1,
+          "explanation": "主語が she なので be動詞は is。疑問文なので Is she happy? となります。",
+          "wrongExplanation": "she に対応するbe動詞は is。正しくは Is she happy?"
+        },
+        {
+          "type": "question",
+          "question": "「No」で答えるとき、正しいのはどれ？",
+          "subText": "答え方に注目して選ぼう",
+          "sentence": "Is he your teacher?",
+          "choices": [
+            "No, he not.",
+            "No, is he not.",
+            "No, he isn't."
+          ],
+          "answer": 2,
+          "explanation": "No の答えは「主語 + be動詞 + not」の形で、No, he isn't. が正解です。",
+          "wrongExplanation": "「No, he isn't.」と「主語 + be動詞 + not」の形で答えます。"
+        },
+        {
+          "type": "question",
+          "question": "正しい疑問文はどれ？",
+          "subText": "次の文を疑問文にしよう",
+          "sentence": "They are students.",
+          "choices": [
+            "They are students?",
+            "Are they students?",
+            "Is they students?"
+          ],
+          "answer": 1,
+          "explanation": "be動詞 are を文頭に出して、Are they students? とします。",
+          "wrongExplanation": "be動詞を文頭に出すのがルールです。正しくは Are they students?"
+        }
+      ]
+    },
+    {
+      "id": "lesson14q",
+      "title": "be動詞の過去形 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞の過去形はどれ？",
+          "subText": "主語が I のとき、was か were かを選ぼう",
+          "sentence": "I ___ happy yesterday.",
+          "choices": [
+            "were",
+            "am",
+            "is",
+            "was"
+          ],
+          "answer": 3,
+          "explanation": "主語が I のとき、be動詞の過去形は was です。「I was happy yesterday.（私は昨日うれしかったです）」",
+          "wrongExplanation": "I のときは was を使います。am・is は現在形、were は You・We・They のときです。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞の過去形はどれ？",
+          "subText": "主語が「I」のとき、過去形を選ぼう",
+          "sentence": "I ___ tired yesterday.",
+          "choices": [
+            "am",
+            "were",
+            "is",
+            "was"
+          ],
+          "answer": 3,
+          "explanation": "主語が I のとき、be動詞の過去形は was です。「I was tired yesterday.（私は昨日疲れていました）」",
+          "wrongExplanation": "I のときは was を使います。am・is は現在形、were は You・We・They のときです。"
+        },
+        {
+          "type": "question",
+          "question": "「He was a student last year.」の意味はどれ？",
+          "subText": "was が過去形であることに注目しよう",
+          "choices": [
+            "彼は生徒になりたかった。",
+            "彼は生徒です。",
+            "彼は去年、生徒でした。",
+            "彼は生徒だったことがある。"
+          ],
+          "answer": 2,
+          "explanation": "was は is の過去形なので「〜でした」という意味です。「He was a student last year.（彼は去年、生徒でした）」",
+          "wrongExplanation": "was は「〜でした」という過去の意味です。last year（去年）とセットで使われていることにも注目しましょう。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞の過去形はどれ？",
+          "subText": "主語が「They」のとき、過去形を選ぼう",
+          "sentence": "They ___ in the park.",
+          "choices": [
+            "was",
+            "were",
+            "are",
+            "be"
+          ],
+          "answer": 1,
+          "explanation": "主語が They のとき、be動詞の過去形は were です。「They were in the park.（彼らは公園にいました）」",
+          "wrongExplanation": "You・We・They のときは were を使います。was は I・He・She・It のときです。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入るbe動詞の過去形はどれ？",
+          "subText": "主語に注目して、was か were かを考えよう",
+          "sentence": "Ken and Yuki ___ classmates.",
+          "choices": [
+            "was",
+            "is",
+            "were",
+            "be"
+          ],
+          "answer": 2,
+          "explanation": "「Ken and Yuki（ケンとゆき）」は2人いるので複数です。複数のときは were を使います。「Ken and Yuki were classmates.（ケンとゆきはクラスメートでした）」",
+          "wrongExplanation": "「Ken and Yuki」は2人いる＝複数なので were です。「〜と〜」のように2人以上のときは were を使います。"
+        }
+      ]
+    },
+    {
+      "id": "lesson8q",
+      "title": "一般動詞の否定文 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "一般動詞の否定文の作り方は？",
+          "subText": "主語が I / You / We / They のとき、正しいルールを選ぼう",
+          "choices": [
+            "動詞の前に not を置く",
+            "動詞の後ろに not を置く",
+            "動詞の前に don't を置く",
+            "動詞をしない形に変える"
+          ],
+          "answer": 2,
+          "explanation": "I / You / We / They のとき、動詞の前に don't を置きます。例：I don't like math.",
+          "wrongExplanation": "一般動詞の否定文は don't（または doesn't）を動詞の前に置きます。not だけでは使えません。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "主語が I のとき、don't か doesn't かを選ぼう",
+          "sentence": "I ___ play soccer.",
+          "choices": [
+            "doesn't",
+            "not",
+            "don't",
+            "isn't"
+          ],
+          "answer": 2,
+          "explanation": "主語が I のとき don't を使います。「I don't play soccer.（私はサッカーをしません）」",
+          "wrongExplanation": "I / You / We / They のときは don't を使います。doesn't は He / She / It のときです。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "主語が He のとき、don't か doesn't かを選ぼう",
+          "sentence": "He ___ have a dog.",
+          "choices": [
+            "don't",
+            "not",
+            "isn't",
+            "doesn't"
+          ],
+          "answer": 3,
+          "explanation": "主語が He のとき doesn't を使います。「He doesn't have a dog.（彼は犬を飼っていません）」",
+          "wrongExplanation": "He / She / It のときは doesn't を使います。don't は I / You / We / They のときです。"
+        },
+        {
+          "type": "question",
+          "question": "「doesn't」を使うとき、動詞はどんな形？",
+          "subText": "doesn't のあとの動詞に注目しよう",
+          "choices": [
+            "s をつけた形（三単現）",
+            "ing をつけた形",
+            "s なしの原形",
+            "ed をつけた過去形"
+          ],
+          "answer": 2,
+          "explanation": "doesn't のあとの動詞は s なしの原形に戻ります。例：doesn't like（× doesn't likes）",
+          "wrongExplanation": "doesn't を使うと、s は doesn't の中に吸収されます。動詞は原形（s なし）で使います。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "主語と動詞に注目して選ぼう",
+          "sentence": "She ___ go to school.",
+          "choices": [
+            "don't",
+            "doesn't",
+            "not",
+            "isn't"
+          ],
+          "answer": 1,
+          "explanation": "主語が She のとき doesn't を使います。「She doesn't go to school.（彼女は学校に行きません）」",
+          "wrongExplanation": "She は He / She / It の仲間なので doesn't を使います。"
+        }
+      ]
+    },
+    {
+      "id": "lesson9q",
+      "title": "一般動詞の疑問文 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "一般動詞の疑問文の作り方は？",
+          "subText": "主語が I / You / We / They のとき、正しいルールを選ぼう",
+          "choices": [
+            "文の末尾に？をつけるだけ",
+            "文頭に Do を置く",
+            "動詞を文頭に出す",
+            "文頭に Is を置く"
+          ],
+          "answer": 1,
+          "explanation": "I / You / We / They のとき、文頭に Do を置いて、動詞は原形を使います。例：Do you like music?",
+          "wrongExplanation": "一般動詞の疑問文は文頭に Do（または Does）を置きます。？をつけるだけでは疑問文になりません。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "主語が you のとき、Do か Does かを選ぼう",
+          "sentence": "___ you like soccer?",
+          "choices": [
+            "Does",
+            "Is",
+            "Are",
+            "Do"
+          ],
+          "answer": 3,
+          "explanation": "主語が you のとき Do を使います。「Do you like soccer?（あなたはサッカーが好きですか？）」",
+          "wrongExplanation": "You / I / We / They のときは Do を使います。Does は He / She / It のときです。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "主語が she のとき、Do か Does かを選ぼう",
+          "sentence": "___ she speak English?",
+          "choices": [
+            "Do",
+            "Is",
+            "Does",
+            "Are"
+          ],
+          "answer": 2,
+          "explanation": "主語が she のとき Does を使います。「Does she speak English?（彼女は英語を話しますか？）」",
+          "wrongExplanation": "He / She / It のときは Does を使います。Do は I / You / We / They のときです。"
+        },
+        {
+          "type": "question",
+          "question": "「Yes」で正しく答えているのはどれ？",
+          "subText": "答え方のルールに注目しよう",
+          "sentence": "Do you play tennis?",
+          "choices": [
+            "Yes, I do.",
+            "Yes, I does.",
+            "Yes, I play.",
+            "Yes, do I."
+          ],
+          "answer": 0,
+          "explanation": "Do を使った疑問文への Yes の答えは「Yes, 主語 + do.」です。「Yes, I do.」が正解。",
+          "wrongExplanation": "Do への答えは「Yes, I do.」の形です。does は使いません。"
+        },
+        {
+          "type": "question",
+          "question": "「No」で正しく答えているのはどれ？",
+          "subText": "答え方のルールに注目しよう",
+          "sentence": "Does he have a car?",
+          "choices": [
+            "No, he don't.",
+            "No, he doesn't.",
+            "No, he isn't.",
+            "No, doesn't he."
+          ],
+          "answer": 1,
+          "explanation": "Does を使った疑問文への No の答えは「No, 主語 + doesn't.」です。「No, he doesn't.」が正解。",
+          "wrongExplanation": "Does への答えは「No, he doesn't.」の形です。don't は使いません。"
+        }
+      ]
+    },
+    {
+      "id": "lesson10q",
+      "title": "現在進行形とは？ 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "現在進行形の意味はどれ？",
+          "subText": "進行形が表す時間に注目しよう",
+          "choices": [
+            "〜した（過去のこと）",
+            "〜している（今まさにやっている）",
+            "〜するつもりだ（未来）",
+            "〜できる（可能）"
+          ],
+          "answer": 1,
+          "explanation": "現在進行形は「今まさに〜している」という意味です。「I am eating lunch now.（今ランチを食べています）」",
+          "wrongExplanation": "現在進行形は「今まさに〜している」という意味です。be動詞 + 動詞ing で表します。"
+        },
+        {
+          "type": "question",
+          "question": "現在進行形の形はどれ？",
+          "subText": "be動詞と動詞の組み合わせに注目しよう",
+          "choices": [
+            "be動詞 + 動詞の原形",
+            "be動詞 + 動詞ed",
+            "be動詞 + 動詞ing",
+            "do + 動詞の原形"
+          ],
+          "answer": 2,
+          "explanation": "現在進行形は「be動詞 + 動詞ing」の形です。例：I am playing soccer.",
+          "wrongExplanation": "現在進行形は「be動詞 + 動詞ing」です。be動詞だけでも、ingだけでも不完全です。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る正しい形はどれ？",
+          "subText": "現在進行形を使おう",
+          "sentence": "She is ___ TV now.",
+          "choices": [
+            "watch",
+            "watches",
+            "watched",
+            "watching"
+          ],
+          "answer": 3,
+          "explanation": "現在進行形なので動詞に ing をつけます。「She is watching TV now.（彼女は今テレビを見ています）」",
+          "wrongExplanation": "be動詞（is）の後ろなので動詞ing の形にします。watching が正解です。"
+        },
+        {
+          "type": "question",
+          "question": "次の文の意味はどれ？",
+          "subText": "be動詞と ing に注目しよう",
+          "sentence": "He is running in the park.",
+          "choices": [
+            "彼は公園で走った。",
+            "彼は公園で走ります。",
+            "彼は公園で走っています。",
+            "彼は公園で走るつもりです。"
+          ],
+          "answer": 2,
+          "explanation": "「is running」は現在進行形なので「走っています」という意味です。「He is running in the park.（彼は公園で走っています）」",
+          "wrongExplanation": "is + running（動詞ing）は現在進行形で「〜しています」という意味です。"
+        }
+      ]
+    },
+    {
+      "id": "lesson12q",
+      "title": "現在進行形の否定文 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "現在進行形の否定文の作り方は？",
+          "subText": "正しいルールを選ぼう",
+          "choices": [
+            "be動詞の前に not を置く",
+            "be動詞の後ろに not を置く",
+            "動詞ingの前に not を置く",
+            "文の末尾に not を置く"
+          ],
+          "answer": 1,
+          "explanation": "be動詞の後ろに not を置きます。例：She is not eating lunch.",
+          "wrongExplanation": "not は be動詞の後ろに置きます。例：She is not eating lunch."
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "現在進行形の否定文を作ろう",
+          "sentence": "I am ___ sleeping.",
+          "choices": [
+            "don't",
+            "no",
+            "not",
+            "never"
+          ],
+          "answer": 2,
+          "explanation": "be動詞（am）の後ろに not を置きます。「I am not sleeping.（私は眠っていません）」",
+          "wrongExplanation": "現在進行形の否定は be動詞の後ろに not を置きます。I am not sleeping."
+        },
+        {
+          "type": "question",
+          "question": "「He is not playing.」の短縮形はどれ？",
+          "subText": "isn't の使い方に注目しよう",
+          "choices": [
+            "He isn't playing.",
+            "He not's playing.",
+            "He's not playing.",
+            "Heisn't playing."
+          ],
+          "answer": 0,
+          "explanation": "is not の短縮形は isn't です。「He isn't playing.（彼は遊んでいません）」",
+          "wrongExplanation": "is not は isn't と短縮できます。He isn't playing. が正解です。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "主語に合う否定形を選ぼう",
+          "sentence": "They ___ watching TV.",
+          "choices": [
+            "isn't",
+            "doesn't",
+            "aren't",
+            "don't"
+          ],
+          "answer": 2,
+          "explanation": "主語が They なので aren't を使います。「They aren't watching TV.（彼らはテレビを見ていません）」",
+          "wrongExplanation": "They のときは are なので、否定の短縮形は aren't になります。"
+        },
+        {
+          "type": "question",
+          "question": "正しい否定文はどれ？",
+          "subText": "「She is studying now.」を否定文にしよう",
+          "choices": [
+            "She not is studying now.",
+            "She is not studying now.",
+            "She does not studying now.",
+            "She isn't study now."
+          ],
+          "answer": 1,
+          "explanation": "be動詞（is）の後ろに not を置きます。「She is not studying now.（彼女は今勉強していません）」",
+          "wrongExplanation": "現在進行形の否定は is の後ろに not を入れます。動詞ingはそのまま変えません。"
+        }
+      ]
+    },
+    {
+      "id": "lesson13q",
+      "title": "現在進行形の疑問文 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "現在進行形の疑問文の作り方は？",
+          "subText": "正しいルールを選ぼう",
+          "choices": [
+            "文の末尾に？をつけるだけ",
+            "Do を文頭に置く",
+            "be動詞を文頭に出す",
+            "動詞ingを文頭に出す"
+          ],
+          "answer": 2,
+          "explanation": "be動詞を文頭に出します。例：Is she running? / Are they playing?",
+          "wrongExplanation": "現在進行形の疑問文はbe動詞を文頭に出します。Do / Does は一般動詞の疑問文で使います。"
+        },
+        {
+          "type": "question",
+          "question": "正しい疑問文はどれ？",
+          "subText": "「She is eating lunch.」を疑問文にしよう",
+          "choices": [
+            "She is eating lunch?",
+            "Does she eating lunch?",
+            "Is she eating lunch?",
+            "Eating she is lunch?"
+          ],
+          "answer": 2,
+          "explanation": "be動詞 is を文頭に出します。「Is she eating lunch?（彼女は昼食を食べていますか？）」",
+          "wrongExplanation": "be動詞（is）を文頭に出して Is she eating lunch? とします。Does は使いません。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る語はどれ？",
+          "subText": "主語に合うbe動詞を選ぼう",
+          "sentence": "___ they playing soccer?",
+          "choices": [
+            "Is",
+            "Do",
+            "Does",
+            "Are"
+          ],
+          "answer": 3,
+          "explanation": "主語が they なので Are を使います。「Are they playing soccer?（彼らはサッカーをしていますか？）」",
+          "wrongExplanation": "they のときの be動詞は are なので、疑問文は Are they...? となります。"
+        },
+        {
+          "type": "question",
+          "question": "「Yes」で正しく答えているのはどれ？",
+          "subText": "答え方のルールに注目しよう",
+          "sentence": "Are you studying?",
+          "choices": [
+            "Yes, I am studying.",
+            "Yes, I am.",
+            "Yes, I do.",
+            "Yes, am I."
+          ],
+          "answer": 1,
+          "explanation": "be動詞の疑問文への答えは「Yes, 主語 + be動詞.」です。「Yes, I am.」が正解。",
+          "wrongExplanation": "Are you...? への答えは「Yes, I am.」です。「Yes, I am studying.」は間違いではありませんが、短く答えるのが自然です。"
+        },
+        {
+          "type": "question",
+          "question": "「No」で正しく答えているのはどれ？",
+          "subText": "答え方のルールに注目しよう",
+          "sentence": "Is he sleeping?",
+          "choices": [
+            "No, he isn't.",
+            "No, he doesn't.",
+            "No, he not.",
+            "No, isn't he."
+          ],
+          "answer": 0,
+          "explanation": "Is を使った疑問文への No の答えは「No, 主語 + isn't.」です。「No, he isn't.」が正解。",
+          "wrongExplanation": "Is he...? への答えは「No, he isn't.」の形です。doesn't は一般動詞の疑問文で使います。"
+        }
+      ]
+    },
+    {
+      "id": "lesson15",
+      "title": "規則動詞の過去形",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "規則動詞の過去形 (1/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-regular-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "規則動詞の過去形 (2/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-regular-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "規則動詞の過去形 (3/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-regular-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "規則動詞の過去形 (4/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-regular-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "規則動詞の過去形 (5/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-regular-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson15q",
+      "title": "一般動詞の過去形（規則変化）演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "規則変化の過去形の作り方は？",
+          "subText": "正しいルールを選ぼう",
+          "choices": [
+            "動詞の前に did をつける",
+            "動詞の末尾に -ed をつける",
+            "動詞の末尾に -ing をつける",
+            "動詞をそのまま使う"
+          ],
+          "answer": 1,
+          "explanation": "規則変化の過去形は動詞の末尾に -ed をつけます。例：play → played",
+          "wrongExplanation": "規則変化は -ed をつけます。did は疑問文・否定文で使います。-ing は現在進行形です。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る正しい形はどれ？",
+          "subText": "play の過去形を使おう",
+          "sentence": "I ___ soccer yesterday.",
+          "choices": ["play", "plays", "playing", "played"],
+          "answer": 3,
+          "explanation": "play の過去形は played（末尾に -ed）です。「I played soccer yesterday.（私は昨日サッカーをしました）」",
+          "wrongExplanation": "過去のことを表すので過去形の played を使います。play は現在形、plays は三単現です。"
+        },
+        {
+          "type": "question",
+          "question": "「study」の過去形はどれ？",
+          "subText": "子音 + y で終わる動詞の変化に注目しよう",
+          "choices": ["studyed", "studid", "studied", "studying"],
+          "answer": 2,
+          "explanation": "「子音 + y」で終わる動詞は y を i に変えて -ed をつけます。study → studied",
+          "wrongExplanation": "study は「子音(d) + y」で終わるので、y → i に変えて -ed をつけます。studied が正解です。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る正しい形はどれ？",
+          "subText": "e で終わる動詞の変化に注目しよう",
+          "sentence": "She ___ me a lot.",
+          "choices": ["liked", "likeed", "liking", "like"],
+          "answer": 0,
+          "explanation": "e で終わる動詞は e を取って -d だけつけます。like → liked。「She liked me a lot.（彼女は私のことがとても好きでした）」",
+          "wrongExplanation": "like は e で終わるので、e を取って d だけつけます。liked が正解です。"
+        },
+        {
+          "type": "question",
+          "question": "「stop」の過去形はどれ？",
+          "subText": "短母音 + 子音1文字で終わる動詞の変化に注目しよう",
+          "choices": ["stoped", "stopd", "stopp", "stopped"],
+          "answer": 3,
+          "explanation": "「短母音 + 子音1文字」で終わる動詞は、末尾の子音を重ねて -ed をつけます。stop → stopped",
+          "wrongExplanation": "stop は「短母音 + p」で終わるので、p を重ねて -ed をつけます。stopped が正解です。"
+        }
+      ]
+    },
+    {
+      "id": "lesson16",
+      "title": "不規則動詞の過去形",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "不規則動詞の過去形 (1/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-irregular-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "不規則動詞の過去形 (2/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-irregular-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "不規則動詞の過去形 (3/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-irregular-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "不規則動詞の過去形 (4/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-irregular-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "不規則動詞の過去形 (5/5)",
+          "text": "",
+          "embedUrl": "slides/ippan-doushi-kako-irregular-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson16q",
+      "title": "一般動詞の過去形（不規則変化）演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "「go」の過去形はどれ？",
+          "subText": "不規則変化の動詞は -ed をつけない",
+          "choices": ["goed", "going", "went", "gone"],
+          "answer": 2,
+          "explanation": "go は不規則変化の動詞で、過去形は went です。-ed はつけません。",
+          "wrongExplanation": "go の過去形は went です。goed という形は存在しません。不規則変化は形を丸ごと覚えましょう。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る正しい形はどれ？",
+          "subText": "have の過去形を使おう",
+          "sentence": "She ___ lunch at noon.",
+          "choices": ["have", "has", "having", "had"],
+          "answer": 3,
+          "explanation": "have の過去形は had です。「She had lunch at noon.（彼女は正午に昼食を食べました）」",
+          "wrongExplanation": "have の過去形は had です。不規則変化なので -ed はつけません。"
+        },
+        {
+          "type": "question",
+          "question": "「see」の過去形はどれ？",
+          "subText": "不規則変化の動詞を確認しよう",
+          "choices": ["seed", "seen", "saw", "see"],
+          "answer": 2,
+          "explanation": "see の過去形は saw です。「They saw a movie.（彼らは映画を見ました）」",
+          "wrongExplanation": "see の過去形は saw です。seed という形は存在しません。seen は過去分詞です。"
+        },
+        {
+          "type": "question",
+          "question": "正しい組み合わせはどれ？",
+          "subText": "動詞とその過去形のペアを確認しよう",
+          "choices": [
+            "come → comed",
+            "get → getted",
+            "eat → ate",
+            "run → runned"
+          ],
+          "answer": 2,
+          "explanation": "eat の過去形は ate です。come → came / get → got / run → ran が正しい不規則変化です。",
+          "wrongExplanation": "eat → ate が正しいペアです。come → came / get → got / run → ran も覚えておきましょう。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る正しい形はどれ？",
+          "subText": "come の過去形を使おう",
+          "sentence": "He ___ to Japan last year.",
+          "choices": ["come", "comes", "came", "comed"],
+          "answer": 2,
+          "explanation": "come の過去形は came です。「He came to Japan last year.（彼は去年、日本に来ました）」",
+          "wrongExplanation": "come の過去形は came です。comed という形は存在しません。"
+        }
+      ]
+    },
+    {
+      "id": "lesson17",
+      "title": "まとめ＋総合演習",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (1/4)",
+          "text": "",
+          "embedUrl": "slides/unit04-matome-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (2/4)",
+          "text": "",
+          "embedUrl": "slides/unit04-matome-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (3/4)",
+          "text": "",
+          "embedUrl": "slides/unit04-matome-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (4/4)",
+          "text": "",
+          "embedUrl": "slides/unit04-matome-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson20",
+      "title": "can の使い方",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "can の使い方 (1/4)",
+          "text": "",
+          "embedUrl": "slides/can-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "can の使い方 (2/4)",
+          "text": "",
+          "embedUrl": "slides/can-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "can の使い方 (3/4)",
+          "text": "",
+          "embedUrl": "slides/can-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "can の使い方 (4/4)",
+          "text": "",
+          "embedUrl": "slides/can-basic-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson20q",
+      "title": "can の使い方 演習",
+      "steps": [
+        {
+          "type": "question",
+          "question": "can の意味はどれ？",
+          "subText": "正しい意味を選ぼう",
+          "choices": [
+            "〜した（過去）",
+            "〜できる（可能）",
+            "〜している（進行中）",
+            "〜しなければならない"
+          ],
+          "answer": 1,
+          "explanation": "can は「〜できる」という意味で、能力や可能性を表します。",
+          "wrongExplanation": "can は「〜できる」という意味です。過去・進行・義務とは違います。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る正しい形はどれ？",
+          "subText": "can のあとの動詞に注目しよう",
+          "sentence": "I can ___ soccer.",
+          "choices": [
+            "plays",
+            "played",
+            "playing",
+            "play"
+          ],
+          "answer": 3,
+          "explanation": "can のあとは動詞の原形を使います。「I can play soccer.（私はサッカーができます）」",
+          "wrongExplanation": "can のあとは必ず動詞の原形（-s や -ed をつけない形）を使います。"
+        },
+        {
+          "type": "question",
+          "question": "（　）に入る正しい形はどれ？",
+          "subText": "he のときも原形のまま？",
+          "sentence": "He can ___ fast.",
+          "choices": [
+            "runs",
+            "running",
+            "ran",
+            "run"
+          ],
+          "answer": 3,
+          "explanation": "he でも can のあとは動詞の原形です。「He can run fast.（彼は速く走れます）」",
+          "wrongExplanation": "he / she でも can のあとは必ず原形！-s はつけません。"
+        },
+        {
+          "type": "question",
+          "question": "正しい文はどれ？",
+          "subText": "she のときの can の使い方に注目しよう",
+          "choices": [
+            "She can plays the guitar.",
+            "She can playing the guitar.",
+            "She can play the guitar.",
+            "She cans play the guitar."
+          ],
+          "answer": 2,
+          "explanation": "can のあとは原形の play、can 自体も形が変わりません。「She can play the guitar.（彼女はギターが弾けます）」",
+          "wrongExplanation": "can は主語が変わっても形は変わりません。can のあとは必ず動詞の原形です。"
+        },
+        {
+          "type": "question",
+          "question": "「My dog can catch a ball.」の意味はどれ？",
+          "subText": "can の意味に注目しよう",
+          "choices": [
+            "私の犬はボールをキャッチした。",
+            "私の犬はボールをキャッチしている。",
+            "私の犬はボールをキャッチできる。",
+            "私の犬はボールをキャッチするつもりだ。"
+          ],
+          "answer": 2,
+          "explanation": "can は「〜できる」なので「My dog can catch a ball.（私の犬はボールをキャッチできます）」です。",
+          "wrongExplanation": "can は「〜できる（能力）」を表します。過去・進行・意図とは違います。"
+        }
+      ]
+    },
+    {
+      "id": "lesson21",
+      "title": "can の否定文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "can の否定文 (1/5)",
+          "text": "",
+          "embedUrl": "slides/can-negative-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "can の否定文 (2/5)",
+          "text": "",
+          "embedUrl": "slides/can-negative-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "can の否定文 (3/5)",
+          "text": "",
+          "embedUrl": "slides/can-negative-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "can の否定文 (4/5)",
+          "text": "",
+          "embedUrl": "slides/can-negative-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "can の否定文 (5/5)",
+          "text": "",
+          "embedUrl": "slides/can-negative-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson22",
+      "title": "can の疑問文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "can の疑問文 (1/5)",
+          "text": "",
+          "embedUrl": "slides/can-question-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "can の疑問文 (2/5)",
+          "text": "",
+          "embedUrl": "slides/can-question-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "can の疑問文 (3/5)",
+          "text": "",
+          "embedUrl": "slides/can-question-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "can の疑問文 (4/5)",
+          "text": "",
+          "embedUrl": "slides/can-question-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "can の疑問文 (5/5)",
+          "text": "",
+          "embedUrl": "slides/can-question-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson23",
+      "title": "What / Who",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "What / Who (1/4)",
+          "text": "",
+          "embedUrl": "slides/what-who-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "What / Who (2/4)",
+          "text": "",
+          "embedUrl": "slides/what-who-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "What / Who (3/4)",
+          "text": "",
+          "embedUrl": "slides/what-who-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "What / Who (4/4)",
+          "text": "",
+          "embedUrl": "slides/what-who-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson24",
+      "title": "When / Where",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "When / Where (1/4)",
+          "text": "",
+          "embedUrl": "slides/when-where-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "When / Where (2/4)",
+          "text": "",
+          "embedUrl": "slides/when-where-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "When / Where (3/4)",
+          "text": "",
+          "embedUrl": "slides/when-where-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "When / Where (4/4)",
+          "text": "",
+          "embedUrl": "slides/when-where-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson26",
+      "title": "Why / How",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "Why / How (1/4)",
+          "text": "",
+          "embedUrl": "slides/why-how-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "Why / How (2/4)",
+          "text": "",
+          "embedUrl": "slides/why-how-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "Why / How (3/4)",
+          "text": "",
+          "embedUrl": "slides/why-how-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "Why / How (4/4)",
+          "text": "",
+          "embedUrl": "slides/why-how-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson27",
+      "title": "There is / There areとは？",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "There is / There areとは？ (1/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There areとは？ (2/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There areとは？ (3/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There areとは？ (4/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson28",
+      "title": "There is / There are の否定文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "There is / There are の否定文 (1/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-negative-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There are の否定文 (2/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-negative-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There are の否定文 (3/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-negative-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There are の否定文 (4/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-negative-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson29",
+      "title": "There is / There are の疑問文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "There is / There are の疑問文 (1/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-question-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There are の疑問文 (2/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-question-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There are の疑問文 (3/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-question-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "There is / There are の疑問文 (4/4)",
+          "text": "",
+          "embedUrl": "slides/there-is-are-question-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson30",
+      "title": "命令文とは？",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "命令文とは？ (1/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "命令文とは？ (2/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "命令文とは？ (3/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "命令文とは？ (4/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson30b",
+      "title": "否定の命令文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "否定の命令文 (1/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-negative-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "否定の命令文 (2/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-negative-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "否定の命令文 (3/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-negative-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "否定の命令文 (4/4)",
+          "text": "",
+          "embedUrl": "slides/imperative-negative-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson30c",
+      "title": "丁寧な命令文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "丁寧な命令文 (1/5)",
+          "text": "",
+          "embedUrl": "slides/imperative-please-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "丁寧な命令文 (2/5)",
+          "text": "",
+          "embedUrl": "slides/imperative-please-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "丁寧な命令文 (3/5)",
+          "text": "",
+          "embedUrl": "slides/imperative-please-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "丁寧な命令文 (4/5)",
+          "text": "",
+          "embedUrl": "slides/imperative-please-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "丁寧な命令文 (5/5)",
+          "text": "",
+          "embedUrl": "slides/imperative-please-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson30d",
+      "title": "Let's の文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "Let's の文 (1/5)",
+          "text": "",
+          "embedUrl": "slides/lets-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "Let's の文 (2/5)",
+          "text": "",
+          "embedUrl": "slides/lets-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "Let's の文 (3/5)",
+          "text": "",
+          "embedUrl": "slides/lets-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "Let's の文 (4/5)",
+          "text": "",
+          "embedUrl": "slides/lets-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "Let's の文 (5/5)",
+          "text": "",
+          "embedUrl": "slides/lets-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson31",
+      "title": "will の基本",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "will の基本 (1/4)",
+          "text": "",
+          "embedUrl": "slides/will-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "will の基本 (2/4)",
+          "text": "",
+          "embedUrl": "slides/will-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "will の基本 (3/4)",
+          "text": "",
+          "embedUrl": "slides/will-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "will の基本 (4/4)",
+          "text": "",
+          "embedUrl": "slides/will-basic-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson32",
+      "title": "will の否定文・疑問文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "will の否定文・疑問文 (1/4)",
+          "text": "",
+          "embedUrl": "slides/will-negative-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "will の否定文・疑問文 (2/4)",
+          "text": "",
+          "embedUrl": "slides/will-negative-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "will の否定文・疑問文 (3/4)",
+          "text": "",
+          "embedUrl": "slides/will-negative-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "will の否定文・疑問文 (4/4)",
+          "text": "",
+          "embedUrl": "slides/will-negative-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson34",
+      "title": "be going to の基本",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "be going to の基本 (1/4)",
+          "text": "",
+          "embedUrl": "slides/be-going-to-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "be going to の基本 (2/4)",
+          "text": "",
+          "embedUrl": "slides/be-going-to-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "be going to の基本 (3/4)",
+          "text": "",
+          "embedUrl": "slides/be-going-to-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "be going to の基本 (4/4)",
+          "text": "",
+          "embedUrl": "slides/be-going-to-basic-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson35",
+      "title": "will vs be going to の使い分け",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "will vs be going to の使い分け (1/4)",
+          "text": "",
+          "embedUrl": "slides/will-vs-be-going-to-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "will vs be going to の使い分け (2/4)",
+          "text": "",
+          "embedUrl": "slides/will-vs-be-going-to-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "will vs be going to の使い分け (3/4)",
+          "text": "",
+          "embedUrl": "slides/will-vs-be-going-to-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "will vs be going to の使い分け (4/4)",
+          "text": "",
+          "embedUrl": "slides/will-vs-be-going-to-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson36",
+      "title": "have to の基本",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "have to の基本 (1/4)",
+          "text": "",
+          "embedUrl": "slides/have-to-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "have to の基本 (2/4)",
+          "text": "",
+          "embedUrl": "slides/have-to-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "have to の基本 (3/4)",
+          "text": "",
+          "embedUrl": "slides/have-to-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "have to の基本 (4/4)",
+          "text": "",
+          "embedUrl": "slides/have-to-basic-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson37",
+      "title": "must の基本",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "must の基本 (1/4)",
+          "text": "",
+          "embedUrl": "slides/must-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "must の基本 (2/4)",
+          "text": "",
+          "embedUrl": "slides/must-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "must の基本 (3/4)",
+          "text": "",
+          "embedUrl": "slides/must-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "must の基本 (4/4)",
+          "text": "",
+          "embedUrl": "slides/must-basic-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson38",
+      "title": "否定形の大きな違い",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "否定形の大きな違い (1/4)",
+          "text": "",
+          "embedUrl": "slides/negation-comparison-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "否定形の大きな違い (2/4)",
+          "text": "",
+          "embedUrl": "slides/negation-comparison-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "否定形の大きな違い (3/4)",
+          "text": "",
+          "embedUrl": "slides/negation-comparison-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "否定形の大きな違い (4/4)",
+          "text": "",
+          "embedUrl": "slides/negation-comparison-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson39",
+      "title": "受動態の基本",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "受動態の基本 (1/5)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の基本 (2/5)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の基本 (3/5)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の基本 (4/5)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-basic-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の基本 (5/5)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-basic-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson40",
+      "title": "受動態の時制",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "受動態の時制 (1/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-tense-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の時制 (2/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-tense-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の時制 (3/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-tense-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の時制 (4/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-tense-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson41",
+      "title": "受動態の否定文・疑問文",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "受動態の否定文・疑問文 (1/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-negative-question-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の否定文・疑問文 (2/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-negative-question-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の否定文・疑問文 (3/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-negative-question-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "受動態の否定文・疑問文 (4/4)",
+          "text": "",
+          "embedUrl": "slides/passive-voice-negative-question-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson47",
+      "title": "経験用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "経験用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-experience-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "経験用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-experience-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "経験用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-experience-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "経験用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-experience-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "経験用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-experience-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson48",
+      "title": "完了用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "完了用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-completion-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "完了用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-completion-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "完了用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-completion-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "完了用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-completion-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "完了用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-completion-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson111",
+      "title": "まとめ＋総合演習",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (1/4)",
+          "text": "",
+          "embedUrl": "slides/unit13-matome-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (2/4)",
+          "text": "",
+          "embedUrl": "slides/unit13-matome-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (3/4)",
+          "text": "",
+          "embedUrl": "slides/unit13-matome-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (4/4)",
+          "text": "",
+          "embedUrl": "slides/unit13-matome-html/slide1.html?embed=1&page=4"
+        }
+      ]
+    },
+    {
+      "id": "lesson49",
+      "title": "継続用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "継続用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-duration-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "継続用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-duration-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "継続用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-duration-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "継続用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-duration-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "継続用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/present-perfect-duration-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson50",
+      "title": "不定詞の名詞的用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の名詞的用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-noun-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson51",
+      "title": "不定詞の副詞的用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の副詞的用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adverb-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson52",
+      "title": "不定詞の形容詞的用法",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "不定詞の形容詞的用法 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-adjective-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson53",
+      "title": "3用法の見分け方",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "3用法の見分け方 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-distinguish-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson113",
+      "title": "まとめ＋総合演習",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (1/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (2/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (3/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (4/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "まとめ＋総合演習 (5/5)",
+          "text": "",
+          "embedUrl": "slides/infinitive-summary-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    },
+    {
+      "id": "lesson54",
+      "title": "動名詞とは？",
+      "steps": [
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (1/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=1"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (2/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=2"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (3/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=3"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (4/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=4"
+        },
+        {
+          "type": "slide",
+          "title": "動名詞とは？ (5/5)",
+          "text": "",
+          "embedUrl": "slides/gerund-basic-html/slide1.html?embed=1&page=5"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 7 レッスン3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+/* embedded モード */
+body.embedded { background: transparent; min-height: auto; }
+body.embedded nav,
+body.embedded .bottom-nav { display: none; }
+body.embedded main { max-width: none; width: 100%; margin: 0; padding: 0; }
+body.embedded .slide { animation: none; }
+body.embedded .slide-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  padding: 44px 52px;
+}
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { visibility: hidden; pointer-events: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.5; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* 変換ボックス（肯定→疑問） */
+.transform-box { display: flex; flex-direction: column; gap: 8px; }
+.tf-row { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+.tf-row .tf-top    { padding: 13px 20px; font-size: 15px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); color: var(--text); line-height: 1.5; }
+.tf-row .tf-bottom { padding: 13px 20px; font-size: 15px; font-weight: 700; background: var(--blue-light); color: var(--blue); line-height: 1.5; }
+.tf-row .tf-top    .tag { font-size: 11px; font-weight: 700; color: var(--sub); margin-right: 8px; }
+.tf-row .tf-bottom .tag { font-size: 11px; font-weight: 700; color: var(--blue); opacity: 0.7; margin-right: 8px; }
+.tf-arrow { text-align: center; font-size: 13px; font-weight: 700; color: var(--sub); padding: 2px 0; }
+.hl-q { color: #D32F2F; font-weight: 700; }
+
+/* QA ボックス（Yes/No の答え方） */
+.qa-list { display: flex; flex-direction: column; gap: 10px; }
+.qa-row { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+.qa-row .qa-q { padding: 14px 20px; font-size: 15px; font-weight: 700; background: var(--blue-light); border-bottom: 1px solid var(--border); color: var(--blue); }
+.qa-row .qa-a { padding: 14px 20px; font-size: 14px; font-weight: 600; background: var(--white); color: var(--text); line-height: 1.8; }
+.qa-row .qa-a .hl-yes { color: #1B873B; font-weight: 700; }
+.qa-row .qa-a .hl-no  { color: #C62828; font-weight: 700; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 11px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+
+/* 公式ボックス */
+.formula-box { border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.formula-box .f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); line-height: 1.5; }
+.formula-box .f-part.key { background: var(--blue); border-color: var(--blue); color: white; }
+.formula-box .f-plus { font-size: 18px; font-weight: 700; color: var(--blue); }
+.f-label { font-size: 11px; font-weight: 600; text-align: center; display: block; margin-top: 4px; color: var(--sub); }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 7 · There is / are の疑問文</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="../../lessons.html" class="btn-exit">← 一覧へ</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：疑問文の作り方 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 7 · レッスン3 · スライド 1</div>
+      <div class="question-title">疑問文は <span class="accent">Is / Are を文頭に出すだけ！</span></div>
+
+      <div class="transform-box">
+        <div class="tf-row">
+          <div class="tf-top"><span class="tag">肯定文</span>There is a cat on the table.</div>
+          <div class="tf-bottom"><span class="tag">疑問文</span><span class="hl-q">Is</span> there a cat on the table?</div>
+        </div>
+        <div class="tf-arrow">↓ is / are を文頭に移動するだけ！</div>
+        <div class="tf-row">
+          <div class="tf-top"><span class="tag">肯定文</span>There are three books on the desk.</div>
+          <div class="tf-bottom"><span class="tag">疑問文</span><span class="hl-q">Are</span> there three books on the desk?</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 核となるルール：<strong>Is / Are を文頭に出すだけ！</strong><br>there は小文字のまま残すよ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：公式 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 7 · レッスン3 · スライド 2</div>
+      <div class="question-title">疑問文の<span class="accent">公式</span></div>
+
+      <div class="formula-box">
+        <div style="text-align:center">
+          <div class="f-part key">Is / Are</div>
+          <span class="f-label">文頭に！</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part">there</div>
+          <span class="f-label">小文字のまま</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div style="text-align:center">
+          <div class="f-part">名詞 ＋ 場所 ?</div>
+          <span class="f-label"></span>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="hl-q">Is</span> there a library near your house?</div>
+          <div class="jp">あなたの家の近くに図書館はありますか？</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="hl-q">Are</span> there any students in the gym?</div>
+          <div class="jp">体育館に生徒はいますか？</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 疑問文でも複数のものを聞くときは <strong>any</strong> を使うよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：Yes / No の答え方 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 7 · レッスン3 · スライド 3</div>
+      <div class="question-title">Yes / No の<span class="accent">答え方</span></div>
+
+      <div class="qa-list">
+        <div class="qa-row">
+          <div class="qa-q">Is there a park near your school?</div>
+          <div class="qa-a">
+            <span class="hl-yes">Yes</span>, there <span class="hl-yes">is</span>.　／　<span class="hl-no">No</span>, there <span class="hl-no">isn't</span>.
+          </div>
+        </div>
+        <div class="qa-row">
+          <div class="qa-q">Are there any buses to the station?</div>
+          <div class="qa-a">
+            <span class="hl-yes">Yes</span>, there <span class="hl-yes">are</span>.　／　<span class="hl-no">No</span>, there <span class="hl-no">aren't</span>.
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">Is there a convenience store here? — <span style="color:#1B873B;font-weight:700;">Yes, there is.</span></div>
+          <div class="jp">ここにコンビニはありますか？ — はい、あります。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 答えるときは <strong>there is / there are</strong> をそのまま使う！<br>Yes → is / are　／　No → isn't / aren't</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 7 · レッスン3 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">疑問文は <strong>Is / Are</strong> を文頭に出すだけ</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">there は小文字のまま残す：<strong>Is there …? / Are there …?</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">複数を聞くときは <strong>any</strong> を使う：Are there any …?</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">答え方：<strong>Yes, there is / are.</strong>　／　<strong>No, there isn't / aren't.</strong></div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav cta" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  const requestedPage = Number(params.get('page') || 1);
+
+  if (isEmbedded) document.body.classList.add('embedded');
+
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  if (!isEmbedded) {
+    document.getElementById('n0').addEventListener('click', function() { go(1); });
+    document.getElementById('n1').addEventListener('click', function() { go(2); });
+    document.getElementById('n2').addEventListener('click', function() { go(3); });
+    document.getElementById('n3').addEventListener('click', function() { location.href = '../../exercises/nexelia-unit7-lesson3-exercise.html'; });
+    document.getElementById('back1').addEventListener('click', function() { go(0); });
+    document.getElementById('back2').addEventListener('click', function() { go(1); });
+    document.getElementById('back3').addEventListener('click', function() { go(2); });
+  }
+
+  const initialPage = Number.isFinite(requestedPage) ? requestedPage : 1;
+  go(initialPage - 1);
+</script>
+
+</body>
+</html>

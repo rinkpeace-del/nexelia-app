@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --blue: #1A56DB;
+  --blue-dark: #1446B8;
+  --blue-light: #E8F0FE;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --orange: #E65100;
+  --orange-light: #FFF3E0;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; flex-shrink: 0;
+}
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { visibility: hidden; pointer-events: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-decoration: none; transition: border-color 0.15s, color 0.15s; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main {
+  flex: 1; display: flex; flex-direction: column;
+  max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px;
+}
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 52px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.concept-title { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.concept-text  { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.concept-text .accent { color: var(--blue); }`r`n/* 変換図 */
+.transform-row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.transform-box {
+  padding: 14px 22px; border-radius: 12px;
+  font-size: 17px; font-weight: 700; text-align: center;
+}
+.transform-box.before { background: #F3F4F6; color: var(--text); }
+.transform-box.after  { background: var(--orange-light); color: var(--orange); }
+.transform-arrow { font-size: 22px; color: var(--sub); }
+.transform-label { font-size: 12px; color: var(--sub); font-weight: 600; display: block; margin-bottom: 4px; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.ex-single .en {
+  padding: 16px 22px;
+  font-size: 19px; font-weight: 700;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.02em;
+}
+.ex-single .en .subj { color: var(--orange); }
+.ex-single .en .verb { color: var(--green); }
+.ex-single .en .s    { color: var(--red); }
+.ex-single .jp {
+  padding: 12px 22px;
+  font-size: 14px; color: var(--sub);
+  background: var(--bg);
+}
+
+/* sのルール表 */
+.rule-list { display: flex; flex-direction: column; gap: 10px; }
+.rule-item {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.rule-cond {
+  padding: 14px 16px;
+  background: #F3F4F6;
+  font-size: 13px; font-weight: 700;
+  border-right: 1px solid var(--border);
+  display: flex; align-items: center;
+}
+.rule-ex {
+  padding: 14px 16px;
+  font-size: 14px; font-weight: 600;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.rule-ex .arrow { color: var(--sub); }
+.rule-ex .result { color: var(--orange); font-weight: 700; }
+
+/* ポイントボックス */
+.point-box {
+  background: var(--orange-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 15px; color: var(--orange);
+  font-weight: 600; line-height: 1.7;
+  margin-top: auto;
+}
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 12px;
+}
+.summary-num {
+  width: 26px; height: 26px; background: var(--blue); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* BOTTOM NAV */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { background: var(--blue-dark); }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(26,86,219,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .rule-item { grid-template-columns: 1fr; }
+  .rule-cond { border-right: 0; border-bottom: 1px solid var(--border); }
+}
+
+html, body { background: #fff; }
+body {
+  min-height: 0;
+  padding: 24px;
+  display: block;
+}
+main {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.slide { display: block !important; }
+.slide-card {
+  flex: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="slide active">
+    <div class="slide-card">
+<div class="slide-label">三単現のs · まとめ</div>
+      <div>
+        <div class="concept-title">このレッスンで学んだこと</div>
+        <div class="concept-text">まとめ</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">三単現とは、<strong style="color:var(--orange)">三人称・単数・現在形</strong> のこと</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">主語が <strong style="color:var(--orange)">He / She / It</strong> のとき、動詞に <strong style="color:var(--red)">s</strong> をつける</div>
+        </div>
+
+
+      </div>
+
+      <div class="point-box">💡 この2つが頭に入ったら演習に進もう！</div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

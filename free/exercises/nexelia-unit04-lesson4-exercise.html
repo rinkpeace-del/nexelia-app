@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 4 総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --blue: #0277BD; --blue-light: #E1F5FE;
+  --warn: #E65100; --warn-light: #FFF3E0;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { visibility: hidden; pointer-events: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); }
+.q-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); background: var(--blue-light); border-radius: 6px; padding: 3px 10px; margin-top: 2px; }
+.q-text { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.q-highlight { font-size: 18px; color: var(--blue); font-weight: 700; line-height: 1.6; }
+
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
+.opt { padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt:disabled { cursor: default; transform: none; }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
+.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 17px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.4; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 68px; }
+.opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt-card:disabled { cursor: default; transform: none; }
+
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+.dots { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 18px; }
+
+/* 結果画面 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 52px; margin-bottom: 16px; }
+.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+.rank-badge { font-size: 48px; font-weight: 700; margin-bottom: 8px; }
+.score-badge { font-size: 28px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 20px; }
+.recap-box { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; font-size: 14px; color: var(--blue); font-weight: 600; line-height: 1.8; margin-bottom: 14px; text-align: left; width: 100%; max-width: 460px; }
+.mistake-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 13px; color: var(--warn); font-weight: 600; line-height: 1.8; margin-bottom: 14px; text-align: left; width: 100%; max-width: 460px; }
+.mistake-box .mistake-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.my-mistakes { background: var(--wrong-light); border: 1.5px solid var(--wrong); border-radius: 12px; padding: 14px 18px; font-size: 13px; color: var(--wrong); font-weight: 600; line-height: 1.8; margin-bottom: 20px; text-align: left; width: 100%; max-width: 460px; display: none; }
+.my-mistakes .mm-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cbtn { padding: 13px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+.cbtn.primary { background: var(--blue); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+.cbtn.retry { background: var(--warn); color: white; border: none; }
+.cbtn.retry:hover { opacity: 0.88; }
+
+/* AI一時非表示 */
+.btn-ask-ai { display: none !important; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .quiz-card { padding: 24px 18px; }
+  .opt-card { font-size: 15px; min-height: 60px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 4 · 総合演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:10%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 10</span>
+  </div>
+  <a href="../learning.html?lesson=lesson17" class="btn-exit">← スライドへ</a>
+</nav>
+
+<main>
+
+  <!-- Q1：be動詞 — was/were の選択 -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-label">問題 1 / 10</div>
+      <div class="q-tag">be動詞の過去形</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">My parents （　　） at home last Sunday.</div>
+      <div class="q-sub">主語は My parents — どちらを使う？</div>
+      <div class="options-grid" id="o0">
+        <button class="opt-card" data-correct="false">was</button>
+        <button class="opt-card" data-correct="true">were</button>
+        <button class="opt-card" data-correct="false">is</button>
+        <button class="opt-card" data-correct="false">are</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：規則動詞 — -ed のつけ方（e省略） -->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-label">問題 2 / 10</div>
+      <div class="q-tag">規則動詞の過去形</div>
+      <div class="q-text">use の過去形はどれ？</div>
+      <div class="q-highlight">She （　　） this dictionary yesterday.</div>
+      <div class="q-sub">e で終わる動詞のつけ方を思い出そう！</div>
+      <div class="options-grid" id="o1">
+        <button class="opt-card" data-correct="false">useed</button>
+        <button class="opt-card" data-correct="true">used</button>
+        <button class="opt-card" data-correct="false">usied</button>
+        <button class="opt-card" data-correct="false">uses</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：不規則動詞 — have の過去形 -->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-label">問題 3 / 10</div>
+      <div class="q-tag">不規則動詞の過去形</div>
+      <div class="q-text">have の過去形はどれ？</div>
+      <div class="q-highlight">We （　　） a great time last weekend.</div>
+      <div class="q-sub">have も不規則動詞。形を思い出そう！</div>
+      <div class="options-grid" id="o2">
+        <button class="opt-card" data-correct="false">haved</button>
+        <button class="opt-card" data-correct="false">has</button>
+        <button class="opt-card" data-correct="true">had</button>
+        <button class="opt-card" data-correct="false">have</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：be動詞の否定文 -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">問題 4 / 10</div>
+      <div class="q-tag">be動詞の否定文</div>
+      <div class="q-text">日本語に合う正しい英文はどれ？</div>
+      <div class="q-highlight">「彼は昨日、家にいなかった。」</div>
+      <div class="q-sub">be動詞の否定文の作り方！</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false">He didn't be at home yesterday.</button>
+        <button class="opt" data-correct="false">He wasn't be at home yesterday.</button>
+        <button class="opt" data-correct="true">He wasn't at home yesterday.</button>
+        <button class="opt" data-correct="false">He didn't at home yesterday.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5：規則動詞の否定文（didn't ＋ 原形） -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">問題 5 / 10</div>
+      <div class="q-tag">規則動詞の否定文</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">I didn't （　　） TV last night.</div>
+      <div class="q-sub">didn't のあとの動詞の形は？</div>
+      <div class="options-grid" id="o4">
+        <button class="opt-card" data-correct="false">watched</button>
+        <button class="opt-card" data-correct="true">watch</button>
+        <button class="opt-card" data-correct="false">watches</button>
+        <button class="opt-card" data-correct="false">watching</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav primary" id="n4" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q6：不規則動詞の否定文（didn't went の罠） -->
+  <div class="slide" id="s5">
+    <div class="quiz-card">
+      <div class="q-label">問題 6 / 10</div>
+      <div class="q-tag">不規則動詞の否定文</div>
+      <div class="q-text">日本語に合う正しい英文はどれ？</div>
+      <div class="q-highlight">「彼らは先週、図書館に行かなかった。」</div>
+      <div class="q-sub">不規則動詞でも否定文の作り方は同じ！</div>
+      <div class="options" id="o5">
+        <button class="opt" data-correct="false">They didn't went to the library last week.</button>
+        <button class="opt" data-correct="true">They didn't go to the library last week.</button>
+        <button class="opt" data-correct="false">They weren't go to the library last week.</button>
+        <button class="opt" data-correct="false">They didn't gone to the library last week.</button>
+      </div>
+      <div class="feedback" id="f5"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back5">← もどる</button>
+      <div class="dots" id="d5"></div>
+      <button class="btn-nav primary" id="n5" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q7：be動詞の疑問文（Was/Were） -->
+  <div class="slide" id="s6">
+    <div class="quiz-card">
+      <div class="q-label">問題 7 / 10</div>
+      <div class="q-tag">be動詞の疑問文</div>
+      <div class="q-text">この質問への正しい答えはどれ？</div>
+      <div class="q-highlight">Was your teacher kind?</div>
+      <div class="q-sub">Was で聞かれた。何で答える？</div>
+      <div class="options" id="o6">
+        <button class="opt" data-correct="false">Yes, she did.</button>
+        <button class="opt" data-correct="false">Yes, she is.</button>
+        <button class="opt" data-correct="true">Yes, she was.</button>
+        <button class="opt" data-correct="false">Yes, she were.</button>
+      </div>
+      <div class="feedback" id="f6"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back6">← もどる</button>
+      <div class="dots" id="d6"></div>
+      <button class="btn-nav primary" id="n6" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q8：Did の疑問文（不規則動詞 + 原形） -->
+  <div class="slide" id="s7">
+    <div class="quiz-card">
+      <div class="q-label">問題 8 / 10</div>
+      <div class="q-tag">一般動詞の疑問文</div>
+      <div class="q-text">日本語に合う正しい英文はどれ？</div>
+      <div class="q-highlight">「あなたは昨日、何時に起きましたか？」</div>
+      <div class="q-sub">get up の過去形は got up。疑問文では？</div>
+      <div class="options" id="o7">
+        <button class="opt" data-correct="false">What time got you up yesterday?</button>
+        <button class="opt" data-correct="false">What time did you got up yesterday?</button>
+        <button class="opt" data-correct="true">What time did you get up yesterday?</button>
+        <button class="opt" data-correct="false">What time were you get up yesterday?</button>
+      </div>
+      <div class="feedback" id="f7"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back7">← もどる</button>
+      <div class="dots" id="d7"></div>
+      <button class="btn-nav primary" id="n7" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q9：誤文発見（be動詞 vs 一般動詞の混在） -->
+  <div class="slide" id="s8">
+    <div class="quiz-card">
+      <div class="q-label">問題 9 / 10</div>
+      <div class="q-tag">誤文発見</div>
+      <div class="q-text">文法的に<strong>まちがっている</strong>英文はどれ？</div>
+      <div class="q-sub">be動詞と一般動詞、混ざっていないか確認！</div>
+      <div class="options" id="o8">
+        <button class="opt" data-correct="false">She made a delicious cake yesterday.</button>
+        <button class="opt" data-correct="true">Did you studied English last night?</button>
+        <button class="opt" data-correct="false">I didn't take a bath this morning.</button>
+        <button class="opt" data-correct="false">They were tired after the game.</button>
+      </div>
+      <div class="feedback" id="f8"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back8">← もどる</button>
+      <div class="dots" id="d8"></div>
+      <button class="btn-nav primary" id="n8" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q10：総合判断（正しい文を選ぶ） -->
+  <div class="slide" id="s9">
+    <div class="quiz-card">
+      <div class="q-label">問題 10 / 10</div>
+      <div class="q-tag">総合判断</div>
+      <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-highlight">「彼女は昨日、友達に会いましたか？」</div>
+      <div class="q-sub">see の過去形は saw。be動詞か一般動詞かも確認！</div>
+      <div class="options" id="o9">
+        <button class="opt" data-correct="false">Was she see her friend yesterday?</button>
+        <button class="opt" data-correct="false">Did she saw her friend yesterday?</button>
+        <button class="opt" data-correct="false">Did she seen her friend yesterday?</button>
+        <button class="opt" data-correct="true">Did she see her friend yesterday?</button>
+      </div>
+      <div class="feedback" id="f9"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back9">← もどる</button>
+      <div class="dots" id="d9"></div>
+      <button class="btn-nav cta" id="n9" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon" id="c-icon"></div>
+    <h1 id="c-title"></h1>
+    <div class="rank-badge" id="c-rank"></div>
+    <div class="score-badge" id="c-score"></div>
+    <div class="recap-box">
+      💡 <strong>be動詞</strong> → was / were（否定：wasn't/weren't　疑問：Was/Were）<br>
+      <strong>規則動詞</strong> → 動詞 + ed（否定・疑問：didn't/Did ＋ 原形）<br>
+      <strong>不規則動詞</strong> → 形ごと変わる（否定・疑問：didn't/Did ＋ 原形）
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-title">⚠ よくあるミス TOP 3</div>
+      1. <u>didn't went</u> → <strong>didn't go</strong>（didn't のあとは原形！）<br>
+      2. <u>Were you study?</u> → <strong>Did you study?</strong>（一般動詞の疑問文は Did！）<br>
+      3. <u>Did she saw?</u> → <strong>Did she see?</strong>（Did のあとは原形に戻す！）
+    </div>
+    <div class="my-mistakes" id="my-mistakes">
+      <div class="mm-title">📝 あなたが間違えた問題</div>
+      <div id="mm-list"></div>
+    </div>
+    <p id="c-msg"></p>
+    <div class="complete-btns">
+      <button class="cbtn retry" id="retry-btn">もう一度挑戦</button>
+      <a href="../learning.html?lesson=lesson17" class="cbtn secondary">← スライドへ</a>
+      <a href="../lessons.html" class="cbtn primary">レッスン一覧へ →</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 10;
+  let cur = 0;
+  let correct = 0;
+  const answered = {};
+  const wrongQuestions = [];
+
+  const QUESTIONS = [
+    'Q1：My parents （　） at home — was / were の選択',
+    'Q2：use の過去形 — used',
+    'Q3：have の過去形 — had',
+    'Q4：be動詞の否定文 — wasn\'t',
+    'Q5：didn\'t のあと — 原形 watch',
+    'Q6：didn\'t went → didn\'t go',
+    'Q7：Was で聞かれたら — Yes, she was.',
+    'Q8：Did you got up → Did you get up',
+    'Q9：Did you studied → Did you study（Did のあとは原形）',
+    'Q10：Did she saw → Did she see'
+  ];
+
+  const FB = [
+    {
+      ok: '✓ 正解！My parents は複数（They と同じ）だから were！was は単数のとき。',
+      ng: '✗ 惜しい！My parents は複数扱い。複数の主語には were を使う。was は I / He / She / It のとき！'
+    },
+    {
+      ok: '✓ 正解！use は e で終わるから d だけつけて used！useed は NG。',
+      ng: '✗ 惜しい！use は e で終わるから ed ではなく d だけ。use + d = used が正解！'
+    },
+    {
+      ok: '✓ 正解！have は不規則動詞。過去形は had。haved は存在しない！',
+      ng: '✗ 惜しい！have は不規則動詞。-ed はつけない。have→had と形ごと変わる！'
+    },
+    {
+      ok: '✓ 正解！be動詞の否定は wasn\'t（was not）。didn\'t は一般動詞に使う！',
+      ng: '✗ 惜しい！be動詞の否定に didn\'t は使えない。He wasn\'t at home. が正解。wasn\'t be は二重で NG！'
+    },
+    {
+      ok: '✓ 正解！didn\'t のあとは必ず原形。watched（過去形）は NG。watch が正解！',
+      ng: '✗ 惜しい！didn\'t のあとは原形。watched（-ed つき）は NG。didn\'t watch が正しい！'
+    },
+    {
+      ok: '✓ 正解！不規則動詞でも didn\'t のあとは原形。went → go に戻す。didn\'t go が正解！',
+      ng: '✗ 惜しい！didn\'t のあとは原形。didn\'t went は NG。went を go に戻して didn\'t go！'
+    },
+    {
+      ok: '✓ 正解！Was で聞かれたら was で答える。主語は she（your teacher）なので Yes, she was.！',
+      ng: '✗ 惜しい！Was で聞かれたら was で答える。did は一般動詞の答え方。Yes, she was. が正解！'
+    },
+    {
+      ok: '✓ 正解！Did のあとは原形。got（過去形）ではなく get。What time did you get up? が正解！',
+      ng: '✗ 惜しい！Did のあとは原形。「did you got」は過去形のまま NG。get up の原形で What time did you get up?！'
+    },
+    {
+      ok: '✓ 正解！「Did you studied」が間違い。Did のあとは原形。studied（-ed つき）は NG。Did you study? が正しい！',
+      ng: '✗ 惜しい！間違いは「Did you studied」。Did のあとは必ず原形。studied を study に戻して Did you study?！'
+    },
+    {
+      ok: '✓ 完璧！Did のあとは原形。saw → see に戻す。Did she see her friend? が正解！',
+      ng: '✗ 惜しい！Did のあとは原形。saw（過去形）も seen（過去分詞）も NG。Did she see? が正解！'
+    }
+  ];
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s' + cur).classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+    document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
+
+    var rank, icon, title, msg;
+    if (correct === 10) {
+      rank = 'S'; icon = '🏆'; title = '完全制覇！';
+      msg = 'Unit 4 の過去形を完全マスター！<br>be動詞・規則・不規則すべて完璧！';
+    } else if (correct >= 8) {
+      rank = 'A'; icon = '🎉'; title = 'ほぼ完璧！';
+      msg = 'あと少し！ミスした問題をスライドで確認しよう。';
+    } else if (correct >= 6) {
+      rank = 'B'; icon = '👍'; title = 'もう少し！';
+      msg = '半分以上OK！didn\'t / Did のあとの原形をもう一度確認しよう。';
+    } else {
+      rank = 'C'; icon = '📖'; title = 'スライドを見直そう';
+      msg = 'be動詞・規則・不規則の違いをスライドで整理してから再挑戦！';
+    }
+
+    document.getElementById('c-icon').textContent = icon;
+    document.getElementById('c-title').textContent = title;
+    document.getElementById('c-rank').textContent = rank;
+    document.getElementById('c-rank').style.color = correct >= 8 ? 'var(--blue)' : correct >= 6 ? 'var(--green)' : 'var(--warn)';
+    document.getElementById('c-msg').innerHTML = msg;
+
+    if (wrongQuestions.length > 0) {
+      var mmBox = document.getElementById('my-mistakes');
+      var mmList = document.getElementById('mm-list');
+      mmBox.style.display = 'block';
+      mmList.innerHTML = wrongQuestions.map(function(q) { return '• ' + q; }).join('<br>');
+    }
+  }
+
+  function resetAll() {
+    cur = 0;
+    correct = 0;
+    Object.keys(answered).forEach(function(k) { delete answered[k]; });
+    wrongQuestions.length = 0;
+
+    for (var i = 0; i < TOTAL; i++) {
+      var slide = document.getElementById('s' + i);
+      slide.classList.remove('active');
+      var opts = slide.querySelectorAll('.opt, .opt-card');
+      opts.forEach(function(b) {
+        b.disabled = false;
+        b.classList.remove('correct', 'wrong');
+      });
+      var fb = document.getElementById('f' + i);
+      fb.classList.remove('show', 'ok', 'ng');
+      fb.textContent = '';
+      document.getElementById('n' + i).disabled = true;
+    }
+
+    document.getElementById('complete').classList.remove('active');
+    document.getElementById('my-mistakes').style.display = 'none';
+    document.getElementById('mm-list').innerHTML = '';
+    document.getElementById('s0').classList.add('active');
+    document.getElementById('nav-fill').style.width = '10%';
+    document.getElementById('nav-count').textContent = '1 / ' + TOTAL;
+    renderDots(0);
+  }
+
+  for (var q = 0; q < TOTAL; q++) {
+    (function(qIdx) {
+      var container = document.getElementById('o' + qIdx);
+      var opts = container.querySelectorAll('.opt, .opt-card');
+      opts.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (answered[qIdx]) return;
+          answered[qIdx] = true;
+          var isCorrect = btn.dataset.correct === 'true';
+          if (isCorrect) {
+            correct++;
+          } else {
+            wrongQuestions.push(QUESTIONS[qIdx]);
+          }
+          opts.forEach(function(b) {
+            b.disabled = true;
+            if (b.dataset.correct === 'true') b.classList.add('correct');
+          });
+          if (!isCorrect) btn.classList.add('wrong');
+          var fb = document.getElementById('f' + qIdx);
+          fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+          fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
+          document.getElementById('n' + qIdx).disabled = false;
+        });
+      });
+    })(q);
+  }
+
+  for (var i = 0; i < TOTAL - 1; i++) {
+    (function(idx) {
+      document.getElementById('n' + idx).addEventListener('click', function() { go(idx + 1); });
+      if (idx > 0) document.getElementById('back' + idx).addEventListener('click', function() { go(idx - 1); });
+    })(i);
+  }
+  document.getElementById('n9').addEventListener('click', function() { finish(); });
+  document.getElementById('back9').addEventListener('click', function() { go(8); });
+  document.getElementById('retry-btn').addEventListener('click', function() { resetAll(); });
+
+  renderDots(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 10 レッスン1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { visibility: hidden; pointer-events: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 28px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.5; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* 意味カード */
+.meaning-card { border-radius: 14px; padding: 22px 26px; display: flex; gap: 20px; align-items: center; background: var(--blue-light); border: 1px solid #B3E5FC; }
+.meaning-word { font-size: 26px; font-weight: 700; color: var(--blue); min-width: 90px; white-space: nowrap; }
+.meaning-body { display: flex; flex-direction: column; gap: 6px; }
+.meaning-main { font-size: 17px; font-weight: 700; }
+.meaning-note { font-size: 13px; color: var(--sub); font-weight: 500; }
+
+/* 場面カード */
+.scene-cards { display: flex; flex-direction: column; gap: 12px; }
+.scene-card { border-radius: 14px; padding: 18px 22px; border: 1px solid var(--border); background: var(--white); display: flex; align-items: flex-start; gap: 14px; }
+.scene-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+.scene-body { display: flex; flex-direction: column; gap: 4px; }
+.scene-title { font-size: 13px; font-weight: 700; color: var(--blue); }
+.scene-text { font-size: 15px; font-weight: 600; line-height: 1.5; }
+
+/* 公式ボックス */
+.formula-box { border-radius: 14px; padding: 22px 24px; display: flex; align-items: flex-start; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.f-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); line-height: 1.4; }
+.f-part.key { background: var(--blue); color: white; border-color: var(--blue); }
+.f-part.warn-part { background: var(--warn); color: white; border-color: var(--warn); font-size: 17px; padding: 12px 20px; }
+.f-plus { font-size: 18px; font-weight: 700; color: var(--blue); margin-top: 10px; }
+.f-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--sub); }
+.f-label.warn-label { color: var(--warn); font-weight: 700; font-size: 12px; }
+
+/* 原形メモ */
+.genkey-note { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* 比較ボックス */
+.compare-box { display: flex; flex-direction: column; gap: 10px; }
+.compare-row { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-radius: 14px; border: 1px solid var(--border); background: var(--white); }
+.compare-subject { font-size: 14px; font-weight: 700; color: var(--sub); min-width: 140px; }
+.compare-arrow { font-size: 16px; color: var(--blue); }
+.compare-form { font-size: 17px; font-weight: 700; color: var(--blue); }
+.compare-row.highlight { background: var(--warn-light); border-color: var(--warn); border-width: 2px; }
+.compare-row.highlight .compare-form { color: var(--warn); font-size: 19px; }
+.compare-badge { font-size: 12px; font-weight: 700; background: var(--warn); color: white; border-radius: 6px; padding: 4px 10px; margin-left: 10px; }
+.compare-reason { font-size: 12px; color: var(--warn); font-weight: 700; margin-top: 6px; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 16px 22px; font-size: 17px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 11px 22px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); }
+.hl-warn { color: var(--warn); }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 12px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 18px 22px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+/* 埋め込みサポート */
+body.embedded { background: transparent; min-height: auto; }
+body.embedded nav, body.embedded .bottom-nav { display: none; }
+body.embedded main { max-width: none; width: 100%; margin: 0; padding: 0; }
+body.embedded .slide { animation: none; }
+body.embedded .slide-card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  padding: 44px 52px;
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .compare-subject { min-width: 90px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 10 · have to の基本</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <a href="../../learning.html?lesson=lesson36" class="btn-exit">← Unit 10</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：have to とは？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 10 · レッスン1 · スライド 1</div>
+      <div class="question-title"><span class="accent">have to</span> は「〜しなければならない」！</div>
+
+      <div class="meaning-card">
+        <div class="meaning-word">have to</div>
+        <div class="meaning-body">
+          <div class="meaning-main">「〜しなければならない」</div>
+          <div class="meaning-note">やるべき義務があるときに使う</div>
+        </div>
+      </div>
+
+      <div class="scene-cards">
+        <div class="scene-card">
+          <div class="scene-icon">📚</div>
+          <div class="scene-body">
+            <div class="scene-title">義務・ルール</div>
+            <div class="scene-text">I <strong>have to</strong> do my homework.（宿題をしなければならない。）</div>
+          </div>
+        </div>
+        <div class="scene-card">
+          <div class="scene-icon">🏫</div>
+          <div class="scene-body">
+            <div class="scene-title">決まりごと</div>
+            <div class="scene-text">You <strong>have to</strong> wear a uniform.（制服を着なければならない。）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 核となるルール：<strong>have to ＋ 動詞の原形</strong> で「〜しなければならない」！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：have to の文の形 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 10 · レッスン1 · スライド 2</div>
+      <div class="question-title">have to のあとは<span class="accent">必ず原形！</span></div>
+
+      <div class="formula-box">
+        <div class="f-col">
+          <div class="f-part">主語</div>
+          <span class="f-label">だれが</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part key">have to</div>
+          <span class="f-label">〜しなければ</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part warn-part">動詞の原形</div>
+          <span class="f-label warn-label">⚠ s・ed はつけない！</span>
+        </div>
+      </div>
+
+      <div class="genkey-note">⚠️ なぜ原形？ → <strong>to のあとは動詞の原形</strong>がルール！<br>「to go」「to eat」と同じ — have to も同じしくみだよ。</div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I <span class="hl">have to finish</span> my homework.</div>
+          <div class="jp">私は宿題を終わらせなければならない。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">You <span class="hl">have to be</span> here by 9.</div>
+          <div class="jp">9時までにここにいなければならない。</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：has to（3人称単数） -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 10 · レッスン1 · スライド 3</div>
+      <div class="question-title">he / she / it のときは<span class="accent"> has to </span>になる！</div>
+
+      <div class="compare-box">
+        <div class="compare-row">
+          <div class="compare-subject">I / You / We / They</div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-form">have to</div>
+        </div>
+        <div class="compare-row highlight">
+          <div style="width:100%">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="compare-subject" style="color:var(--warn);">He / She / It</div>
+              <div class="compare-arrow" style="color:var(--warn);">→</div>
+              <div class="compare-form">has to <span class="compare-badge">⚠ 要注意！</span></div>
+            </div>
+            <div class="compare-reason">→ 三単現のルールで have が has に変わる！</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">She <span class="hl-warn">has to</span> practice piano every day.</div>
+          <div class="jp">彼女は毎日ピアノを練習しなければならない。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">He <span class="hl-warn">has to</span> go to the hospital.</div>
+          <div class="jp">彼は病院に行かなければならない。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 He / She / It → <strong>has to</strong>（三単現！）　でも動詞はそのまま<strong>原形</strong>！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：まとめ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 10 · レッスン1 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text"><strong>have to ＋ 動詞の原形</strong> で「〜しなければならない」</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">主語が he / she / it のときは <strong>have → has</strong> に変わる（三単現！）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">have to / has to のあとは<strong>必ず動詞の原形</strong>（s・ed はつけない！）</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav cta" id="n3">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  const requestedPage = Number(params.get('page') || 1);
+
+  if (isEmbedded) document.body.classList.add('embedded');
+
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  if (!isEmbedded) {
+    document.getElementById('n0').addEventListener('click', function() { go(1); });
+    document.getElementById('n1').addEventListener('click', function() { go(2); });
+    document.getElementById('n2').addEventListener('click', function() { go(3); });
+    document.getElementById('n3').addEventListener('click', function() { location.href = '../../exercises/nexelia-unit10-lesson1-exercise.html'; });
+    document.getElementById('back1').addEventListener('click', function() { go(0); });
+    document.getElementById('back2').addEventListener('click', function() { go(1); });
+    document.getElementById('back3').addEventListener('click', function() { go(2); });
+  }
+
+  const initialPage = Number.isFinite(requestedPage) ? requestedPage : 1;
+  renderDots(0);
+  go(initialPage - 1);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NEXELIA レッスン一覧" />
+  <title>レッスン一覧 | NEXELIA</title>
+  <link rel="stylesheet" href="stylesheet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand: #1A56DB;
+      --brand-dark: #1446B8;
+      --line: #E8E8E8;
+      --ink: #1A1A1A;
+      --ink-2: #555555;
+      --ink-3: #888888;
+      --ink-4: #AAAAAA;
+    }
+
+    * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: var(--ink);
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .site-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 0 32px;
+    }
+
+    .logo {
+      text-decoration: none;
+      color: #D32F2F;
+      font-weight: 800;
+      font-size: 1.7rem;
+      letter-spacing: 0.03em;
+      display: inline-block;
+      line-height: 1;
+    }
+
+
+    .lessons-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 56px 40px;
+    }
+
+    .hero {
+      margin-bottom: 36px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .hero-beta-note {
+      margin: 10px 0 0;
+      color: var(--ink-4);
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .units-list {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    .unit-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .unit-label {
+      color: #999;
+      font-size: 11px;
+      letter-spacing: .1em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .unit-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+
+    .unit-count {
+      color: var(--ink-3);
+      font-size: 13px;
+    }
+
+    .lesson-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .lesson-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .lesson-card.is-clickable {
+      cursor: pointer;
+    }
+
+    .lesson-card.is-clickable:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    .lesson-card.is-clickable:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    /* Unit 5以降は無効化状態 */
+    .lesson-card.is-disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .lesson-card.is-disabled:hover {
+      transform: none;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+
+
+    .card-title {
+      margin: 8px 0 2px;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 48px;
+    }
+
+    .card-desc {
+      margin: 0 0 4px;
+      font-size: 12px;
+      color: var(--ink-3);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card-minutes {
+      font-size: 11px;
+      color: var(--ink-4);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .card-minutes svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--ink-4);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card-difficulty {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .card-difficulty.easy {
+      background: #ECFDF5;
+      color: #059669;
+    }
+
+    .card-difficulty.normal {
+      background: #EFF6FF;
+      color: #3B82F6;
+    }
+
+    .card-difficulty.hard {
+      background: #FEF3C7;
+      color: #D97706;
+    }
+
+
+    @media (max-width: 980px) {
+      .lessons-page { padding: 40px 20px; }
+      .lesson-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .site-header { height: 58px; }
+      .topbar { padding: 0 14px; }
+      .logo { font-size: 1.35rem; }
+      .lessons-page { padding: 28px 14px; }
+      .hero h1 { font-size: 24px; }
+      .overall { padding: 18px 16px; margin-bottom: 36px; }
+      .overall-row { gap: 10px; }
+      .overall-label, .overall-percent { font-size: 12px; }
+      .units-list { gap: 36px; }
+      .unit-head { margin-bottom: 16px; }
+      .lesson-grid { grid-template-columns: 1fr; gap: 12px; }
+      .card-title { font-size: 16px; min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="topbar">
+      <a href="index.html" class="logo">NEXELIA</a>
+    </div>
+  </header>
+
+  <main class="lessons-page">
+    <section class="hero">
+      <h1>レッスン一覧</h1>
+      <p class="hero-beta-note">＊現在ベータ版です。英語教材を順次追加しています。</p>
+    </section>
+
+<div class="units-list" id="unitsContainer" aria-label="ユニット一覧"></div>
+  </main>
+
+  <script>
+    const units = [
+      {
+        label: "UNIT 1",
+        title: "be動詞",
+        lessons: [
+          { id: "lesson1", title: "be動詞の基本", desc: "主語によって変わるbe動詞の基本ルールを学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 5, href: "learning.html?lesson=lesson1&step=1" },
+          { id: "lesson3", title: "be動詞の否定文", desc: "be動詞の後ろに not を置く否定文の作り方を練習しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson3" },
+          { id: "lesson6", title: "be動詞の疑問文", desc: "be動詞を文の先頭に出す疑問文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson6" },
+          { id: "lesson87", title: "まとめ＋総合演習", desc: "UNIT 1 be動詞のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "learning.html?lesson=lesson87" }
+        ]
+      },
+      {
+        label: "UNIT 2",
+        title: "一般動詞",
+        lessons: [
+          { id: "lesson4", title: "一般動詞とは？", desc: "be動詞との違いから一般動詞の基本ルールを学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson4" },
+          { id: "lesson7", title: "三単現のs", desc: "三人称単数現在で動詞にsを付けるルール。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson7" },
+          { id: "lesson8", title: "否定文の作り方", desc: "do / does を使った否定文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson8" },
+          { id: "lesson9", title: "疑問文の作り方", desc: "do / does を使った疑問文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson9" },
+          { id: "lesson89", title: "まとめ＋総合演習", desc: "UNIT 2 一般動詞のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "learning.html?lesson=lesson89" }
+        ]
+      },
+      {
+        label: "UNIT 3",
+        title: "現在進行形",
+        lessons: [
+          { id: "lesson10", title: "現在進行形の基本", desc: "be動詞 + 動詞ing の形を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson10" },
+{ id: "lesson12", title: "ing形の作り方", desc: "動詞にingをつける3つのパターンを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson12" },
+          { id: "lesson13", title: "疑問文と否定文", desc: "疑問文・否定文の作り方と短縮形を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson13" },
+          { id: "lesson91", title: "まとめ＋総合演習", desc: "UNIT 3 現在進行形のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "learning.html?lesson=lesson91" }
+        ]
+      },
+      {
+        label: "UNIT 4",
+        title: "過去形",
+        lessons: [
+          { id: "lesson14", title: "be動詞の過去形", desc: "am / is / are が was / were に変わるルール。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 9, href: "learning.html?lesson=lesson14" },
+          { id: "lesson15", title: "規則動詞の過去形", desc: "-ed のつけ方4パターンを学ぼう。", difficulty: "hard", difficultyLabel: "むずかしい", minutes: 10, href: "learning.html?lesson=lesson15" },
+          { id: "lesson16", title: "不規則動詞の過去形", desc: "形ごと変わる不規則動詞を学ぼう。", difficulty: "hard", difficultyLabel: "むずかしい", minutes: 10, href: "learning.html?lesson=lesson16" },
+          { id: "lesson17", title: "まとめ＋総合演習", desc: "Unit 4 の過去形を横断して確認しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 10, href: "learning.html?lesson=lesson17" },
+        ]
+      },
+      {
+        label: "UNIT 5",
+        title: "助動詞(can)",
+        lessons: [
+          { id: "lesson20", title: "can の使い方", desc: "can を使った基本文を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson20" },
+          { id: "lesson21", title: "can の否定文", desc: "can not / can't の形を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson21" },
+          { id: "lesson22", title: "can の疑問文", desc: "Can + 主語 ...? の形を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson22" },
+          { id: "lesson95", title: "まとめ＋総合演習", desc: "UNIT 5 助動詞(can)のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit05-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 6",
+        title: "疑問詞",
+        lessons: [
+          { id: "lesson23", title: "What / Who", desc: "What と Who を使った質問の基本を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson23" },
+          { id: "lesson24", title: "When / Where", desc: "when と where を使った質問文を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson24" },
+          { id: "lesson26", title: "Why / How", desc: "why と how を使った質問文を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson26" },
+          { id: "lesson97", title: "まとめ＋総合演習", desc: "UNIT 6 疑問詞のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit06-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 7",
+        title: "There is / There are",
+        lessons: [
+          { id: "lesson27", title: "There is / There areとは？", desc: "「〜がある・いる」を表す There is / There are の基本を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson27" },
+          { id: "lesson28", title: "There is / There are の否定文", desc: "There isn't / There aren't を使った否定文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson28" },
+          { id: "lesson29", title: "There is / There are の疑問文", desc: "Is there ...? / Are there ...? を使った疑問文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson29" },
+          { id: "lesson99", title: "まとめ＋総合演習", desc: "UNIT 7 There is/areのまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit07-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 8",
+        title: "命令文",
+        lessons: [
+          { id: "lesson30", title: "命令文とは？", desc: "命令文の基本ルールを学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson30" },
+          { id: "lesson30b", title: "否定の命令文", desc: "Don't を使って「〜してはいけない」の言い方を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson30b" },
+          { id: "lesson30c", title: "丁寧な命令文", desc: "Please を使って「〜してください」の丁寧な言い方を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 7, href: "learning.html?lesson=lesson30c" },
+          { id: "lesson30d", title: "Let's の文", desc: "Let's を使って「〜しよう」という誘い表現を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 7, href: "learning.html?lesson=lesson30d" },
+          { id: "lesson101", title: "まとめ＋総合演習", desc: "UNIT 8 命令文のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 12, href: "exercises/nexelia-unit08-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 9",
+        title: "未来形",
+        lessons: [
+          { id: "lesson31", title: "will の基本", desc: "will を使った未来形の基本を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson31" },
+          { id: "lesson32", title: "will の否定文・疑問文", desc: "won't の否定文と Will〜? の疑問文・答え方を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 7, href: "learning.html?lesson=lesson32" },
+          { id: "lesson34", title: "be going to の基本", desc: "be going to を使った予定・計画の表現を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 7, href: "learning.html?lesson=lesson34" },
+          { id: "lesson35", title: "will vs be going to の使い分け", desc: "will と be going to の違いと使い分けを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson35" },
+          { id: "lesson103", title: "まとめ＋総合演習", desc: "UNIT 9 未来形のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit09-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 10",
+        title: "have to / must",
+        lessons: [
+          { id: "lesson36", title: "have to の基本", desc: "have to の基本的な意味と使い方を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson36" },
+          { id: "lesson37", title: "must の基本", desc: "must の基本的な意味と使い方を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 6, href: "learning.html?lesson=lesson37" },
+          { id: "lesson38", title: "否定形の大きな違い", desc: "don't have to と must not の意味の違いを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson38" },
+          { id: "lesson105", title: "まとめ＋総合演習", desc: "UNIT 10 have to/mustのまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit10-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 11",
+        title: "受動態",
+        lessons: [
+          { id: "lesson39", title: "受動態の基本", desc: "受動態の基本的な形と意味を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 7, href: "learning.html?lesson=lesson39" },
+          { id: "lesson40", title: "受動態の時制", desc: "受動態のbe動詞は時制で変わる。現在と過去を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson40" },
+          { id: "lesson41", title: "受動態の否定文・疑問文", desc: "受動態の否定文と疑問文の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "learning.html?lesson=lesson41" },
+          { id: "lesson107", title: "まとめ＋総合演習", desc: "UNIT 11 受動態のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit11-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 12",
+        title: "比較",
+        lessons: [
+          { id: "lesson42", title: "比較級", desc: "比較級の基本的な作り方と使い方を学ぼう。", difficulty: "easy", difficultyLabel: "かんたん", minutes: 7, href: "exercises/nexelia-study42.html" },
+          { id: "lesson43", title: "最上級", desc: "最上級の基本的な作り方と使い方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "exercises/nexelia-study43.html" },
+          { id: "lesson44", title: "同等比較", desc: "as ... as を使った同等比較の作り方を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "exercises/nexelia-study44.html" },
+          { id: "lesson109", title: "まとめ＋総合演習", desc: "UNIT 12 比較のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit12-final.html" }
+        ]
+      },
+      {
+        label: "UNIT 13",
+        title: "現在完了",
+        lessons: [
+          { id: "lesson46", title: "現在完了の基本", desc: "現在完了の基本の形と意味を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "exercises/nexelia-study45.html" },
+          { id: "lesson47", title: "経験用法", desc: "現在完了の経験用法を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson47" },
+          { id: "lesson48", title: "完了用法", desc: "現在完了の完了用法を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson48" },
+          { id: "lesson49", title: "継続用法", desc: "現在完了の継続用法を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson49" },
+          { id: "lesson111", title: "まとめ＋総合演習", desc: "UNIT 13 現在完了のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "learning.html?lesson=lesson111" }
+        ]
+      },
+      {
+        label: "UNIT 14",
+        title: "不定詞",
+        lessons: [
+          { id: "lesson50", title: "不定詞の名詞的用法", desc: "to不定詞の名詞的用法を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson50" },
+          { id: "lesson51", title: "不定詞の副詞的用法", desc: "to不定詞の副詞的用法を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson51" },
+          { id: "lesson52", title: "不定詞の形容詞的用法", desc: "to不定詞の形容詞的用法を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson52" },
+          { id: "lesson53", title: "3用法の見分け方", desc: "不定詞の3用法を見分ける判断フローを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson53" },
+          { id: "lesson113", title: "まとめ＋総合演習", desc: "UNIT 14 不定詞のまとめと総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "learning.html?lesson=lesson113" }
+        ]
+      },
+      {
+        label: "UNIT 15",
+        title: "動名詞",
+        lessons: [
+          { id: "lesson54", title: "動名詞とは？", desc: "動名詞の基本の形と意味を学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 7, href: "learning.html?lesson=lesson54" },
+          { id: "lesson55", title: "動名詞の3つの働き", desc: "動名詞が主語・目的語・前置詞の後に使える3つのパターンを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "exercises/nexelia-unit15-lesson2.html" },
+          { id: "lesson56", title: "動名詞 vs to不定詞", desc: "〜ing と to〜 の違いと、動詞ごとの使い分けを学ぼう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 8, href: "exercises/nexelia-unit15-lesson3.html" },
+          { id: "lesson115", title: "まとめ＋総合演習", desc: "UNIT 15 動名詞のポイントを総整理して、総合演習に挑戦しよう。", difficulty: "normal", difficultyLabel: "ふつう", minutes: 13, href: "exercises/nexelia-unit15-lesson4.html" }
+        ]
+      }
+    ];
+
+
+    const unitsContainer = document.getElementById("unitsContainer");
+    const CHECK_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+    const FREE_UNIT_LIMIT = 999;
+
+    function getUnitNumber(unitLabel) {
+      const match = String(unitLabel || "").match(/UNIT\s*(\d+)/i);
+      return match ? Number(match[1]) : NaN;
+    }
+
+    function createLessonCard(lesson, unitLabel) {
+      const unitNumber = getUnitNumber(unitLabel);
+      const isDisabled = Number.isFinite(unitNumber) && unitNumber > FREE_UNIT_LIMIT;
+
+      const card = document.createElement("article");
+      card.className = "lesson-card";
+
+
+const CLOCK_SVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+      const diffClass = lesson.difficulty || "normal";
+      const diffLabel = lesson.difficultyLabel || "ふつう";
+      const minutes = lesson.minutes ? `約${lesson.minutes}分` : "";
+
+      card.innerHTML = `
+<p class="card-title">${lesson.title}</p>
+        ${lesson.desc ? `<p class="card-desc">${lesson.desc}</p>` : ""}
+        <div class="card-meta">
+          ${minutes ? `<span class="card-minutes">${CLOCK_SVG}${minutes}</span>` : ""}
+          <span class="card-difficulty ${diffClass}">${isDisabled ? "有料" : diffLabel}</span>
+        </div>
+      `;
+
+      card.classList.add("is-clickable");
+      if (isDisabled) {
+        card.classList.add("is-disabled");
+      }
+      card.setAttribute("role", "link");
+      card.tabIndex = isDisabled ? -1 : 0;
+      card.setAttribute("aria-label", `${lesson.title}${isDisabled ? " (有料)" : " を開く"}`);
+
+      const goToLesson = () => {
+        if (isDisabled) {
+          // Unit 5以降はクリック不可
+          return;
+        }
+        if (!lesson.href || lesson.href === "#") return;
+        try {
+          localStorage.setItem("nexeliaLastLesson", lesson.id);
+        } catch (_) {}
+        window.location.href = lesson.href;
+      };
+
+      card.addEventListener("click", goToLesson);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          if (!isDisabled) {
+            goToLesson();
+          }
+        }
+      });
+
+      return { card };
+    }
+
+    units.forEach((unit) => {
+      const section = document.createElement("section");
+      const grid = document.createElement("div");
+      grid.className = "lesson-grid";
+
+      unit.lessons.forEach((lesson) => {
+        const { card } = createLessonCard(lesson, unit.label);
+        grid.appendChild(card);
+      });
+
+      const head = document.createElement("header");
+      head.className = "unit-head";
+      head.innerHTML = `
+        <span class="unit-label">${unit.label}</span>
+        <h2 class="unit-title">${unit.title}</h2>
+      `;
+
+      section.append(head, grid);
+      unitsContainer.appendChild(section);
+    });
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 4 レッスン1</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EBTY5DKRN5');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { visibility: hidden; pointer-events: none; padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.35; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+.q-sub { font-size: 14px; color: var(--sub); font-weight: 500; line-height: 1.6; }
+
+/* 現在→過去の比較ブロック */
+.compare-block { display: flex; flex-direction: column; gap: 10px; }
+.compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cmp-box { border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+.cmp-box.now { background: var(--bg); border: 1.5px solid var(--border); }
+.cmp-box.past { background: var(--blue-light); border: 1.5px solid #B3E5FC; }
+.cmp-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--sub); }
+.cmp-box.past .cmp-label { color: var(--blue); }
+.cmp-en { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.cmp-box.past .cmp-en { color: var(--blue); }
+.cmp-jp { font-size: 12px; color: var(--sub); font-weight: 500; }
+
+/* 主語グループ */
+.subject-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.subj-box { border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+.subj-box.was-box  { background: var(--blue-light); border: 1.5px solid #B3E5FC; }
+.subj-box.were-box { background: var(--warn-light); border: 1.5px solid var(--warn); }
+.subj-head { font-size: 13px; font-weight: 700; }
+.was-box .subj-head  { color: var(--blue); }
+.were-box .subj-head { color: var(--warn); }
+.subj-key { font-size: 30px; font-weight: 700; }
+.was-box .subj-key  { color: var(--blue); }
+.were-box .subj-key { color: var(--warn); }
+.subj-names { font-size: 14px; font-weight: 600; color: var(--sub); line-height: 1.7; }
+.subj-from { font-size: 12px; font-weight: 700; margin-top: 2px; }
+.was-box .subj-from  { color: var(--blue); }
+.were-box .subj-from { color: var(--warn); }
+
+/* 公式ボックス */
+.formula-box { border-radius: 14px; padding: 20px 24px; display: flex; align-items: flex-start; justify-content: center; gap: 10px; flex-wrap: wrap; background: var(--blue-light); }
+.formula-box.warn-formula { background: var(--warn-light); }
+.f-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.f-part { background: var(--white); border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 700; text-align: center; border: 1.5px solid #B3E5FC; color: var(--blue); line-height: 1.4; }
+.f-part.key      { background: var(--blue); color: white; border-color: var(--blue); }
+.f-part.warn-key { background: var(--warn); color: white; border-color: var(--warn); }
+.f-part.warn-border { border-color: #FFCC80; color: var(--warn); }
+.f-plus { font-size: 18px; font-weight: 700; color: var(--blue); margin-top: 10px; }
+.f-plus.warn-plus { color: var(--warn); }
+.f-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--sub); }
+.f-label.warn-label { color: var(--warn); font-weight: 700; }
+
+/* Q&A ブロック */
+.qa-block { display: flex; flex-direction: column; gap: 10px; }
+.qa-row { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.qa-q { padding: 13px 18px; font-size: 15px; font-weight: 700; background: var(--blue-light); color: var(--blue); border-bottom: 1px solid #B3E5FC; line-height: 1.5; }
+.qa-q.warn-q { background: var(--warn-light); color: var(--warn); border-bottom-color: #FFCC80; }
+.qa-a { padding: 12px 18px; font-size: 14px; font-weight: 700; background: var(--white); color: var(--text); line-height: 1.6; }
+.qa-jp { padding: 8px 18px; font-size: 12px; color: var(--sub); background: var(--bg); }
+.hl      { color: var(--blue); }
+.hl-warn { color: var(--warn); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+
+/* 例文リスト */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); }
+
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* 穴埋めまとめ */
+.blank-list { display: flex; flex-direction: column; gap: 10px; }
+.blank-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; flex-wrap: wrap; }
+.blank-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.blank-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.blank-item.warn-item .blank-num { background: var(--warn); }
+.blank-text { font-size: 15px; font-weight: 600; line-height: 1.7; flex: 1; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: transparent; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+body.embedded nav { display: none; }
+body.embedded main { padding: 20px 16px; }
+body.embedded .btn-nav { display: none; }
+body.embedded .bottom-nav { display: none; }
+body.embedded .slide-card { border: 1px solid var(--border); border-radius: 20px; background: var(--white); padding: 44px 52px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .compare-row { grid-template-columns: 1fr; }
+  .subject-split { grid-template-columns: 1fr; }
+  .question-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 4 · be動詞の過去形</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <a href="learning.html?lesson=lesson14" class="btn-exit">← レッスン一覧</a>
+</nav>
+
+<main>
+
+  <!-- スライド 1：過去形とは？現在形と比べて直感をつかむ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン1 · スライド 1</div>
+      <div class="question-title">「今」じゃなくて<span class="accent">「昨日・前」</span>の話をするには？</div>
+
+      <div class="compare-block">
+        <div class="compare-row">
+          <div class="cmp-box now">
+            <div class="cmp-label">現在形（今）</div>
+            <div class="cmp-en">I <strong>am</strong> happy.</div>
+            <div class="cmp-jp">私は（今）うれしい。</div>
+          </div>
+          <div class="cmp-box past">
+            <div class="cmp-label">過去形（過去）</div>
+            <div class="cmp-en">I <strong>was</strong> happy <strong><span style="color:var(--blue)">yesterday</span></strong>.</div>
+            <div class="cmp-jp">私は<strong>昨日</strong>うれしかった。</div>
+          </div>
+        </div>
+        <div class="compare-row">
+          <div class="cmp-box now">
+            <div class="cmp-label">現在形（今）</div>
+            <div class="cmp-en">They <strong>are</strong> busy.</div>
+            <div class="cmp-jp">彼らは（今）忙しい。</div>
+          </div>
+          <div class="cmp-box past">
+            <div class="cmp-label">過去形（過去）</div>
+            <div class="cmp-en">They <strong>were</strong> busy <strong><span style="color:var(--blue)">last&nbsp;week</span></strong>.</div>
+            <div class="cmp-jp">彼らは<strong>先週</strong>忙しかった。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 be動詞は「今」→「過去」になると形が変わる！<br>am / is → <strong>was</strong>　　are → <strong>were</strong></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" style="visibility:hidden">←</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：was と were の使い分け -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン1 · スライド 2</div>
+      <div class="question-title">was と were、<span class="accent">どう使い分ける？</span></div>
+
+      <div class="subject-split">
+        <div class="subj-box was-box">
+          <div class="subj-head">これらの主語のとき</div>
+          <div class="subj-names">I / He / She / It<br>（単数の名前も）</div>
+          <div class="subj-key">was</div>
+          <div class="subj-from">← am・is の過去形</div>
+        </div>
+        <div class="subj-box were-box">
+          <div class="subj-head">これらの主語のとき</div>
+          <div class="subj-names">You / We / They<br>（複数の名前も）</div>
+          <div class="subj-key">were</div>
+          <div class="subj-from">← are の過去形</div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">She <span class="hl">was</span> a student last year.</div>
+          <div class="jp">彼女は去年、生徒だった。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">We <span class="hl-warn">were</span> at the park yesterday.</div>
+          <div class="jp">私たちは昨日、公園にいた。</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ You は were！「You was」は NG。<br>You は1人でも、英語では複数扱いだから were を使う。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：否定文（was not / were not） -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン1 · スライド 3</div>
+      <div class="question-title">否定文は<span class="accent">was / were のあとに not</span> をつける！</div>
+
+      <div class="formula-box">
+        <div class="f-col">
+          <div class="f-part">主語</div>
+          <span class="f-label"></span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part key">was / were</div>
+          <span class="f-label">be動詞の過去形</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part warn-key">not</div>
+          <span class="f-label warn-label">ここに入れる！</span>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="qa-row">
+          <div class="qa-q">I <span class="hl">was</span> tired.</div>
+          <div class="qa-a">→ I <span class="hl">was</span> <span class="hl-warn">not</span> tired.<br>　 （短縮形：I <span class="hl">wasn't</span> tired.）</div>
+          <div class="qa-jp">私は疲れていなかった。</div>
+        </div>
+        <div class="qa-row">
+          <div class="qa-q warn-q">They <span class="hl-warn">were</span> late.</div>
+          <div class="qa-a">→ They <span class="hl-warn">were</span> <span class="hl-warn">not</span> late.<br>　 （短縮形：They <span class="hl-warn">weren't</span> late.）</div>
+          <div class="qa-jp">彼らは遅刻した（遅れていた）。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 wasn't = was&nbsp;not　／　weren't = were&nbsp;not<br>現在形の isn't / aren't と同じ仕組みだよ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：疑問文（Was / Were を文頭に） -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン1 · スライド 4</div>
+      <div class="question-title">疑問文は<span class="accent">Was / Were を文頭</span>に出す！</div>
+
+      <div class="formula-box">
+        <div class="f-col">
+          <div class="f-part key">Was / Were</div>
+          <span class="f-label">文頭に出す</span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">主語</div>
+          <span class="f-label"></span>
+        </div>
+        <div class="f-plus">＋</div>
+        <div class="f-col">
+          <div class="f-part">〜 ?</div>
+          <span class="f-label"></span>
+        </div>
+      </div>
+
+      <div class="qa-block">
+        <div class="qa-row">
+          <div class="qa-q"><span class="hl">Was</span> he at home yesterday?</div>
+          <div class="qa-a">
+            ✅ Yes, he <span class="hl">was</span>.<br>
+            ✅ No, he <span class="hl">wasn't</span>.
+          </div>
+          <div class="qa-jp">彼は昨日、家にいましたか？ — はい／いいえ</div>
+        </div>
+        <div class="qa-row">
+          <div class="qa-q warn-q"><span class="hl-warn">Were</span> you busy last week?</div>
+          <div class="qa-a">
+            ✅ Yes, I <span class="hl">was</span>.<br>
+            ✅ No, I <span class="hl">wasn't</span>.
+          </div>
+          <div class="qa-jp">先週、忙しかったですか？ — はい／いいえ</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ Were you〜? と聞かれても、答えは Yes,&nbsp;I&nbsp;<strong>was</strong>. ！<br>「Yes,&nbsp;I&nbsp;were.」は NG。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 4 · レッスン1 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">be動詞の過去形を<span class="accent">整理しよう！</span></div>
+      </div>
+
+      <div class="blank-list">
+        <div class="blank-item">
+          <div class="blank-num">1</div>
+          <div class="blank-text">am・is の過去形 → <span style="color:var(--blue);font-weight:700;">was</span>　（I / He / She / It）</div>
+        </div>
+        <div class="blank-item warn-item">
+          <div class="blank-num">2</div>
+          <div class="blank-text">are の過去形 → <span style="color:var(--warn);font-weight:700;">were</span>　（You / We / They）</div>
+        </div>
+        <div class="blank-item warn-item">
+          <div class="blank-num">3</div>
+          <div class="blank-text">否定文 → was / were の後ろに <span style="color:var(--warn);font-weight:700;">not</span>（wasn't / weren't）</div>
+        </div>
+        <div class="blank-item">
+          <div class="blank-num">4</div>
+          <div class="blank-text">疑問文 → <span style="color:var(--blue);font-weight:700;">Was / Were</span> を文頭に出して ?</div>
+        </div>
+        <div class="blank-item warn-item">
+          <div class="blank-num">5</div>
+          <div class="blank-text">Were&nbsp;you〜? への答え → Yes, I <span style="color:var(--blue);font-weight:700;">was</span>.（were にしない！）</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'learning.html?lesson=lesson14q'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+
+  // Embedded mode
+  const params = new URLSearchParams(window.location.search);
+  const isEmbedded = params.get('embed') === '1';
+  if (isEmbedded) {
+    document.body.classList.add('embedded');
+    const pageParam = params.get('page');
+    if (pageParam) {
+      const pageNum = Math.max(0, parseInt(pageParam) - 1);
+      if (pageNum < TOTAL && pageNum >= 0) {
+        go(pageNum);
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
