@@ -966,16 +966,18 @@ function renderStep() {
 
   saveProgress();
 
-  // 次スライドをプリフェッチ（ラグ軽減）
+  // 次スライドを隠しiframeで先読み（ラグ軽減）
   const nextStep = steps[stepIndex + 1];
+  const preloadId = '__preload_next_slide';
+  const existing = document.getElementById(preloadId);
+  if (existing) existing.remove();
   if (nextStep && nextStep.embedUrl && !isPdfUrl(nextStep.embedUrl) && !isImageUrl(nextStep.embedUrl)) {
-    const existing = document.getElementById('__prefetch_next_slide');
-    if (existing) existing.remove();
-    const link = document.createElement('link');
-    link.id = '__prefetch_next_slide';
-    link.rel = 'prefetch';
-    link.href = nextStep.embedUrl;
-    document.head.appendChild(link);
+    const preIframe = document.createElement('iframe');
+    preIframe.id = preloadId;
+    preIframe.src = nextStep.embedUrl;
+    preIframe.style.cssText = 'position:fixed;left:-9999px;top:0;width:800px;height:600px;visibility:hidden;pointer-events:none;';
+    preIframe.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(preIframe);
   }
 }
 
