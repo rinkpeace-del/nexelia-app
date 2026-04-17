@@ -304,5 +304,22 @@
       }
     });
     observer.observe(complete, { attributes: true, attributeFilter: ['class'] });
+
+    // ドットをクリック可能にする（renderDotsをオーバーライド）
+    if (typeof window.renderDots === 'function') {
+      var _origRenderDots = window.renderDots;
+      window.renderDots = function (id) {
+        _origRenderDots(id);
+        var el = document.getElementById('d' + id);
+        if (!el) return;
+        el.querySelectorAll('.dot').forEach(function (dot, i) {
+          dot.style.cursor = 'pointer';
+          dot.title = 'スライド ' + (i + 1);
+          dot.addEventListener('click', function () {
+            if (typeof window.go === 'function') window.go(i);
+          });
+        });
+      };
+    }
   });
 })();
