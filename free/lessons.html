@@ -234,6 +234,39 @@
       color: #D97706;
     }
 
+    .premium-divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin: 48px 0 40px;
+    }
+    .premium-divider-line {
+      width: 100%;
+      height: 1px;
+      background: #E8E8E8;
+    }
+    .premium-divider-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #555;
+      white-space: nowrap;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+    .premium-divider-lock { font-size: 16px; }
+    .premium-divider-link {
+      color: #1A56DB;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .premium-divider-link:hover { text-decoration: underline; }
+
     .card-paid {
       font-size: 11px;
       font-weight: 700;
@@ -270,6 +303,7 @@
   <header class="site-header">
     <div class="topbar">
       <a href="index.html" class="logo">NEXELIA</a>
+      <a href="https://nexelia.base.shop/items/142047103" target="_blank" rel="noopener" style="padding:9px 20px;background:#1A56DB;color:#fff;font-size:14px;font-weight:700;border-radius:8px;text-decoration:none;white-space:nowrap;">プレミアムプランを見る</a>
     </div>
   </header>
 
@@ -336,6 +370,7 @@
         ]
       },
       {
+        isPremium: true,
         label: "UNIT 6",
         title: "疑問詞",
         lessons: [
@@ -485,7 +520,7 @@ const CLOCK_SVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><pol
 
       const goToLesson = () => {
         if (isDisabled) {
-          // Unit 5以降はクリック不可
+          window.open("https://nexelia.base.shop/items/142047103", "_blank", "noopener");
           return;
         }
         if (!lesson.href || lesson.href === "#") return;
@@ -508,7 +543,24 @@ const CLOCK_SVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><pol
       return { card };
     }
 
+    let premiumDividerInserted = false;
     units.forEach((unit) => {
+      if (unit.isPremium && !premiumDividerInserted) {
+        const divider = document.createElement("div");
+        divider.className = "premium-divider";
+        divider.innerHTML = `
+          <div class="premium-divider-line"></div>
+          <div class="premium-divider-label">
+            <span class="premium-divider-lock">🔒</span>
+            Unit 6以降はプレミアムプランの購入が必要です
+            <a href="https://nexelia.base.shop/items/142047103" target="_blank" rel="noopener" class="premium-divider-link">プランを見る →</a>
+          </div>
+          <div class="premium-divider-line"></div>
+        `;
+        unitsContainer.appendChild(divider);
+        premiumDividerInserted = true;
+      }
+
       const section = document.createElement("section");
       const grid = document.createElement("div");
       grid.className = "lesson-grid";
