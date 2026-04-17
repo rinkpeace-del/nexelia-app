@@ -965,6 +965,18 @@ function renderStep() {
   }
 
   saveProgress();
+
+  // 次スライドをプリフェッチ（ラグ軽減）
+  const nextStep = steps[stepIndex + 1];
+  if (nextStep && nextStep.embedUrl && !isPdfUrl(nextStep.embedUrl) && !isImageUrl(nextStep.embedUrl)) {
+    const existing = document.getElementById('__prefetch_next_slide');
+    if (existing) existing.remove();
+    const link = document.createElement('link');
+    link.id = '__prefetch_next_slide';
+    link.rel = 'prefetch';
+    link.href = nextStep.embedUrl;
+    document.head.appendChild(link);
+  }
 }
 
 function goToPreviousStep() {
