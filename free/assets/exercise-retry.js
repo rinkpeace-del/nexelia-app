@@ -259,7 +259,9 @@
               }
               if (fb) {
                 fb.classList.add('show', allRight ? 'ok' : 'ng');
-                fb.textContent = allRight ? '✓ 正解！' : (ngTexts[retryIdx] || '✗ もう一度スライドで確認しよう。');
+                fb.textContent = allRight
+                  ? (ngTexts[retryIdx] ? ngTexts[retryIdx].replace(/^[✗×][^\s！]*\s*/, '✓ 正解！ ') : '✓ 正解！')
+                  : (ngTexts[retryIdx] || '✗ もう一度スライドで確認しよう。');
               }
               if (nextBtn) nextBtn.disabled = false;
             }
