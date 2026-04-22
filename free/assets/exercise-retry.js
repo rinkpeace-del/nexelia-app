@@ -112,6 +112,7 @@
     var slides = [];
     var cur = 0;
     var retryCorrect = 0;
+    var retryWrongInOrig = []; // やり直し中でも間違えた元インデックス
 
     // 各間違いスライドのfeedbackテキスト（解説）を元から取得
     var ngTexts = [];
@@ -149,6 +150,7 @@
       '<p id="retryDoneMsg"></p>' +
       '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">' +
         '<a href="../lessons.html" style="' + btnStyle + 'background:#fff;border:1.5px solid #E8E8E8;color:#1A1A1A;">ホームに戻る</a>' +
+        '<button id="retryAgainBtn" style="' + btnStyle + 'background:#E65100;border:none;color:#fff;">もう一度挑戦する</button>' +
         '<a id="retryNextLesson" href="' + nextHref + '" style="' + btnStyle + 'background:#0277BD;border:none;color:#fff;">次のレッスンへ →</a>' +
       '</div>';
     body.appendChild(doneScreen);
@@ -182,14 +184,23 @@
 
       var icon = document.getElementById('retryDoneIcon');
       var msg = document.getElementById('retryDoneMsg');
+      var retryAgainBtn = document.getElementById('retryAgainBtn');
       if (retryCorrect === total) {
         if (icon) icon.textContent = '🎉';
         document.getElementById('retryDoneTitle').textContent = '全問正解！';
         if (msg) msg.textContent = '完璧です！次のレッスンへ進もう。';
+        if (retryAgainBtn) retryAgainBtn.style.display = 'none';
       } else {
         if (icon) icon.textContent = '📖';
         document.getElementById('retryDoneTitle').textContent = retryCorrect + ' / ' + total + ' 問正解';
         if (msg) msg.textContent = 'もう一度スライドを確認してみよう。';
+        if (retryAgainBtn) {
+          retryAgainBtn.style.display = '';
+          retryAgainBtn.onclick = function () {
+            document.body.removeChild(overlay);
+            buildRetryOverlay(retryWrongInOrig);
+          };
+        }
       }
     }
 
@@ -241,7 +252,11 @@
               selected.forEach(function (b) {
                 if (b.dataset.correct !== 'true') b.classList.add('wrong');
               });
-              if (allRight) retryCorrect++;
+              if (allRight) {
+                retryCorrect++;
+              } else {
+                retryWrongInOrig.push(wrongIndices[retryIdx]);
+              }
               if (fb) {
                 fb.classList.add('show', allRight ? 'ok' : 'ng');
                 fb.textContent = allRight ? '✓ 正解！' : (ngTexts[retryIdx] || '✗ もう一度スライドで確認しよう。');
@@ -256,7 +271,11 @@
             if (answered) return;
             answered = true;
             var isCorrect = btn.dataset.correct === 'true';
-            if (isCorrect) retryCorrect++;
+            if (isCorrect) {
+              retryCorrect++;
+            } else {
+              retryWrongInOrig.push(wrongIndices[retryIdx]);
+            }
             opts.forEach(function (b) {
               b.disabled = true;
               if (b.dataset.correct === 'true') b.classList.add('correct');
