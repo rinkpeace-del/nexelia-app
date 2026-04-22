@@ -85,6 +85,10 @@
   function buildRetryOverlay(wrongIndices) {
     addStyles();
 
+    // 元の「次のレッスンへ」リンクを取得
+    var nextLessonEl = document.querySelector('.complete-btns .cbtn.primary');
+    var nextHref = nextLessonEl ? nextLessonEl.getAttribute('href') : '../lessons.html';
+
     var overlay = document.createElement('div');
     overlay.className = 'retry-overlay';
 
@@ -109,16 +113,12 @@
     var cur = 0;
     var retryCorrect = 0;
 
-    // FB texts from original slides
-    var originalFbOk = [];
-    var originalFbNg = [];
-    document.querySelectorAll('.feedback').forEach(function (fb, i) {
-      if (wrongIndices.indexOf(i) !== -1) {
-        var okText = fb.classList.contains('ok') ? fb.textContent : '';
-        var ngText = fb.classList.contains('ng') ? fb.textContent : '';
-        originalFbOk.push(okText);
-        originalFbNg.push(ngText);
-      }
+    // 各間違いスライドのfeedbackテキスト（解説）を元から取得
+    var ngTexts = [];
+    wrongIndices.forEach(function (origIdx) {
+      var origSlide = document.getElementById('s' + origIdx);
+      var origFb = origSlide ? origSlide.querySelector('.feedback') : null;
+      ngTexts.push(origFb ? origFb.textContent.trim() : '');
     });
 
     // Clone and add wrong slides
@@ -142,12 +142,14 @@
     doneScreen.className = 'retry-done';
     doneScreen.id = 'retryDone';
     doneScreen.style.display = 'none';
+    var btnStyle = 'padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block;';
     doneScreen.innerHTML =
       '<div style="font-size:52px" id="retryDoneIcon">👍</div>' +
       '<h2 id="retryDoneTitle">やり直し完了！</h2>' +
       '<p id="retryDoneMsg"></p>' +
       '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">' +
-        '<button id="retryClose" class="cbtn secondary" style="padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;background:#fff;border:1.5px solid #E8E8E8;font-family:inherit;">閉じる</button>' +
+        '<a href="../lessons.html" style="' + btnStyle + 'background:#fff;border:1.5px solid #E8E8E8;color:#1A1A1A;">ホームに戻る</a>' +
+        '<a id="retryNextLesson" href="' + nextHref + '" style="' + btnStyle + 'background:#0277BD;border:none;color:#fff;">次のレッスンへ →</a>' +
       '</div>';
     body.appendChild(doneScreen);
 
@@ -189,10 +191,6 @@
         document.getElementById('retryDoneTitle').textContent = retryCorrect + ' / ' + total + ' 問正解';
         if (msg) msg.textContent = 'もう一度スライドを確認してみよう。';
       }
-
-      document.getElementById('retryClose').addEventListener('click', function () {
-        document.body.removeChild(overlay);
-      });
     }
 
     // Wire up each cloned slide's options
@@ -246,7 +244,7 @@
               if (allRight) retryCorrect++;
               if (fb) {
                 fb.classList.add('show', allRight ? 'ok' : 'ng');
-                fb.textContent = allRight ? '✓ 正解！' : '✗ もう一度スライドで確認しよう。';
+                fb.textContent = allRight ? '✓ 正解！' : (ngTexts[retryIdx] || '✗ もう一度スライドで確認しよう。');
               }
               if (nextBtn) nextBtn.disabled = false;
             }
@@ -266,7 +264,7 @@
             if (!isCorrect) btn.classList.add('wrong');
             if (fb) {
               fb.classList.add('show', isCorrect ? 'ok' : 'ng');
-              fb.textContent = isCorrect ? '✓ 正解！' : '✗ もう一度スライドで確認しよう。';
+              fb.textContent = isCorrect ? '✓ 正解！' : (ngTexts[retryIdx] || '✗ もう一度スライドで確認しよう。');
             }
             if (nextBtn) nextBtn.disabled = false;
           });
