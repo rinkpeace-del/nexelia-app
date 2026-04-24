@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 17 レッスン2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* キーワードカード */
+.keyword-cards { display: flex; flex-direction: column; gap: 10px; }
+.kw-card { border-radius: 12px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 16px; border: 1.5px solid #B3E5FC; background: var(--blue-light); }
+.kw-word { font-size: 20px; font-weight: 700; color: var(--blue); min-width: 90px; padding-top: 2px; }
+.kw-body { display: flex; flex-direction: column; gap: 4px; }
+.kw-pos { font-size: 12px; font-weight: 700; color: var(--blue); background: var(--white); border-radius: 4px; padding: 1px 7px; display: inline-block; margin-bottom: 2px; }
+.kw-mean { font-size: 15px; font-weight: 700; line-height: 1.4; }
+.kw-note { font-size: 12px; color: var(--sub); font-weight: 500; font-style: italic; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); font-weight: 700; }
+.hl-warn { color: var(--warn); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+
+/* 正誤対比 */
+.compare-box { display: flex; flex-direction: column; gap: 8px; }
+.compare-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border-radius: 10px; }
+.compare-row.ok  { background: var(--green-light); border: 1.5px solid var(--green); }
+.compare-row.ng  { background: #FFEBEE; border: 1.5px solid #C62828; }
+.compare-mark { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.compare-text { font-size: 14px; font-weight: 700; line-height: 1.5; }
+.compare-text .del { text-decoration: line-through; color: #C62828; }
+.compare-note { font-size: 12px; font-weight: 500; color: var(--sub); margin-top: 3px; }
+
+/* 注意ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .question-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 17 · because / if</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <div style="width:80px"></div>
+</nav>
+
+<main>
+
+  <!-- スライド 1：because の使い方 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン2 · スライド 1</div>
+      <div class="question-title"><span class="accent">because</span> ＝「〜だから・〜なので」</div>
+
+      <div class="kw-card">
+        <div class="kw-word">because</div>
+        <div class="kw-body">
+          <div class="kw-pos">接続詞（理由）</div>
+          <div class="kw-mean">「〜だから」「〜なので」</div>
+          <div class="kw-note">because のあとに「理由（主語＋動詞）」を続ける</div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I was tired <span class="hl">because</span> I ran a lot.</div>
+          <div class="jp">たくさん走ったので、私は疲れた。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en"><span class="hl">Because</span> it was cold, I wore a coat.</div>
+          <div class="jp">寒かったので、私はコートを着た。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 because も文頭に置ける！<br>文頭に置くとき → 後ろに<strong>コンマ（,）</strong>が必要（L1 と同じルール）</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：because vs so -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン2 · スライド 2</div>
+      <div class="question-title"><span class="accent">because</span> と <span class="accent">so</span> は同じ文で使わない！</div>
+
+      <div class="compare-box">
+        <div class="compare-row ng">
+          <div class="compare-mark">✗</div>
+          <div class="compare-text">
+            <span class="del">Because</span> I was tired, <span class="del">so</span> I went to bed.
+            <div class="compare-note">because と so を両方使うのは誤り</div>
+          </div>
+        </div>
+        <div class="compare-row ok">
+          <div class="compare-mark">✓</div>
+          <div class="compare-text">
+            <span class="hl-green">Because</span> I was tired, I went to bed.
+            <div class="compare-note">because だけ使う</div>
+          </div>
+        </div>
+        <div class="compare-row ok">
+          <div class="compare-mark">✓</div>
+          <div class="compare-text">
+            I was tired, <span class="hl-green">so</span> I went to bed.
+            <div class="compare-note">so だけ使う</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ because ＝「〜だから」（理由が後ろ）<br>
+        so ＝「だから〜」（結果が後ろ）<br>
+        どちらか<strong>1つだけ</strong>使う！両方は NG！
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：if の使い方 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン2 · スライド 3</div>
+      <div class="question-title"><span class="accent">if</span> ＝「もし〜なら」</div>
+
+      <div class="kw-card">
+        <div class="kw-word">if</div>
+        <div class="kw-body">
+          <div class="kw-pos">接続詞（条件）</div>
+          <div class="kw-mean">「もし〜なら」「〜の場合は」</div>
+          <div class="kw-note">if のあとに「条件（主語＋動詞）」を続ける</div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en"><span class="hl">If</span> it rains tomorrow, I will stay home.</div>
+          <div class="jp">もし明日雨が降ったら、私は家にいます。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I will call you <span class="hl">if</span> I have time.</div>
+          <div class="jp">時間があれば、電話します。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 if も文頭に置ける！<br>文頭に置くとき → 後ろに<strong>コンマ（,）</strong>（L1 と同じルール）</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：if 節の中は現在形！ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン2 · スライド 4</div>
+      <div class="question-title">if 節の中は<span class="accent">未来でも現在形</span>！</div>
+
+      <div class="compare-box">
+        <div class="compare-row ng">
+          <div class="compare-mark">✗</div>
+          <div class="compare-text">
+            If it <span class="del">will rain</span> tomorrow, I will stay home.
+            <div class="compare-note">if 節の中に will は使わない</div>
+          </div>
+        </div>
+        <div class="compare-row ok">
+          <div class="compare-mark">✓</div>
+          <div class="compare-text">
+            If it <span class="hl-green">rains</span> tomorrow, I will stay home.
+            <div class="compare-note">if 節の中は現在形（rains）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ 「もし明日〜なら」と未来のことを言うときも、<br>
+        if のあとは <strong>will を使わず現在形</strong>にする！<br>
+        will は if の外（主節）に置く。
+      </div>
+
+      <div class="point-box">💡 まとめると：<br>
+        <strong>If ＋ 現在形, will ＋ 動詞の原形</strong> が基本の形！
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 17 · レッスン2 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text"><strong>because</strong> ＝「〜だから」— 理由を後ろに続ける</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text"><strong>because と so は同じ文で使わない！</strong>どちらか1つだけ</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text"><strong>if</strong> ＝「もし〜なら」— 条件を後ろに続ける</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">if 節の中は<strong>未来でも現在形</strong>（will は使わない）</div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'nexelia-unit17-lesson2-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>

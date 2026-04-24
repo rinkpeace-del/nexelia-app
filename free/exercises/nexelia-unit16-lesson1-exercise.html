@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXELIA — Unit 15 レッスン3 · 演習</title>
+<title>NEXELIA — Unit 16 レッスン1 · 演習</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,6 +25,7 @@ nav { background: var(--white); border-bottom: 1px solid var(--border); height: 
 .nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
 .btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
 .btn-exit:hover { border-color: #aaa; color: var(--text); }
+.nav-spacer { width: 88px; }
 
 main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
 .slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
@@ -46,13 +47,13 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .opt:disabled { cursor: default; transform: none; }
 
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
-.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 16px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 72px; }
+.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 16px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.4; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 72px; }
 .opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
 .opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
 .opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
 .opt-card:disabled { cursor: default; transform: none; }
 
-.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.5; }
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.6; }
 .feedback.show { display: block; }
 .feedback.ok { background: var(--green-light); color: var(--green); }
 .feedback.ng { background: var(--wrong-light); color: var(--wrong); }
@@ -63,7 +64,7 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
 .btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
 .btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
-.btn-nav:disabled { opacity: 0.3; cursor: default; }
+.btn-nav:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
 .dots { display: flex; gap: 7px; align-items: center; }
 .dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s; }
@@ -101,50 +102,51 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 <nav>
   <a href="../lessons.html" class="nav-logo">NEXELIA</a>
   <div class="nav-center">
-    <span class="lesson-name">Unit 15 · 動名詞 vs to不定詞 · 演習</span>
+    <span class="lesson-name">Unit 16 · 関係代名詞 who · 演習</span>
     <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:20%"></div></div>
     <span class="nav-count" id="nav-count">1 / 5</span>
   </div>
+  <div class="nav-spacer" aria-hidden="true"></div>
 </nav>
 
 <main>
 
-  <!-- Q1：超簡単 — enjoy の後の形 -->
+  <!-- Q1：超簡単 — who を使う対象（人 vs もの） -->
   <div class="slide active" id="s0">
     <div class="quiz-card">
       <div class="q-label">問題 1 / 5</div>
-      <div class="q-tag">動名詞のみOK</div>
-      <div class="q-text">（　）に入る正しい形はどれ？</div>
-      <div class="q-highlight">I enjoy （　　） music.</div>
-      <div class="q-sub">enjoy の後に来る形はどちら？</div>
+      <div class="q-tag">who を使う対象</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <div class="q-highlight">The girl （　　） sings well is Yui.</div>
+      <div class="q-sub">説明しているのは「人」？「もの」？</div>
       <div class="options-grid" id="o0">
-        <button class="opt-card" data-correct="true">listening to</button>
-        <button class="opt-card" data-correct="false">to listen to</button>
-        <button class="opt-card" data-correct="false">listen to</button>
-        <button class="opt-card" data-correct="false">listened to</button>
+        <button class="opt-card" data-correct="true">who</button>
+        <button class="opt-card" data-correct="false">which</button>
+        <button class="opt-card" data-correct="false">what</button>
+        <button class="opt-card" data-correct="false">where</button>
       </div>
       <div class="feedback" id="f0"></div>
     </div>
     <div class="bottom-nav">
-      <button class="btn-nav" style="visibility:hidden">←</button>
+      <button class="btn-nav" disabled aria-disabled="true">← もどる</button>
       <div class="dots" id="d0"></div>
       <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
     </div>
   </div>
 
-  <!-- Q2：超簡単 — finish の後の形 -->
+  <!-- Q2：超簡単 — who のうしろに来るもの（動詞 vs 代名詞） -->
   <div class="slide" id="s1">
     <div class="quiz-card">
       <div class="q-label">問題 2 / 5</div>
-      <div class="q-tag">動名詞のみOK</div>
+      <div class="q-tag">who のうしろ</div>
       <div class="q-text">日本語に合う正しい英文はどれ？</div>
-      <div class="q-highlight">「彼は宿題をやり終えた。」</div>
-      <div class="q-sub">finish の後に来る形に注目！</div>
-      <div class="options-grid" id="o1">
-        <button class="opt-card" data-correct="false">He finished to do his homework.</button>
-        <button class="opt-card" data-correct="true">He finished doing his homework.</button>
-        <button class="opt-card" data-correct="false">He finished do his homework.</button>
-        <button class="opt-card" data-correct="false">He finished did his homework.</button>
+      <div class="q-highlight">「私はピアノを弾く少年を知っている。」</div>
+      <div class="q-sub">who のうしろに何が来る？</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="true">I know a boy who plays the piano.</button>
+        <button class="opt" data-correct="false">I know a boy who he plays the piano.</button>
+        <button class="opt" data-correct="false">I know a boy who the piano plays.</button>
+        <button class="opt" data-correct="false">I know a boy which plays the piano.</button>
       </div>
       <div class="feedback" id="f1"></div>
     </div>
@@ -155,19 +157,19 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q3：普通 — 両方OKな動詞（like）の確認 -->
+  <!-- Q3：普通 — 3単現の s に注意しながら who 節を完成 -->
   <div class="slide" id="s2">
     <div class="quiz-card">
       <div class="q-label">問題 3 / 5</div>
-      <div class="q-tag">両方OKな動詞</div>
-      <div class="q-text">like の後に来て<strong>正しい</strong>形をすべて選ぶとしたら？</div>
-      <div class="q-highlight">I like （　　） tennis.</div>
-      <div class="q-sub">like の後は動名詞と to不定詞、どちらが使える？</div>
-      <div class="options" id="o2">
-        <button class="opt" data-correct="false">playing だけ正しい</button>
-        <button class="opt" data-correct="false">to play だけ正しい</button>
-        <button class="opt" data-correct="true">playing も to play もどちらも正しい</button>
-        <button class="opt" data-correct="false">どちらも間違い</button>
+      <div class="q-tag">who ＋ 動詞の形</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">She is the teacher who （　　） math.</div>
+      <div class="q-sub">who のうしろの動詞、形は正しい？</div>
+      <div class="options-grid" id="o2">
+        <button class="opt-card" data-correct="false">teach</button>
+        <button class="opt-card" data-correct="true">teaches</button>
+        <button class="opt-card" data-correct="false">taught</button>
+        <button class="opt-card" data-correct="false">teaching</button>
       </div>
       <div class="feedback" id="f2"></div>
     </div>
@@ -178,18 +180,18 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q4：普通 — 🔍 誤文発見（enjoy to play） -->
+  <!-- Q4：普通 — 誤文発見（who のうしろに he を重ねる・who と which の混同） -->
   <div class="slide" id="s3">
     <div class="quiz-card">
       <div class="q-label">問題 4 / 5</div>
-      <div class="q-tag">🔍 なぜ間違い？</div>
-      <div class="q-text">文法的に<strong>まちがっている</strong>英文はどれ？</div>
-      <div class="q-sub">動名詞のみOKな動詞と両方OKな動詞を区別しよう！</div>
+      <div class="q-tag">誤文発見</div>
+      <div class="q-text">文法的に<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-sub">who の使い方・うしろの語順に注目！</div>
       <div class="options" id="o3">
-        <button class="opt" data-correct="false">She loves singing in the shower.</button>
-        <button class="opt" data-correct="true">He enjoyed to play video games.</button>
-        <button class="opt" data-correct="false">They started running every morning.</button>
-        <button class="opt" data-correct="false">I like to read books.</button>
+        <button class="opt" data-correct="false">The man who he works here is kind.</button>
+        <button class="opt" data-correct="false">I have a friend which speaks French.</button>
+        <button class="opt" data-correct="true">The woman who lives next door is a doctor.</button>
+        <button class="opt" data-correct="false">She knows a boy who running fast.</button>
       </div>
       <div class="feedback" id="f3"></div>
     </div>
@@ -200,19 +202,19 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q5：少し応用 — 動名詞のみOKかどうかを総合判断 -->
+  <!-- Q5：少し応用 — 2文を1文に（日本語→英語・総合判断） -->
   <div class="slide" id="s4">
     <div class="quiz-card">
       <div class="q-label">問題 5 / 5</div>
       <div class="q-tag">総合判断</div>
       <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
-      <div class="q-highlight">「窓を閉めていただけますか？」</div>
-      <div class="q-sub">mind の後に来る形は？mind の意味も確認しよう！</div>
+      <div class="q-highlight">「私にはフランスに住んでいる友達がいる。」</div>
+      <div class="q-sub">who の位置・うしろの語順・動詞の形——全部チェック！</div>
       <div class="options" id="o4">
-        <button class="opt" data-correct="false">Do you mind to close the window?</button>
-        <button class="opt" data-correct="true">Do you mind closing the window?</button>
-        <button class="opt" data-correct="false">Do you mind close the window?</button>
-        <button class="opt" data-correct="false">Do you mind closed the window?</button>
+        <button class="opt" data-correct="false">I have a friend which lives in France.</button>
+        <button class="opt" data-correct="false">I have a friend who she lives in France.</button>
+        <button class="opt" data-correct="false">I have a friend who live in France.</button>
+        <button class="opt" data-correct="true">I have a friend who lives in France.</button>
       </div>
       <div class="feedback" id="f4"></div>
     </div>
@@ -229,21 +231,21 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     <h1 id="c-title"></h1>
     <div class="score-badge" id="c-score"></div>
     <div class="recap-box">
-      💡 <strong>動名詞のみOK：enjoy / finish / mind</strong><br>
-      → 後ろは必ず <strong>〜ing</strong>（to不定詞は NG）<br>
-      💡 <strong>両方OK：like / love / start</strong><br>
-      → <strong>〜ing でも to〜 でも正解</strong>
+      💡 <strong>人を説明するときは who</strong><br>
+      <strong>who のうしろは動詞から始める</strong>（he / she は不要！）<br>
+      who のうしろの動詞は説明したい人に合わせる → <strong>3単現の s に注意</strong>
     </div>
-    <div class="mistake-box">
+    <div class="mistake-box" id="mistake-box">
       <div class="mistake-title">⚠ よくあるミス TOP 3</div>
-      1. I enjoyed <u>to play</u> → I enjoyed <strong>playing</strong>（enjoy は ing のみ！）<br>
-      2. He finished <u>to do</u> → He finished <strong>doing</strong>（finish は ing のみ！）<br>
-      3. Do you mind <u>to close</u> → Do you mind <strong>closing</strong>（mind は ing のみ！）
+      1. a friend <u>which</u> → a friend <strong>who</strong>（人には who！）<br>
+      2. who <u>he</u> plays → who <strong>plays</strong>（who のうしろに he / she は不要！）<br>
+      3. who <u>live</u> → who <strong>lives</strong>（a friend が主語 → 3単現の s！）
     </div>
     <p id="c-msg"></p>
     <div class="complete-btns">
-      <a href="nexelia-unit15-lesson3.html" class="cbtn secondary">← スライドへ</a>
-      <a href="nexelia-unit15-lesson4.html" class="cbtn primary">まとめへ →</a>
+      <button class="cbtn secondary" id="btn-retry">もう一度挑戦</button>
+      <a href="nexelia-unit16-lesson1.html" class="cbtn secondary">← スライドへ</a>
+      <a href="nexelia-unit16-lesson2.html" class="cbtn primary">次のレッスンへ →</a>
     </div>
   </div>
 
@@ -257,24 +259,24 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 
   const FB = [
     {
-      ok: '✓ 正解！enjoy の後は動名詞（〜ing）だけ。listening to が正しい！',
-      ng: '✗ 惜しい！enjoy の後は動名詞（〜ing）のみ。to listen to（to不定詞）は enjoy の後には来られない。正解は listening to！'
+      ok: '✓ 正解！説明しているのは「The girl（人）」だから who を使う。',
+      ng: '✗ 惜しい！説明しているのは「The girl（人）」だから who が正解。which はもの・動物に使う。'
     },
     {
-      ok: '✓ 正解！finish の後は動名詞（〜ing）だけ。finished doing が正しい！',
-      ng: '✗ 惜しい！finish の後は動名詞（〜ing）のみ。finished to do は NG。正解は He finished doing his homework.！'
+      ok: '✓ 正解！who のうしろは動詞から始める。「who he plays」のように代名詞を重ねるのは NG！',
+      ng: '✗ 惜しい！正解は「who plays the piano」。who のうしろに he は不要。who がすでに「その人（主語）」の役割を持っている。'
     },
     {
-      ok: '✓ 正解！like は動名詞（playing）でも to不定詞（to play）でもどちらもOK！',
-      ng: '✗ 惜しい！like は動名詞（playing）でも to不定詞（to play）でも両方使える。どちらか一方だけが正しいわけではない！'
+      ok: '✓ 正解！「the teacher」が主語 → 3人称単数 → teaches（s をつける）！',
+      ng: '✗ 惜しい！who のうしろの動詞は「説明したい人（the teacher）」に合わせる。3人称単数・現在なら s が必要 → teaches が正解。'
     },
     {
-      ok: '✓ 正解！He enjoyed to play. がまちがい。enjoy は動名詞のみOKなので to play は来られない。正しくは enjoyed playing！',
-      ng: '✗ 惜しい！まちがいは He enjoyed to play video games.。enjoy は動名詞（ing 形）のみOKで、to不定詞は来られない。loves・started・like はどちらの形でもOK！'
+      ok: '✓ 正解！「who lives next door」——who の直後に動詞、代名詞なし、人に who。完璧！',
+      ng: '✗ 惜しい！正解は「The woman who lives next door is a doctor.」\n① who he → who のうしろに he は不要\n② which → 人には who\n③ who running → 動詞は原形か活用形（running だけでは不可）'
     },
     {
-      ok: '✓ 完璧！mind は動名詞のみOK。Do you mind closing the window? が正しい！',
-      ng: '✗ 惜しい！mind の後は動名詞（〜ing）のみ。Do you mind to close. は NG。正解は Do you mind closing the window?！'
+      ok: '✓ 完璧！「a friend who lives」——人に who・直後に動詞・3単現の s、全部OK！',
+      ng: '✗ 惜しい！正解は「I have a friend who lives in France.」\n① which → 人には who\n② who she lives → she は不要\n③ who live → a friend が主語だから lives（s をつける）'
     }
   ];
 
@@ -308,15 +310,15 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     if (correct === 5) {
       document.getElementById('c-icon').textContent = '🎉';
       document.getElementById('c-title').textContent = '全問正解！';
-      document.getElementById('c-msg').innerHTML = '動名詞 vs to不定詞はバッチリ！<br>まとめへ進もう！';
+      document.getElementById('c-msg').innerHTML = '関係代名詞 who はバッチリ！<br>次のレッスンへ進もう！';
     } else if (correct >= 3) {
       document.getElementById('c-icon').textContent = '👍';
       document.getElementById('c-title').textContent = 'もう少し！';
-      document.getElementById('c-msg').innerHTML = 'enjoy・finish・mind は ing のみ！<br>もう一度スライドで確認しよう。';
+      document.getElementById('c-msg').innerHTML = '「人 ＋ who ＋ 動詞」の語順をもう一度確認しよう！';
     } else {
       document.getElementById('c-icon').textContent = '📖';
       document.getElementById('c-title').textContent = 'スライドを見直そう';
-      document.getElementById('c-msg').innerHTML = '動名詞のみOKな動詞と両方OKな動詞を<br>スライドの表で確認してから再チャレンジ！';
+      document.getElementById('c-msg').innerHTML = 'who の使い方をスライドで確認してから<br>再チャレンジしよう！';
     }
   }
 
@@ -354,9 +356,32 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
   document.getElementById('back3').addEventListener('click', function() { go(2); });
   document.getElementById('back4').addEventListener('click', function() { go(3); });
 
+  document.getElementById('btn-retry').addEventListener('click', function() {
+    correct = 0;
+    for (var k in answered) delete answered[k];
+    cur = 0;
+    document.getElementById('complete').classList.remove('active');
+    for (var i = 0; i < TOTAL; i++) {
+      const container = document.getElementById('o' + i);
+      if (!container) continue;
+      container.querySelectorAll('.opt, .opt-card').forEach(function(b) {
+        b.disabled = false;
+        b.classList.remove('correct', 'wrong');
+      });
+      const fb = document.getElementById('f' + i);
+      if (fb) { fb.classList.remove('show', 'ok', 'ng'); fb.textContent = ''; }
+      const nb = document.getElementById('n' + i);
+      if (nb && i < TOTAL - 1) nb.disabled = true;
+      if (i === TOTAL - 1) { const last = document.getElementById('n' + i); if (last) last.disabled = true; }
+    }
+    document.getElementById('s0').classList.add('active');
+    document.getElementById('nav-fill').style.width = '20%';
+    document.getElementById('nav-count').textContent = '1 / ' + TOTAL;
+    renderDots(0);
+  });
+
   renderDots(0);
 </script>
-<script src="../assets/exercise-retry.js"></script>
 </body>
 </html>
 

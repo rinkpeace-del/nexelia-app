@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXELIA — Unit 15 レッスン3 · 演習</title>
+<title>NEXELIA — Unit 16 レッスン4 · 演習</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,8 +23,6 @@ nav { background: var(--white); border-bottom: 1px solid var(--border); height: 
 .nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
 .nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.5s ease; }
 .nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
-.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
-.btn-exit:hover { border-color: #aaa; color: var(--text); }
 
 main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
 .slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
@@ -34,9 +32,9 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
 .q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); }
 .q-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); background: var(--blue-light); border-radius: 6px; padding: 3px 10px; margin-top: 2px; }
-.q-text  { font-size: 20px; font-weight: 700; line-height: 1.5; }
-.q-sub   { font-size: 14px; color: var(--sub); line-height: 1.6; }
-.q-highlight { font-size: 18px; color: var(--blue); font-weight: 700; line-height: 1.6; }
+.q-text     { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub      { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.q-highlight { font-size: 17px; color: var(--blue); font-weight: 700; line-height: 1.7; }
 
 .options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
 .opt { padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
@@ -46,13 +44,13 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .opt:disabled { cursor: default; transform: none; }
 
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
-.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 16px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 72px; }
+.opt-card { padding: 18px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.4; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 68px; }
 .opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
 .opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
 .opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
 .opt-card:disabled { cursor: default; transform: none; }
 
-.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.5; }
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.6; }
 .feedback.show { display: block; }
 .feedback.ok { background: var(--green-light); color: var(--green); }
 .feedback.ng { background: var(--wrong-light); color: var(--wrong); }
@@ -92,7 +90,7 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
   .nav-center { display: none; }
   main { padding: 20px 16px; }
   .quiz-card { padding: 24px 18px; }
-  .opt-card { font-size: 14px; min-height: 64px; }
+  .opt-card { font-size: 13px; min-height: 60px; }
 }
 </style>
 </head>
@@ -101,50 +99,48 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 <nav>
   <a href="../lessons.html" class="nav-logo">NEXELIA</a>
   <div class="nav-center">
-    <span class="lesson-name">Unit 15 · 動名詞 vs to不定詞 · 演習</span>
+    <span class="lesson-name">Unit 16 · 目的格の関係代名詞 · 演習</span>
     <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:20%"></div></div>
     <span class="nav-count" id="nav-count">1 / 5</span>
   </div>
+  <div style="width:80px"></div>
 </nav>
 
 <main>
 
-  <!-- Q1：超簡単 — enjoy の後の形 -->
+  <!-- Q1：超簡単 — 主格か目的格か（うしろを見る） -->
   <div class="slide active" id="s0">
     <div class="quiz-card">
       <div class="q-label">問題 1 / 5</div>
-      <div class="q-tag">動名詞のみOK</div>
-      <div class="q-text">（　）に入る正しい形はどれ？</div>
-      <div class="q-highlight">I enjoy （　　） music.</div>
-      <div class="q-sub">enjoy の後に来る形はどちら？</div>
+      <div class="q-tag">主格 vs 目的格</div>
+      <div class="q-text">下線部の関係代名詞は「主格」？「目的格」？</div>
+      <div class="q-highlight">This is the song <u>that</u> I like.</div>
+      <div class="q-sub">that のうしろを見てみよう！動詞だけ？主語＋動詞？</div>
       <div class="options-grid" id="o0">
-        <button class="opt-card" data-correct="true">listening to</button>
-        <button class="opt-card" data-correct="false">to listen to</button>
-        <button class="opt-card" data-correct="false">listen to</button>
-        <button class="opt-card" data-correct="false">listened to</button>
+        <button class="opt-card" data-correct="false">主格<br><span style="font-size:12px;font-weight:500">（うしろが動詞だけ）</span></button>
+        <button class="opt-card" data-correct="true">目的格<br><span style="font-size:12px;font-weight:500">（うしろが主語＋動詞）</span></button>
       </div>
       <div class="feedback" id="f0"></div>
     </div>
     <div class="bottom-nav">
-      <button class="btn-nav" style="visibility:hidden">←</button>
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
       <div class="dots" id="d0"></div>
       <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
     </div>
   </div>
 
-  <!-- Q2：超簡単 — finish の後の形 -->
+  <!-- Q2：超簡単 — 目的格の省略（省略してもOKな文を選ぶ） -->
   <div class="slide" id="s1">
     <div class="quiz-card">
       <div class="q-label">問題 2 / 5</div>
-      <div class="q-tag">動名詞のみOK</div>
-      <div class="q-text">日本語に合う正しい英文はどれ？</div>
-      <div class="q-highlight">「彼は宿題をやり終えた。」</div>
-      <div class="q-sub">finish の後に来る形に注目！</div>
-      <div class="options-grid" id="o1">
-        <button class="opt-card" data-correct="false">He finished to do his homework.</button>
-        <button class="opt-card" data-correct="true">He finished doing his homework.</button>
-        <button class="opt-card" data-correct="false">He finished do his homework.</button>
-        <button class="opt-card" data-correct="false">He finished did his homework.</button>
+      <div class="q-tag">省略できる？</div>
+      <div class="q-text">that を<strong>省略できる</strong>文はどれ？</div>
+      <div class="q-sub">それぞれの that のうしろを見てみよう！</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">The boy that runs fast is Ken.</button>
+        <button class="opt" data-correct="true">The book that she read was interesting.</button>
+        <button class="opt" data-correct="false">I have a dog that barks loudly.</button>
+        <button class="opt" data-correct="false">The woman that lives here is kind.</button>
       </div>
       <div class="feedback" id="f1"></div>
     </div>
@@ -155,19 +151,19 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q3：普通 — 両方OKな動詞（like）の確認 -->
+  <!-- Q3：普通 — 目的格の文を完成させる（語順） -->
   <div class="slide" id="s2">
     <div class="quiz-card">
       <div class="q-label">問題 3 / 5</div>
-      <div class="q-tag">両方OKな動詞</div>
-      <div class="q-text">like の後に来て<strong>正しい</strong>形をすべて選ぶとしたら？</div>
-      <div class="q-highlight">I like （　　） tennis.</div>
-      <div class="q-sub">like の後は動名詞と to不定詞、どちらが使える？</div>
+      <div class="q-tag">目的格の語順</div>
+      <div class="q-text">日本語に合う正しい英文はどれ？</div>
+      <div class="q-highlight">「これは彼が作ったケーキです。」</div>
+      <div class="q-sub">that のうしろは「主語＋動詞」の語順！</div>
       <div class="options" id="o2">
-        <button class="opt" data-correct="false">playing だけ正しい</button>
-        <button class="opt" data-correct="false">to play だけ正しい</button>
-        <button class="opt" data-correct="true">playing も to play もどちらも正しい</button>
-        <button class="opt" data-correct="false">どちらも間違い</button>
+        <button class="opt" data-correct="false">This is the cake that made he.</button>
+        <button class="opt" data-correct="false">This is the cake that he it made.</button>
+        <button class="opt" data-correct="true">This is the cake that he made.</button>
+        <button class="opt" data-correct="false">This is the cake that made.</button>
       </div>
       <div class="feedback" id="f2"></div>
     </div>
@@ -178,18 +174,18 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q4：普通 — 🔍 誤文発見（enjoy to play） -->
+  <!-- Q4：普通 — 誤文発見（主格の省略・目的格の it 混入） -->
   <div class="slide" id="s3">
     <div class="quiz-card">
       <div class="q-label">問題 4 / 5</div>
-      <div class="q-tag">🔍 なぜ間違い？</div>
-      <div class="q-text">文法的に<strong>まちがっている</strong>英文はどれ？</div>
-      <div class="q-sub">動名詞のみOKな動詞と両方OKな動詞を区別しよう！</div>
+      <div class="q-tag">誤文発見</div>
+      <div class="q-text">文法的に<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-sub">省略できる・できないのルールに注目！</div>
       <div class="options" id="o3">
-        <button class="opt" data-correct="false">She loves singing in the shower.</button>
-        <button class="opt" data-correct="true">He enjoyed to play video games.</button>
-        <button class="opt" data-correct="false">They started running every morning.</button>
-        <button class="opt" data-correct="false">I like to read books.</button>
+        <button class="opt" data-correct="false">The girl runs fast is my sister.</button>
+        <button class="opt" data-correct="true">The movie I watched last night was great.</button>
+        <button class="opt" data-correct="false">The book that she read it was boring.</button>
+        <button class="opt" data-correct="false">I know the man lives next door.</button>
       </div>
       <div class="feedback" id="f3"></div>
     </div>
@@ -200,19 +196,19 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q5：少し応用 — 動名詞のみOKかどうかを総合判断 -->
+  <!-- Q5：少し応用 — 2文を1文に（目的格の関係代名詞を使って） -->
   <div class="slide" id="s4">
     <div class="quiz-card">
       <div class="q-label">問題 5 / 5</div>
       <div class="q-tag">総合判断</div>
-      <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
-      <div class="q-highlight">「窓を閉めていただけますか？」</div>
-      <div class="q-sub">mind の後に来る形は？mind の意味も確認しよう！</div>
+      <div class="q-text">2文を1文にした<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-highlight">I bought a bag. + The bag was expensive.</div>
+      <div class="q-sub">「そのバッグ」が目的語 → 目的格の関係代名詞を使う！</div>
       <div class="options" id="o4">
-        <button class="opt" data-correct="false">Do you mind to close the window?</button>
-        <button class="opt" data-correct="true">Do you mind closing the window?</button>
-        <button class="opt" data-correct="false">Do you mind close the window?</button>
-        <button class="opt" data-correct="false">Do you mind closed the window?</button>
+        <button class="opt" data-correct="false">The bag that I bought it was expensive.</button>
+        <button class="opt" data-correct="false">The bag who I bought was expensive.</button>
+        <button class="opt" data-correct="false">The bag that bought I was expensive.</button>
+        <button class="opt" data-correct="true">The bag that I bought was expensive.</button>
       </div>
       <div class="feedback" id="f4"></div>
     </div>
@@ -229,21 +225,21 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     <h1 id="c-title"></h1>
     <div class="score-badge" id="c-score"></div>
     <div class="recap-box">
-      💡 <strong>動名詞のみOK：enjoy / finish / mind</strong><br>
-      → 後ろは必ず <strong>〜ing</strong>（to不定詞は NG）<br>
-      💡 <strong>両方OK：like / love / start</strong><br>
-      → <strong>〜ing でも to〜 でも正解</strong>
+      💡 <strong>うしろが動詞だけ → 主格 → 省略NG</strong><br>
+      <strong>うしろが主語＋動詞 → 目的格 → 省略OK</strong><br>
+      that のうしろの動詞のあとに <strong>it / them などを重ねない</strong>！
     </div>
     <div class="mistake-box">
       <div class="mistake-title">⚠ よくあるミス TOP 3</div>
-      1. I enjoyed <u>to play</u> → I enjoyed <strong>playing</strong>（enjoy は ing のみ！）<br>
-      2. He finished <u>to do</u> → He finished <strong>doing</strong>（finish は ing のみ！）<br>
-      3. Do you mind <u>to close</u> → Do you mind <strong>closing</strong>（mind は ing のみ！）
+      1. The boy <u>runs</u> fast → The boy <strong>who</strong> runs fast（主格は省略NG！）<br>
+      2. that he <u>it</u> made → that he <strong>made</strong>（目的語を重ねない！）<br>
+      3. that <u>bought I</u> → that <strong>I bought</strong>（うしろは「主語＋動詞」の語順！）
     </div>
     <p id="c-msg"></p>
     <div class="complete-btns">
-      <a href="nexelia-unit15-lesson3.html" class="cbtn secondary">← スライドへ</a>
-      <a href="nexelia-unit15-lesson4.html" class="cbtn primary">まとめへ →</a>
+      <button class="cbtn secondary" id="btn-retry">もう一度挑戦</button>
+      <a href="nexelia-unit16-lesson4.html" class="cbtn secondary">← スライドへ</a>
+      <a href="nexelia-unit16-lesson5.html" class="cbtn primary">次のレッスンへ →</a>
     </div>
   </div>
 
@@ -257,24 +253,24 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 
   const FB = [
     {
-      ok: '✓ 正解！enjoy の後は動名詞（〜ing）だけ。listening to が正しい！',
-      ng: '✗ 惜しい！enjoy の後は動名詞（〜ing）のみ。to listen to（to不定詞）は enjoy の後には来られない。正解は listening to！'
+      ok: '✓ 正解！「that I like」——that のうしろに「I（主語）＋ like（動詞）」が続いているので目的格！',
+      ng: '✗ 惜しい！that のうしろを見ると「I like」= 主語＋動詞 → 目的格が正解。うしろが動詞だけなら主格。'
     },
     {
-      ok: '✓ 正解！finish の後は動名詞（〜ing）だけ。finished doing が正しい！',
-      ng: '✗ 惜しい！finish の後は動名詞（〜ing）のみ。finished to do は NG。正解は He finished doing his homework.！'
+      ok: '✓ 正解！「that she read」——that のうしろが「she（主語）＋ read（動詞）」= 目的格 → 省略OK！',
+      ng: '✗ 惜しい！正解は「The book that she read」。that のうしろが「主語＋動詞」のものだけ省略できる。他の3文は「that＋動詞だけ」= 主格なので省略NG。'
     },
     {
-      ok: '✓ 正解！like は動名詞（playing）でも to不定詞（to play）でもどちらもOK！',
-      ng: '✗ 惜しい！like は動名詞（playing）でも to不定詞（to play）でも両方使える。どちらか一方だけが正しいわけではない！'
+      ok: '✓ 正解！「the cake that he made」——that のうしろは「he（主語）＋ made（動詞）」の語順。完璧！',
+      ng: '✗ 惜しい！正解は「the cake that he made」。that のうしろは「主語＋動詞」の順番。made he は語順が逆。that he it made は it が不要。that made だけでは主語がない。'
     },
     {
-      ok: '✓ 正解！He enjoyed to play. がまちがい。enjoy は動名詞のみOKなので to play は来られない。正しくは enjoyed playing！',
-      ng: '✗ 惜しい！まちがいは He enjoyed to play video games.。enjoy は動名詞（ing 形）のみOKで、to不定詞は来られない。loves・started・like はどちらの形でもOK！'
+      ok: '✓ 正解！「The movie I watched」——目的格の that を省略した形。うしろが「I watched」= 主語＋動詞なので省略OK！',
+      ng: '✗ 惜しい！正解は「The movie I watched last night was great.」\n① The girl runs fast → 主格なので省略NG（who が必要）\n③ that she read it → it は不要\n④ the man lives → 主格なので省略NG（who / that が必要）'
     },
     {
-      ok: '✓ 完璧！mind は動名詞のみOK。Do you mind closing the window? が正しい！',
-      ng: '✗ 惜しい！mind の後は動名詞（〜ing）のみ。Do you mind to close. は NG。正解は Do you mind closing the window?！'
+      ok: '✓ 完璧！「The bag that I bought」——もの に that・うしろに「I bought」（主語＋動詞）・it なし。全部OK！',
+      ng: '✗ 惜しい！正解は「The bag that I bought was expensive.」\n① that I bought it → it は不要\n② who → バッグ（もの）には who は使えない\n③ that bought I → 語順が逆（that I bought の順）'
     }
   ];
 
@@ -285,6 +281,9 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     for (let i = 0; i < TOTAL; i++) {
       const d = document.createElement('div');
       d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
       el.appendChild(d);
     }
   }
@@ -308,15 +307,15 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     if (correct === 5) {
       document.getElementById('c-icon').textContent = '🎉';
       document.getElementById('c-title').textContent = '全問正解！';
-      document.getElementById('c-msg').innerHTML = '動名詞 vs to不定詞はバッチリ！<br>まとめへ進もう！';
+      document.getElementById('c-msg').innerHTML = '目的格の関係代名詞はバッチリ！<br>次のレッスンへ進もう！';
     } else if (correct >= 3) {
       document.getElementById('c-icon').textContent = '👍';
       document.getElementById('c-title').textContent = 'もう少し！';
-      document.getElementById('c-msg').innerHTML = 'enjoy・finish・mind は ing のみ！<br>もう一度スライドで確認しよう。';
+      document.getElementById('c-msg').innerHTML = '「うしろを見て主格か目的格か判断」をもう一度確認しよう！';
     } else {
       document.getElementById('c-icon').textContent = '📖';
       document.getElementById('c-title').textContent = 'スライドを見直そう';
-      document.getElementById('c-msg').innerHTML = '動名詞のみOKな動詞と両方OKな動詞を<br>スライドの表で確認してから再チャレンジ！';
+      document.getElementById('c-msg').innerHTML = '主格・目的格の違いをスライドで確認してから<br>再チャレンジしよう！';
     }
   }
 
@@ -354,9 +353,31 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
   document.getElementById('back3').addEventListener('click', function() { go(2); });
   document.getElementById('back4').addEventListener('click', function() { go(3); });
 
+  document.getElementById('btn-retry').addEventListener('click', function() {
+    correct = 0;
+    for (var k in answered) delete answered[k];
+    cur = 0;
+    document.getElementById('complete').classList.remove('active');
+    for (var i = 0; i < TOTAL; i++) {
+      const container = document.getElementById('o' + i);
+      if (!container) continue;
+      container.querySelectorAll('.opt, .opt-card').forEach(function(b) {
+        b.disabled = false;
+        b.classList.remove('correct', 'wrong');
+      });
+      const fb = document.getElementById('f' + i);
+      if (fb) { fb.classList.remove('show', 'ok', 'ng'); fb.textContent = ''; }
+      const nb = document.getElementById('n' + i);
+      if (nb) nb.disabled = true;
+    }
+    document.getElementById('s0').classList.add('active');
+    document.getElementById('nav-fill').style.width = '20%';
+    document.getElementById('nav-count').textContent = '1 / ' + TOTAL;
+    renderDots(0);
+  });
+
   renderDots(0);
 </script>
 <script src="../assets/exercise-retry.js"></script>
 </body>
 </html>
-

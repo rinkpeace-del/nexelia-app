@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXELIA — Unit 15 レッスン3 · 演習</title>
+<title>NEXELIA — Unit 16 レッスン5 · 総合演習</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,6 +14,7 @@
   --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
   --blue: #0277BD; --blue-light: #E1F5FE;
   --warn: #E65100; --warn-light: #FFF3E0;
+  --purple: #7B1FA2; --purple-light: #F3E5F5;
 }
 body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
@@ -34,9 +35,9 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
 .q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); }
 .q-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); background: var(--blue-light); border-radius: 6px; padding: 3px 10px; margin-top: 2px; }
-.q-text  { font-size: 20px; font-weight: 700; line-height: 1.5; }
-.q-sub   { font-size: 14px; color: var(--sub); line-height: 1.6; }
-.q-highlight { font-size: 18px; color: var(--blue); font-weight: 700; line-height: 1.6; }
+.q-text     { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub      { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.q-highlight { font-size: 17px; color: var(--blue); font-weight: 700; line-height: 1.7; }
 
 .options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
 .opt { padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
@@ -46,13 +47,13 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .opt:disabled { cursor: default; transform: none; }
 
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
-.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 16px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 72px; }
+.opt-card { padding: 18px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.4; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 68px; }
 .opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
 .opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
 .opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
 .opt-card:disabled { cursor: default; transform: none; }
 
-.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.5; }
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.6; }
 .feedback.show { display: block; }
 .feedback.ok { background: var(--green-light); color: var(--green); }
 .feedback.ng { background: var(--wrong-light); color: var(--wrong); }
@@ -73,13 +74,23 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 /* 結果画面 */
 .complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
 .complete-wrap.active { display: flex; }
-.complete-icon { font-size: 52px; margin-bottom: 20px; }
-.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.complete-icon { font-size: 52px; margin-bottom: 16px; }
+.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
 .score-badge { font-size: 34px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
-.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 28px; }
+
+/* S/A/B/C ランク */
+.rank-badge { display: inline-block; font-size: 52px; font-weight: 700; border-radius: 16px; width: 80px; height: 80px; line-height: 80px; text-align: center; margin-bottom: 12px; }
+.rank-s { background: #FFF8E1; color: #F9A825; border: 3px solid #F9A825; }
+.rank-a { background: var(--green-light); color: var(--green); border: 3px solid var(--green); }
+.rank-b { background: var(--blue-light); color: var(--blue); border: 3px solid var(--blue); }
+.rank-c { background: var(--warn-light); color: var(--warn); border: 3px solid var(--warn); }
+
+.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 20px; }
 .recap-box { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; font-size: 14px; color: var(--blue); font-weight: 600; line-height: 1.8; margin-bottom: 16px; text-align: left; width: 100%; max-width: 460px; }
-.mistake-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 13px; color: var(--warn); font-weight: 600; line-height: 1.8; margin-bottom: 24px; text-align: left; width: 100%; max-width: 460px; }
-.mistake-box .mistake-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.mistake-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 13px; color: var(--warn); font-weight: 600; line-height: 1.8; margin-bottom: 20px; text-align: left; width: 100%; max-width: 460px; }
+.mistake-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.mistake-list { display: none; }
+.mistake-list.show { display: block; }
 .complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 .cbtn { padding: 13px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; }
 .cbtn.primary { background: var(--blue); color: white; border: none; }
@@ -92,7 +103,8 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
   .nav-center { display: none; }
   main { padding: 20px 16px; }
   .quiz-card { padding: 24px 18px; }
-  .opt-card { font-size: 14px; min-height: 64px; }
+  .opt { font-size: 14px; }
+  .opt-card { font-size: 13px; min-height: 60px; }
 }
 </style>
 </head>
@@ -101,50 +113,50 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 <nav>
   <a href="../lessons.html" class="nav-logo">NEXELIA</a>
   <div class="nav-center">
-    <span class="lesson-name">Unit 15 · 動名詞 vs to不定詞 · 演習</span>
+    <span class="lesson-name">Unit 16 · 関係代名詞 · 総合演習</span>
     <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:20%"></div></div>
     <span class="nav-count" id="nav-count">1 / 5</span>
   </div>
+  <div style="width:80px"></div>
 </nav>
 
 <main>
 
-  <!-- Q1：超簡単 — enjoy の後の形 -->
+  <!-- Q1：who / which / that の選択（人・もの判断） -->
   <div class="slide active" id="s0">
     <div class="quiz-card">
       <div class="q-label">問題 1 / 5</div>
-      <div class="q-tag">動名詞のみOK</div>
-      <div class="q-text">（　）に入る正しい形はどれ？</div>
-      <div class="q-highlight">I enjoy （　　） music.</div>
-      <div class="q-sub">enjoy の後に来る形はどちら？</div>
+      <div class="q-tag">who / which / that</div>
+      <div class="q-text">（　）に入る語として<strong>使えないもの</strong>はどれ？</div>
+      <div class="q-highlight">I met a scientist （　　） won the Nobel Prize.</div>
+      <div class="q-sub">scientist は「人」。使えない語はどれ？</div>
       <div class="options-grid" id="o0">
-        <button class="opt-card" data-correct="true">listening to</button>
-        <button class="opt-card" data-correct="false">to listen to</button>
-        <button class="opt-card" data-correct="false">listen to</button>
-        <button class="opt-card" data-correct="false">listened to</button>
+        <button class="opt-card" data-correct="false">who</button>
+        <button class="opt-card" data-correct="false">that</button>
+        <button class="opt-card" data-correct="true">which</button>
+        <button class="opt-card" data-correct="false">どれでも使える</button>
       </div>
       <div class="feedback" id="f0"></div>
     </div>
     <div class="bottom-nav">
-      <button class="btn-nav" style="visibility:hidden">←</button>
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
       <div class="dots" id="d0"></div>
       <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
     </div>
   </div>
 
-  <!-- Q2：超簡単 — finish の後の形 -->
+  <!-- Q2：主格・目的格の識別＋省略の判断 -->
   <div class="slide" id="s1">
     <div class="quiz-card">
       <div class="q-label">問題 2 / 5</div>
-      <div class="q-tag">動名詞のみOK</div>
-      <div class="q-text">日本語に合う正しい英文はどれ？</div>
-      <div class="q-highlight">「彼は宿題をやり終えた。」</div>
-      <div class="q-sub">finish の後に来る形に注目！</div>
-      <div class="options-grid" id="o1">
-        <button class="opt-card" data-correct="false">He finished to do his homework.</button>
-        <button class="opt-card" data-correct="true">He finished doing his homework.</button>
-        <button class="opt-card" data-correct="false">He finished do his homework.</button>
-        <button class="opt-card" data-correct="false">He finished did his homework.</button>
+      <div class="q-tag">省略できる？</div>
+      <div class="q-text">that を<strong>省略できない</strong>文はどれ？</div>
+      <div class="q-sub">うしろが「動詞だけ」か「主語＋動詞」かを確認！</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">The song that she sang was beautiful.</button>
+        <button class="opt" data-correct="true">The cat that sleeps on the sofa is mine.</button>
+        <button class="opt" data-correct="false">This is the picture that he drew.</button>
+        <button class="opt" data-correct="false">The book that I bought was cheap.</button>
       </div>
       <div class="feedback" id="f1"></div>
     </div>
@@ -155,19 +167,18 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q3：普通 — 両方OKな動詞（like）の確認 -->
+  <!-- Q3：誤文発見（全用法横断） -->
   <div class="slide" id="s2">
     <div class="quiz-card">
       <div class="q-label">問題 3 / 5</div>
-      <div class="q-tag">両方OKな動詞</div>
-      <div class="q-text">like の後に来て<strong>正しい</strong>形をすべて選ぶとしたら？</div>
-      <div class="q-highlight">I like （　　） tennis.</div>
-      <div class="q-sub">like の後は動名詞と to不定詞、どちらが使える？</div>
+      <div class="q-tag">誤文発見</div>
+      <div class="q-text">文法的に<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-sub">who / which / that の使い分け・省略・語順——全部チェック！</div>
       <div class="options" id="o2">
-        <button class="opt" data-correct="false">playing だけ正しい</button>
-        <button class="opt" data-correct="false">to play だけ正しい</button>
-        <button class="opt" data-correct="true">playing も to play もどちらも正しい</button>
-        <button class="opt" data-correct="false">どちらも間違い</button>
+        <button class="opt" data-correct="false">The woman which lives here is kind.</button>
+        <button class="opt" data-correct="false">I want a phone that it has a good camera.</button>
+        <button class="opt" data-correct="true">She has a brother who plays basketball.</button>
+        <button class="opt" data-correct="false">The movie I watched it was amazing.</button>
       </div>
       <div class="feedback" id="f2"></div>
     </div>
@@ -178,18 +189,19 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q4：普通 — 🔍 誤文発見（enjoy to play） -->
+  <!-- Q4：2文→1文への変換（目的格・省略あり） -->
   <div class="slide" id="s3">
     <div class="quiz-card">
       <div class="q-label">問題 4 / 5</div>
-      <div class="q-tag">🔍 なぜ間違い？</div>
-      <div class="q-text">文法的に<strong>まちがっている</strong>英文はどれ？</div>
-      <div class="q-sub">動名詞のみOKな動詞と両方OKな動詞を区別しよう！</div>
+      <div class="q-tag">2文 → 1文</div>
+      <div class="q-text">2文を関係代名詞で1文にした<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-highlight">I know a woman. + She speaks three languages.</div>
+      <div class="q-sub">「女性（人）」が主語 → 主格の関係代名詞を使う！</div>
       <div class="options" id="o3">
-        <button class="opt" data-correct="false">She loves singing in the shower.</button>
-        <button class="opt" data-correct="true">He enjoyed to play video games.</button>
-        <button class="opt" data-correct="false">They started running every morning.</button>
-        <button class="opt" data-correct="false">I like to read books.</button>
+        <button class="opt" data-correct="false">I know a woman which speaks three languages.</button>
+        <button class="opt" data-correct="false">I know a woman who she speaks three languages.</button>
+        <button class="opt" data-correct="true">I know a woman who speaks three languages.</button>
+        <button class="opt" data-correct="false">I know a woman speaks three languages.</button>
       </div>
       <div class="feedback" id="f3"></div>
     </div>
@@ -200,19 +212,19 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     </div>
   </div>
 
-  <!-- Q5：少し応用 — 動名詞のみOKかどうかを総合判断 -->
+  <!-- Q5：総合（長文・目的格省略・who と which 混在） -->
   <div class="slide" id="s4">
     <div class="quiz-card">
       <div class="q-label">問題 5 / 5</div>
       <div class="q-tag">総合判断</div>
       <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
-      <div class="q-highlight">「窓を閉めていただけますか？」</div>
-      <div class="q-sub">mind の後に来る形は？mind の意味も確認しよう！</div>
+      <div class="q-highlight">「私が昨日読んだ本は、有名な作家が書いたものだ。」</div>
+      <div class="q-sub">関係代名詞が2つ——それぞれ「人」か「もの」かを確認！</div>
       <div class="options" id="o4">
-        <button class="opt" data-correct="false">Do you mind to close the window?</button>
-        <button class="opt" data-correct="true">Do you mind closing the window?</button>
-        <button class="opt" data-correct="false">Do you mind close the window?</button>
-        <button class="opt" data-correct="false">Do you mind closed the window?</button>
+        <button class="opt" data-correct="false">The book which I read yesterday is written by a writer who is famous.</button>
+        <button class="opt" data-correct="true">The book I read yesterday was written by a writer who is famous.</button>
+        <button class="opt" data-correct="false">The book which I read it yesterday was written by a writer which is famous.</button>
+        <button class="opt" data-correct="false">The book I read yesterday was written by a writer which is famous.</button>
       </div>
       <div class="feedback" id="f4"></div>
     </div>
@@ -225,25 +237,26 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 
   <!-- 結果画面 -->
   <div class="complete-wrap" id="complete">
-    <div class="complete-icon" id="c-icon"></div>
+    <div class="rank-badge" id="c-rank"></div>
     <h1 id="c-title"></h1>
     <div class="score-badge" id="c-score"></div>
     <div class="recap-box">
-      💡 <strong>動名詞のみOK：enjoy / finish / mind</strong><br>
-      → 後ろは必ず <strong>〜ing</strong>（to不定詞は NG）<br>
-      💡 <strong>両方OK：like / love / start</strong><br>
-      → <strong>〜ing でも to〜 でも正解</strong>
+      💡 <strong>人 → who / that　もの・動物 → which / that</strong><br>
+      うしろが<strong>動詞だけ → 主格（省略NG）</strong><br>
+      うしろが<strong>主語＋動詞 → 目的格（省略OK）</strong><br>
+      うしろに <strong>代名詞（it / she など）を重ねない</strong>！
     </div>
     <div class="mistake-box">
       <div class="mistake-title">⚠ よくあるミス TOP 3</div>
-      1. I enjoyed <u>to play</u> → I enjoyed <strong>playing</strong>（enjoy は ing のみ！）<br>
-      2. He finished <u>to do</u> → He finished <strong>doing</strong>（finish は ing のみ！）<br>
-      3. Do you mind <u>to close</u> → Do you mind <strong>closing</strong>（mind は ing のみ！）
+      1. 人に <u>which</u> → <strong>who / that</strong>（which は人に使えない！）<br>
+      2. that / who <u>she</u> / <u>it</u> → 代名詞は<strong>不要</strong>（関係代名詞がすでに担っている）<br>
+      3. 主格を省略 → <strong>省略NG</strong>（うしろが動詞だけなら関係代名詞は必須！）
     </div>
     <p id="c-msg"></p>
     <div class="complete-btns">
-      <a href="nexelia-unit15-lesson3.html" class="cbtn secondary">← スライドへ</a>
-      <a href="nexelia-unit15-lesson4.html" class="cbtn primary">まとめへ →</a>
+      <button class="cbtn secondary" id="btn-retry">もう一度挑戦</button>
+      <a href="nexelia-unit16-lesson5.html" class="cbtn secondary">← スライドへ</a>
+      <a href="https://nexelia.jp" class="cbtn primary">NEXELIAを無料で始める</a>
     </div>
   </div>
 
@@ -254,28 +267,37 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
   let cur = 0;
   let correct = 0;
   const answered = {};
+  const wrongList = [];
 
   const FB = [
     {
-      ok: '✓ 正解！enjoy の後は動名詞（〜ing）だけ。listening to が正しい！',
-      ng: '✗ 惜しい！enjoy の後は動名詞（〜ing）のみ。to listen to（to不定詞）は enjoy の後には来られない。正解は listening to！'
+      ok: '✓ 正解！scientist は人 → who か that を使う。which はもの・動物専用なので使えない！',
+      ng: '✗ 惜しい！scientist（人）には which は使えない。人には who か that を使う。'
     },
     {
-      ok: '✓ 正解！finish の後は動名詞（〜ing）だけ。finished doing が正しい！',
-      ng: '✗ 惜しい！finish の後は動名詞（〜ing）のみ。finished to do は NG。正解は He finished doing his homework.！'
+      ok: '✓ 正解！「that sleeps」——うしろが動詞だけ（sleeps）= 主格 → 省略できない！',
+      ng: '✗ 惜しい！省略できないのは主格（うしろが動詞だけ）の that。「that sleeps」がそれ。他の3文はうしろが「主語＋動詞」= 目的格なので省略OK。'
     },
     {
-      ok: '✓ 正解！like は動名詞（playing）でも to不定詞（to play）でもどちらもOK！',
-      ng: '✗ 惜しい！like は動名詞（playing）でも to不定詞（to play）でも両方使える。どちらか一方だけが正しいわけではない！'
+      ok: '✓ 正解！「a brother who plays」——人に who・うしろに動詞・代名詞なし。完璧！',
+      ng: '✗ 惜しい！正解は「She has a brother who plays basketball.」\n① woman which → 人には which は使えない\n② that it has → it は不要\n④ I watched it → it は不要'
     },
     {
-      ok: '✓ 正解！He enjoyed to play. がまちがい。enjoy は動名詞のみOKなので to play は来られない。正しくは enjoyed playing！',
-      ng: '✗ 惜しい！まちがいは He enjoyed to play video games.。enjoy は動名詞（ing 形）のみOKで、to不定詞は来られない。loves・started・like はどちらの形でもOK！'
+      ok: '✓ 正解！「a woman who speaks」——人に who・うしろに動詞（主格）・she は不要。完璧！',
+      ng: '✗ 惜しい！正解は「I know a woman who speaks three languages.」\n① which → 人には使えない\n② who she speaks → she は不要（who がすでに主語の役割）\n④ a woman speaks → 主格は省略NG'
     },
     {
-      ok: '✓ 完璧！mind は動名詞のみOK。Do you mind closing the window? が正しい！',
-      ng: '✗ 惜しい！mind の後は動名詞（〜ing）のみ。Do you mind to close. は NG。正解は Do you mind closing the window?！'
+      ok: '✓ 完璧！「The book I read」（目的格を省略）＋「a writer who is famous」（人に who）——全部OK！',
+      ng: '✗ 惜しい！正解は「The book I read yesterday was written by a writer who is famous.」\n① is written → was written（過去形）が自然。また関係代名詞の有無はOK\n③ which I read it → it は不要。a writer which → 人には which は使えない\n④ a writer which → 人には which は使えない'
     }
+  ];
+
+  const WRONG_LABELS = [
+    '問題1：人に which は使えない',
+    '問題2：主格（動詞だけ）は省略NG',
+    '問題3：代名詞の重ね・人に which',
+    '問題4：主格の省略 / who のうしろに she',
+    '問題5：人に which / 代名詞の重ね'
   ];
 
   function renderDots(id) {
@@ -285,6 +307,9 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     for (let i = 0; i < TOTAL; i++) {
       const d = document.createElement('div');
       d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = '問題 ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
       el.appendChild(d);
     }
   }
@@ -305,18 +330,37 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     document.getElementById('nav-count').textContent = '完了';
     document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
 
+    const rankEl = document.getElementById('c-rank');
+    const titleEl = document.getElementById('c-title');
+    const msgEl   = document.getElementById('c-msg');
+
     if (correct === 5) {
-      document.getElementById('c-icon').textContent = '🎉';
-      document.getElementById('c-title').textContent = '全問正解！';
-      document.getElementById('c-msg').innerHTML = '動名詞 vs to不定詞はバッチリ！<br>まとめへ進もう！';
+      rankEl.textContent = 'S'; rankEl.className = 'rank-badge rank-s';
+      titleEl.textContent = '全問正解！';
+      msgEl.innerHTML = '関係代名詞を完全マスター！<br>読む・書く・話すで使いこなそう！';
+    } else if (correct === 4) {
+      rankEl.textContent = 'A'; rankEl.className = 'rank-badge rank-a';
+      titleEl.textContent = 'あと1問！';
+      msgEl.innerHTML = 'ほぼ完璧！ミスした問題だけ見直そう。';
     } else if (correct >= 3) {
-      document.getElementById('c-icon').textContent = '👍';
-      document.getElementById('c-title').textContent = 'もう少し！';
-      document.getElementById('c-msg').innerHTML = 'enjoy・finish・mind は ing のみ！<br>もう一度スライドで確認しよう。';
+      rankEl.textContent = 'B'; rankEl.className = 'rank-badge rank-b';
+      titleEl.textContent = 'もう少し！';
+      msgEl.innerHTML = '「うしろを見て主格か目的格か判断」を<br>もう一度スライドで確認しよう！';
     } else {
-      document.getElementById('c-icon').textContent = '📖';
-      document.getElementById('c-title').textContent = 'スライドを見直そう';
-      document.getElementById('c-msg').innerHTML = '動名詞のみOKな動詞と両方OKな動詞を<br>スライドの表で確認してから再チャレンジ！';
+      rankEl.textContent = 'C'; rankEl.className = 'rank-badge rank-c';
+      titleEl.textContent = 'スライドを見直そう';
+      msgEl.innerHTML = 'レッスン1〜4のスライドに戻って<br>基本からもう一度確認しよう！';
+    }
+
+    // ミスした問題の動的表示
+    if (wrongList.length > 0) {
+      const mb = document.querySelector('.mistake-box');
+      const ml = document.createElement('div');
+      ml.className = 'mistake-list show';
+      ml.style.cssText = 'margin-top:8px;font-size:12px;line-height:1.9;';
+      ml.innerHTML = '<div style="font-size:11px;font-weight:700;letter-spacing:0.06em;margin-bottom:4px;">📌 あなたのミス</div>' +
+        wrongList.map(function(i) { return '・' + WRONG_LABELS[i]; }).join('<br>');
+      mb.appendChild(ml);
     }
   }
 
@@ -329,7 +373,11 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
           if (answered[qIdx]) return;
           answered[qIdx] = true;
           const isCorrect = btn.dataset.correct === 'true';
-          if (isCorrect) correct++;
+          if (isCorrect) {
+            correct++;
+          } else {
+            wrongList.push(qIdx);
+          }
           opts.forEach(function(b) {
             b.disabled = true;
             if (b.dataset.correct === 'true') b.classList.add('correct');
@@ -354,9 +402,35 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
   document.getElementById('back3').addEventListener('click', function() { go(2); });
   document.getElementById('back4').addEventListener('click', function() { go(3); });
 
+  document.getElementById('btn-retry').addEventListener('click', function() {
+    correct = 0;
+    wrongList.length = 0;
+    for (var k in answered) delete answered[k];
+    cur = 0;
+    // ミスリスト削除
+    const added = document.querySelector('.mistake-list');
+    if (added) added.remove();
+    document.getElementById('complete').classList.remove('active');
+    for (var i = 0; i < TOTAL; i++) {
+      const container = document.getElementById('o' + i);
+      if (!container) continue;
+      container.querySelectorAll('.opt, .opt-card').forEach(function(b) {
+        b.disabled = false;
+        b.classList.remove('correct', 'wrong');
+      });
+      const fb = document.getElementById('f' + i);
+      if (fb) { fb.classList.remove('show', 'ok', 'ng'); fb.textContent = ''; }
+      const nb = document.getElementById('n' + i);
+      if (nb) nb.disabled = true;
+    }
+    document.getElementById('s0').classList.add('active');
+    document.getElementById('nav-fill').style.width = '20%';
+    document.getElementById('nav-count').textContent = '1 / ' + TOTAL;
+    renderDots(0);
+  });
+
   renderDots(0);
 </script>
 <script src="../assets/exercise-retry.js"></script>
 </body>
 </html>
-

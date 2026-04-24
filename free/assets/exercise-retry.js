@@ -43,9 +43,14 @@
   }
 
   function cloneAndReset(slide) {
+    // クローン前に元のfeedbackテキストを保存
+    var origFb = slide.querySelector('.feedback');
+    var savedNgText = origFb ? origFb.textContent.trim() : '';
+
     var clone = slide.cloneNode(true);
     clone.classList.remove('active');
     clone.removeAttribute('id');
+    clone.dataset.ngText = savedNgText; // data属性として保持
 
     // Reset option buttons
     clone.querySelectorAll('.opt, .opt-card').forEach(function (btn) {
@@ -113,14 +118,6 @@
     var cur = 0;
     var retryCorrect = 0;
     var retryWrongInOrig = []; // やり直し中でも間違えた元インデックス
-
-    // 各間違いスライドのfeedbackテキスト（解説）を元から取得
-    var ngTexts = [];
-    wrongIndices.forEach(function (origIdx) {
-      var origSlide = document.getElementById('s' + origIdx);
-      var origFb = origSlide ? origSlide.querySelector('.feedback') : null;
-      ngTexts.push(origFb ? origFb.textContent.trim() : '');
-    });
 
     // Clone and add wrong slides
     wrongIndices.forEach(function (origIdx, retryIdx) {
@@ -258,10 +255,11 @@
                 retryWrongInOrig.push(wrongIndices[retryIdx]);
               }
               if (fb) {
+                var ngText = slide.dataset.ngText || '';
                 fb.classList.add('show', allRight ? 'ok' : 'ng');
                 fb.textContent = allRight
-                  ? (ngTexts[retryIdx] ? ngTexts[retryIdx].replace(/^[✗×][^\s！]*\s*/, '✓ 正解！ ') : '✓ 正解！')
-                  : (ngTexts[retryIdx] || '✗ もう一度スライドで確認しよう。');
+                  ? (ngText ? '✓ 正解！ ' + ngText.replace(/^[✗×]\s*[^！]*！\s*/, '') : '✓ 正解！')
+                  : (ngText || '✗ もう一度スライドで確認しよう。');
               }
               if (nextBtn) nextBtn.disabled = false;
             }
@@ -284,8 +282,11 @@
             });
             if (!isCorrect) btn.classList.add('wrong');
             if (fb) {
+              var ngText = slide.dataset.ngText || '';
               fb.classList.add('show', isCorrect ? 'ok' : 'ng');
-              fb.textContent = isCorrect ? '✓ 正解！' : (ngTexts[retryIdx] || '✗ もう一度スライドで確認しよう。');
+              fb.textContent = isCorrect
+                ? (ngText ? '✓ 正解！ ' + ngText.replace(/^[✗×]\s*[^！]*！\s*/, '') : '✓ 正解！')
+                : (ngText || '✗ もう一度スライドで確認しよう。');
             }
             if (nextBtn) nextBtn.disabled = false;
           });
@@ -345,6 +346,8 @@
           });
         });
       };
+      // 初回レンダリング済みのドット（d0）にも即時適用
+      window.renderDots(0);
     }
   });
 })();

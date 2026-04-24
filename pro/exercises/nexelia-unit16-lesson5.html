@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 16 レッスン5</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+  --purple: #7B1FA2;
+  --purple-light: #F3E5F5;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* 全パターン比較表 */
+.master-table { display: flex; flex-direction: column; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.mt-row { display: grid; grid-template-columns: 80px 72px 80px 1fr; gap: 0; border-bottom: 1px solid var(--border); }
+.mt-row:last-child { border-bottom: none; }
+.mt-cell { padding: 11px 12px; font-size: 13px; font-weight: 700; text-align: center; border-right: 1px solid var(--border); line-height: 1.4; display: flex; align-items: center; justify-content: center; }
+.mt-cell:last-child { border-right: none; text-align: left; justify-content: flex-start; padding-left: 14px; }
+.mt-cell.header { background: var(--bg); font-size: 11px; color: var(--sub); letter-spacing: 0.05em; }
+.mt-cell.who-c   { background: var(--green-light); color: var(--green); }
+.mt-cell.which-c { background: var(--blue-light);  color: var(--blue); }
+.mt-cell.that-c  { background: var(--purple-light); color: var(--purple); }
+.mt-cell.ex      { background: var(--white); font-size: 12px; color: var(--text); font-weight: 600; }
+
+/* 意味カード */
+.meaning-card { border-radius: 14px; padding: 18px 22px; display: flex; gap: 18px; align-items: center; background: var(--blue-light); border: 1px solid #B3E5FC; }
+.meaning-icon { font-size: 26px; flex-shrink: 0; }
+.meaning-body { display: flex; flex-direction: column; gap: 4px; }
+.meaning-main { font-size: 16px; font-weight: 700; }
+.meaning-extra { font-size: 13px; font-weight: 700; color: var(--blue); }
+
+/* 紛らわしいケース */
+.confuse-list { display: flex; flex-direction: column; gap: 10px; }
+.confuse-item { border-radius: 12px; padding: 14px 18px; border: 1px solid var(--border); background: var(--white); }
+.confuse-q { font-size: 13px; font-weight: 700; color: var(--sub); margin-bottom: 6px; }
+.confuse-en { font-size: 15px; font-weight: 700; line-height: 1.5; }
+.confuse-ans { font-size: 12px; font-weight: 700; color: var(--blue); margin-top: 5px; }
+.hl-green  { color: var(--green);  font-weight: 700; }
+.hl-blue   { color: var(--blue);   font-weight: 700; }
+.hl-purple { color: var(--purple); font-weight: 700; }
+.hl-warn   { color: var(--warn);   font-weight: 700; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 13px 18px; font-size: 15px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 9px 18px; font-size: 12px; color: var(--sub); background: var(--bg); }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num  { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* 判断フロー */
+.flow-box { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 14px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+.flow-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 2px; }
+.flow-step  { display: flex; align-items: center; gap: 12px; }
+.flow-num   { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.flow-text  { font-size: 14px; font-weight: 700; color: var(--blue); line-height: 1.4; }
+.flow-arrow { font-size: 13px; color: var(--blue); padding-left: 36px; line-height: 1.8; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 18px; gap: 18px; }
+  .question-title { font-size: 18px; }
+  .mt-row { grid-template-columns: 60px 56px 64px 1fr; }
+  .mt-cell { font-size: 11px; padding: 9px 6px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 16 · まとめ · レッスン5</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <div style="width:80px"></div>
+</nav>
+
+<main>
+
+  <!-- スライド 1：全パターン比較表（主格・目的格・人・もの） -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 16 · レッスン5 · スライド 1</div>
+      <div class="question-title">関係代名詞を<span class="accent">全パターン</span>整理しよう！</div>
+
+      <div class="master-table">
+        <div class="mt-row">
+          <div class="mt-cell header">語</div>
+          <div class="mt-cell header">対象</div>
+          <div class="mt-cell header">うしろ</div>
+          <div class="mt-cell header">例</div>
+        </div>
+        <div class="mt-row">
+          <div class="mt-cell who-c">who</div>
+          <div class="mt-cell who-c">人</div>
+          <div class="mt-cell who-c">動詞</div>
+          <div class="mt-cell ex">a boy <span class="hl-green">who</span> runs</div>
+        </div>
+        <div class="mt-row">
+          <div class="mt-cell who-c">who</div>
+          <div class="mt-cell who-c">人</div>
+          <div class="mt-cell who-c">主語＋動詞</div>
+          <div class="mt-cell ex">a boy <span class="hl-green">who</span> I know</div>
+        </div>
+        <div class="mt-row">
+          <div class="mt-cell which-c">which</div>
+          <div class="mt-cell which-c">もの・動物</div>
+          <div class="mt-cell which-c">動詞</div>
+          <div class="mt-cell ex">a book <span class="hl-blue">which</span> is old</div>
+        </div>
+        <div class="mt-row">
+          <div class="mt-cell which-c">which</div>
+          <div class="mt-cell which-c">もの・動物</div>
+          <div class="mt-cell which-c">主語＋動詞</div>
+          <div class="mt-cell ex">a book <span class="hl-blue">which</span> she read</div>
+        </div>
+        <div class="mt-row">
+          <div class="mt-cell that-c">that</div>
+          <div class="mt-cell that-c">人・もの・動物</div>
+          <div class="mt-cell that-c">動詞 / 主語＋動詞</div>
+          <div class="mt-cell ex">a boy / book <span class="hl-purple">that</span> …</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 <strong>that は全部カバー</strong>できる万能選手！<br>省略できるのは「うしろが主語＋動詞（目的格）」のときだけ。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：紛らわしいケースの整理 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 16 · レッスン5 · スライド 2</div>
+      <div class="question-title"><span class="accent">紛らわしいケース</span>を整理しよう！</div>
+
+      <div class="confuse-list">
+        <div class="confuse-item">
+          <div class="confuse-q">❓ 人に which を使っていいの？</div>
+          <div class="confuse-en">✗ a girl <span class="hl-warn">which</span> sings → ✅ a girl <span class="hl-green">who</span> / <span class="hl-purple">that</span> sings</div>
+          <div class="confuse-ans">→ which は人には使えない。who か that を使う。</div>
+        </div>
+        <div class="confuse-item">
+          <div class="confuse-q">❓ 目的格の that のうしろに代名詞を足してもいい？</div>
+          <div class="confuse-en">✗ the book that I read <span class="hl-warn">it</span> → ✅ the book that I read</div>
+          <div class="confuse-ans">→ that がすでに目的語の役割を持つので it は不要。</div>
+        </div>
+        <div class="confuse-item">
+          <div class="confuse-q">❓ 主格は省略できる？</div>
+          <div class="confuse-en">✗ The boy <span class="hl-warn">runs</span> fast is Ken. → ✅ The boy <span class="hl-green">who</span> runs fast is Ken.</div>
+          <div class="confuse-ans">→ うしろが動詞だけ（主格）は省略NG！who / that が必要。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 迷ったら「うしろを見る」——動詞だけか、主語＋動詞かで判断！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：実戦チャレンジ（長め1文を読解） -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 16 · レッスン5 · スライド 3</div>
+      <div class="question-title"><span class="accent">実戦チャレンジ</span>——長い文を読んでみよう！</div>
+
+      <div class="meaning-card">
+        <div class="meaning-icon">📖</div>
+        <div class="meaning-body">
+          <div class="meaning-main">関係代名詞が2つ入った文に挑戦！</div>
+          <div class="meaning-extra">→ それぞれどの名詞を説明しているか確認しよう</div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">
+            The teacher <span class="hl-green">who</span> I respect teaches a subject
+            <span class="hl-blue">that</span> I love.
+          </div>
+          <div class="jp">私が尊敬している先生は、私が大好きな教科を教えている。</div>
+        </div>
+      </div>
+
+      <div class="confuse-list">
+        <div class="confuse-item">
+          <div class="confuse-q">① who I respect</div>
+          <div class="confuse-en">→ 人（teacher）を説明・うしろが「I respect」= <span class="hl-green">目的格</span>・省略OK</div>
+        </div>
+        <div class="confuse-item">
+          <div class="confuse-q">② that I love</div>
+          <div class="confuse-en">→ もの（subject）を説明・うしろが「I love」= <span class="hl-blue">目的格</span>・省略OK</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 複数の関係代名詞が入っていても「直前の名詞」を確認すれば解ける！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：総まとめ＋判断フロー -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 16 · レッスン5 · 総まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">Unit 16 総まとめ</div>
+        <div class="question-title">関係代名詞の<span class="accent">全ルール</span>を確認！</div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text"><strong>人 → who / that</strong>　もの・動物 → <strong>which / that</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">うしろが<strong>動詞だけ → 主格</strong>　うしろが<strong>主語＋動詞 → 目的格</strong></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">目的格は<strong>省略OK</strong>——主格は<strong>省略NG</strong></div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">人に <strong>which は使えない</strong>・うしろに <strong>代名詞を重ねない</strong></div>
+        </div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">⚡ 関係代名詞 最終判断フロー</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">説明したいのは「人」か「もの・動物」か？</div>
+        </div>
+        <div class="flow-arrow">人 → who / that　／　もの・動物 → which / that</div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text">うしろは「動詞だけ」か「主語＋動詞」か？</div>
+        </div>
+        <div class="flow-arrow">動詞だけ → 主格（省略NG）　／　主語＋動詞 → 目的格（省略OK）</div>
+        <div class="flow-step">
+          <div class="flow-num" style="background:var(--green)">✓</div>
+          <div class="flow-text" style="color:var(--green)">うしろに代名詞を重ねない — これだけ！</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav cta" id="n3">総合演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit16-lesson5-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>
