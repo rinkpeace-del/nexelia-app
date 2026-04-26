@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 19 レッスン3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.question-title .accent { color: var(--accent); }
+
+/* 問いかけカード */
+.question-card { background: var(--blue-light); border: 1px solid #B3E5FC; border-radius: 14px; padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+.question-card-title { font-size: 13px; font-weight: 700; color: var(--blue); letter-spacing: 0.04em; }
+.question-card-body { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.6; }
+.question-card-hint { font-size: 13px; color: var(--sub); font-weight: 500; }
+
+/* 判断軸カード */
+.axis-cards { display: flex; flex-direction: column; gap: 10px; }
+.axis-card { border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; border: 1.5px solid; }
+.axis-card.active-card  { background: var(--blue-light); border-color: #B3E5FC; }
+.axis-card.passive-card { background: var(--green-light); border-color: #A5D6A7; }
+.axis-badge { font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.axis-card.active-card  .axis-badge { background: var(--blue); color: white; }
+.axis-card.passive-card .axis-badge { background: var(--green); color: white; }
+.axis-body { display: flex; flex-direction: column; gap: 3px; }
+.axis-rule { font-size: 15px; font-weight: 700; }
+.axis-ex   { font-size: 13px; color: var(--sub); font-weight: 500; font-style: italic; }
+
+/* 対比テーブル */
+.compare-table { display: flex; flex-direction: column; gap: 8px; }
+.compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.compare-cell { padding: 12px 16px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); font-size: 13px; font-weight: 700; text-align: center; line-height: 1.6; }
+.compare-cell .cell-label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; display: block; margin-bottom: 4px; }
+.compare-cell.blue-cell  { background: var(--blue-light); border-color: #B3E5FC; color: var(--blue); }
+.compare-cell.green-cell { background: var(--green-light); border-color: #A5D6A7; color: var(--green); }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); line-height: 1.5; }
+.hl      { color: var(--blue); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+.hl-warn  { color: var(--warn); font-weight: 700; }
+
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* 判断フロー */
+.flow-box { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 14px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+.flow-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 2px; }
+.flow-step { display: flex; align-items: center; gap: 12px; }
+.flow-num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.flow-text { font-size: 14px; font-weight: 700; color: var(--blue); line-height: 1.4; }
+.flow-arrow { font-size: 14px; font-weight: 700; color: var(--blue); padding-left: 36px; line-height: 1.6; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; cursor: pointer; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .question-title { font-size: 18px; }
+  .compare-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 19 · 現在分詞 vs 過去分詞</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <div style="width:80px"></div>
+</nav>
+
+<main>
+
+  <!-- スライド 1：問い — 「泳いでいる魚」と「釣られた魚」は何がちがう？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · スライド 1</div>
+      <div class="question-title">この2つ、何が<span class="accent">ちがう</span>？</div>
+
+      <div class="question-card">
+        <div class="question-card-title">🤔 考えてみよう</div>
+        <div class="question-card-body">
+          「泳いでいる魚」と「釣られた魚」<br>
+          どちらも魚を説明しているのに、なぜ英語では形が変わる？
+        </div>
+        <div class="question-card-hint">ヒント：魚は「自分で泳ぐ」？「誰かに釣られる」？</div>
+      </div>
+
+      <div class="compare-table">
+        <div class="compare-row">
+          <div class="compare-cell blue-cell">
+            <span class="cell-label">現在分詞（〜ing）</span>
+            a <strong>swimming</strong> fish<br>
+            <span style="font-size:12px;font-weight:500;">泳いでいる魚</span>
+          </div>
+          <div class="compare-cell green-cell">
+            <span class="cell-label">過去分詞</span>
+            a <strong>caught</strong> fish<br>
+            <span style="font-size:12px;font-weight:500;">釣られた魚</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">
+        💡 魚が「する側」→ <strong>〜ing</strong>（swimming）<br>
+        魚が「される側」→ <strong>過去分詞</strong>（caught）<br>
+        <span style="font-size:13px;">名詞が「する」か「される」かが判断の軸！</span>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：判断軸の整理 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · スライド 2</div>
+      <div class="question-title">「する側」か「される側」かで<span class="accent">決まる</span>！</div>
+
+      <div class="axis-cards">
+        <div class="axis-card active-card">
+          <div class="axis-badge">する側</div>
+          <div class="axis-body">
+            <div class="axis-rule">現在分詞（〜ing）を使う</div>
+            <div class="axis-ex">the boy running in the park（走っている＝ 少年がする）</div>
+          </div>
+        </div>
+        <div class="axis-card passive-card">
+          <div class="axis-badge">される側</div>
+          <div class="axis-body">
+            <div class="axis-rule">過去分詞を使う</div>
+            <div class="axis-ex">the window broken by the ball（壊された＝ 窓がされる）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">the dog <span class="hl">barking</span> at me</div>
+          <div class="jp">私に吠えている犬（犬が吠える＝ する側 → 〜ing）</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">the dog <span class="hl-green">found</span> in the park</div>
+          <div class="jp">公園で見つけられた犬（犬が見つけられる＝ される側 → 過去分詞）</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 名詞に「〜している」と言えるなら <strong>〜ing</strong><br>名詞に「〜された」と言えるなら <strong>過去分詞</strong></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：よくある混同パターン -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · スライド 3</div>
+      <div class="question-title">よく<span class="accent">まちがえる</span>パターンを確認！</div>
+
+      <div class="compare-table">
+        <div class="compare-row">
+          <div class="compare-cell blue-cell">
+            <span class="cell-label">✓ 正しい（〜ing）</span>
+            a <strong>sleeping</strong> baby<br>
+            <span style="font-size:12px;font-weight:500;">眠っている赤ちゃん</span>
+          </div>
+          <div class="compare-cell" style="background:var(--wrong-light,#FFEBEE);border-color:#C62828;color:#C62828;">
+            <span class="cell-label" style="color:#C62828;">✗ まちがい</span>
+            a <strong>slept</strong> baby<br>
+            <span style="font-size:12px;font-weight:500;">（赤ちゃんは「眠る側」→ 過去分詞は使わない）</span>
+          </div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell" style="background:var(--wrong-light,#FFEBEE);border-color:#C62828;color:#C62828;">
+            <span class="cell-label" style="color:#C62828;">✗ まちがい</span>
+            a <strong>breaking</strong> window<br>
+            <span style="font-size:12px;font-weight:500;">（窓は壊す側ではない）</span>
+          </div>
+          <div class="compare-cell green-cell">
+            <span class="cell-label">✓ 正しい（過去分詞）</span>
+            a <strong>broken</strong> window<br>
+            <span style="font-size:12px;font-weight:500;">壊された窓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-box">
+        ⚠️ 赤ちゃんは「眠る側」→ <strong>sleeping</strong>（〜ing）<br>
+        ⚠️ 窓は「壊される側」→ <strong>broken</strong>（過去分詞）<br>
+        名詞が主体的に動くか・動かされるかで判断！
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：例文で対比確認 -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · スライド 4</div>
+      <div class="question-title">例文で<span class="accent">〜ing と過去分詞</span>を対比！</div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">I saw a girl <span class="hl">singing</span> on the stage.</div>
+          <div class="jp">私はステージで歌っている女の子を見た。<br><span style="font-size:11px;color:var(--blue);">→ 女の子が「歌う側」→ 〜ing</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I heard a song <span class="hl-green">sung</span> by her.</div>
+          <div class="jp">私は彼女によって歌われた歌を聞いた。<br><span style="font-size:11px;color:var(--green);">→ 歌が「歌われる側」→ 過去分詞（sung）</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">The man <span class="hl">driving</span> the car is my uncle.</div>
+          <div class="jp">その車を運転している男性は私のおじです。<br><span style="font-size:11px;color:var(--blue);">→ 男性が「運転する側」→ 〜ing</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">The car <span class="hl-green">driven</span> by my uncle is new.</div>
+          <div class="jp">私のおじによって運転された車は新しい。<br><span style="font-size:11px;color:var(--green);">→ 車が「運転される側」→ 過去分詞（driven）</span></div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 同じ動作（歌う・運転する）でも、<strong>誰が・何が主体か</strong>で形が変わる！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ＋判断フロー -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン3 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">名詞が「<strong>する側</strong>」→ 現在分詞（〜ing）「〜している」</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">名詞が「<strong>される側</strong>」→ 過去分詞「〜された」</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text"><strong>a breaking window</strong> は誤り → 窓は「壊される側」→ <strong>a broken window</strong></div>
+        </div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">⚡ 最短判断ルール</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">名詞に「〜している」と言える？</div>
+        </div>
+        <div class="flow-arrow">↓ YES → <strong>〜ing</strong>（現在分詞）</div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text">名詞に「〜された」と言える？</div>
+        </div>
+        <div class="flow-arrow">↓ YES → <strong>過去分詞</strong></div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'nexelia-unit19-lesson3-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>
