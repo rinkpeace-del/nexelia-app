@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 19 レッスン1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.question-title .accent { color: var(--accent); }
+
+/* 意味カード */
+.meaning-card { border-radius: 14px; padding: 20px 24px; display: flex; gap: 20px; align-items: center; background: var(--blue-light); border: 1px solid #B3E5FC; }
+.meaning-icon { font-size: 28px; flex-shrink: 0; }
+.meaning-body { display: flex; flex-direction: column; gap: 5px; }
+.meaning-main { font-size: 17px; font-weight: 700; }
+.meaning-note { font-size: 13px; color: var(--sub); font-weight: 500; }
+.meaning-extra { font-size: 13px; font-weight: 700; color: var(--blue); margin-top: 2px; }
+
+/* 変身イメージ */
+.transform-wrap { display: flex; flex-direction: column; gap: 10px; }
+.transform-row { display: flex; align-items: center; gap: 12px; }
+.t-box { flex: 1; padding: 14px 16px; border-radius: 12px; font-size: 15px; font-weight: 700; text-align: center; line-height: 1.4; }
+.t-box.verb { background: var(--bg); border: 1.5px solid var(--border); color: var(--text); }
+.t-box.adj  { background: var(--blue-light); border: 1.5px solid #B3E5FC; color: var(--blue); }
+.t-arrow { font-size: 20px; color: var(--sub); flex-shrink: 0; }
+.t-label { font-size: 11px; font-weight: 700; color: var(--sub); letter-spacing: 0.04em; text-align: center; margin-bottom: 4px; display: block; }
+
+/* 前置・後置カード */
+.pos-cards { display: flex; flex-direction: column; gap: 12px; }
+.pos-card { border-radius: 14px; overflow: hidden; border: 1.5px solid var(--border); }
+.pos-card-header { padding: 10px 18px; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; }
+.pos-card-header.before { background: var(--blue); color: white; }
+.pos-card-header.after  { background: var(--green); color: white; }
+.pos-card-body { padding: 14px 18px; background: var(--white); display: flex; flex-direction: column; gap: 6px; }
+.pos-rule { font-size: 14px; font-weight: 700; color: var(--text); }
+.pos-ex   { font-size: 13px; color: var(--sub); font-style: italic; }
+
+/* キーワードカード */
+.keyword-cards { display: flex; flex-direction: column; gap: 10px; }
+.kw-card { border-radius: 12px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 16px; border: 1.5px solid #B3E5FC; background: var(--blue-light); }
+.kw-word { font-size: 20px; font-weight: 700; color: var(--blue); min-width: 80px; padding-top: 2px; }
+.kw-body { display: flex; flex-direction: column; gap: 4px; }
+.kw-pos  { font-size: 12px; font-weight: 700; color: var(--blue); background: var(--white); border-radius: 4px; padding: 1px 7px; display: inline-block; margin-bottom: 2px; }
+.kw-mean { font-size: 15px; font-weight: 700; line-height: 1.4; }
+.kw-note { font-size: 12px; color: var(--sub); font-weight: 500; font-style: italic; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl       { color: var(--blue); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+.hl-warn  { color: var(--warn); font-weight: 700; }
+
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* 判断フロー */
+.flow-box { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 14px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+.flow-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 2px; }
+.flow-step { display: flex; align-items: center; gap: 12px; }
+.flow-num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.flow-text { font-size: 14px; font-weight: 700; color: var(--blue); line-height: 1.4; }
+.flow-arrow { font-size: 16px; color: var(--blue); padding-left: 36px; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; cursor: pointer; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .question-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 19 · 現在分詞の形容詞的用法</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <div style="width:80px"></div>
+</nav>
+
+<main>
+
+  <!-- スライド 1：分詞って何？ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン1 · スライド 1</div>
+      <div class="question-title">分詞は「<span class="accent">動詞が形容詞</span>に変身した形」！</div>
+
+      <div class="meaning-card">
+        <div class="meaning-icon">🔄</div>
+        <div class="meaning-body">
+          <div class="meaning-main">今回は <strong>〜ing</strong> が「名詞を説明する」使い方を学ぶ！</div>
+          <div class="meaning-extra">→「〜している○○」と名詞を修飾する形容詞のはたらき</div>
+          <div class="meaning-note">（〜ing には進行形など他の使い方もある。ここでは形容詞的用法に注目！）</div>
+        </div>
+      </div>
+
+      <div class="transform-wrap">
+        <div class="transform-row">
+          <div class="t-box verb">
+            <div class="t-label">動詞</div>
+            run（走る）
+          </div>
+          <div class="t-arrow">→</div>
+          <div class="t-box adj">
+            <div class="t-label">現在分詞</div>
+            running（走っている）
+          </div>
+        </div>
+        <div class="transform-row">
+          <div class="t-box verb">
+            <div class="t-label">動詞</div>
+            sleep（眠る）
+          </div>
+          <div class="t-arrow">→</div>
+          <div class="t-box adj">
+            <div class="t-label">現在分詞</div>
+            sleeping（眠っている）
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 現在分詞 ＝ 動詞の原形 ＋ <strong>-ing</strong><br>「〜している」という意味で<strong>名詞を説明する</strong>のが今回のテーマ！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：1語なら名詞の前に置く -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン1 · スライド 2</div>
+      <div class="question-title">1語のときは名詞の<span class="accent">前</span>に置く！</div>
+
+      <div class="meaning-card">
+        <div class="meaning-icon">📌</div>
+        <div class="meaning-body">
+          <div class="meaning-main">現在分詞 1語 → 名詞の<strong>直前</strong></div>
+          <div class="meaning-extra">→「<strong>〜ing ＋ 名詞</strong>」の語順</div>
+          <div class="meaning-note">英語の形容詞は基本、名詞の前に置く（a&nbsp;big&nbsp;dog と同じ）</div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">a <span class="hl">sleeping</span> cat</div>
+          <div class="jp">眠っている猫</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">a <span class="hl">running</span> boy</div>
+          <div class="jp">走っている男の子</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">the <span class="hl">falling</span> leaves</div>
+          <div class="jp">落ちている葉</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 <strong>〜ing ＋ 名詞</strong> ＝ 「〜している○○」<br>a&nbsp;sleeping&nbsp;cat ＝ 「眠っている猫」</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：2語以上なら名詞の後ろに置く -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン1 · スライド 3</div>
+      <div class="question-title">2語以上のときは名詞の<span class="accent">後ろ</span>に置く！</div>
+
+      <div class="pos-cards">
+        <div class="pos-card">
+          <div class="pos-card-header before">1語 → 名詞の前</div>
+          <div class="pos-card-body">
+            <div class="pos-rule">a <strong>sleeping</strong> cat</div>
+            <div class="pos-ex">眠っている猫（sleeping だけ）</div>
+          </div>
+        </div>
+        <div class="pos-card">
+          <div class="pos-card-header after">2語以上 → 名詞の後ろ</div>
+          <div class="pos-card-body">
+            <div class="pos-rule">the cat <strong>sleeping on the sofa</strong></div>
+            <div class="pos-ex">ソファで眠っている猫（sleeping&nbsp;on&nbsp;the&nbsp;sofa と続く）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">the boy <span class="hl">running in the park</span></div>
+          <div class="jp">公園で走っている男の子</div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ 分詞のかたまりが2語以上になるときは<strong>必ず名詞の後ろ</strong>！<br>×&nbsp;the&nbsp;running&nbsp;in&nbsp;the&nbsp;park&nbsp;boy　→　✓&nbsp;the&nbsp;boy&nbsp;running&nbsp;in&nbsp;the&nbsp;park</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：例文で確認 -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン1 · スライド 4</div>
+      <div class="question-title">例文で<span class="accent">前置・後置</span>を確認！</div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">Look at that <span class="hl">dancing</span> girl.</div>
+          <div class="jp">あの踊っている女の子を見て。<br><span style="font-size:11px;color:var(--blue);">→ dancing 1語 → 名詞の前</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">Look at the girl <span class="hl">dancing on the stage</span>.</div>
+          <div class="jp">ステージで踊っている女の子を見て。<br><span style="font-size:11px;color:var(--green);">→ dancing&nbsp;on&nbsp;the&nbsp;stage（2語以上）→ 名詞の後ろ</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I know the <span class="hl">barking</span> dog.</div>
+          <div class="jp">私はその吠えている犬を知っている。<br><span style="font-size:11px;color:var(--blue);">→ barking 1語 → 名詞の前</span></div>
+        </div>
+        <div class="ex-single">
+          <div class="en">The dog <span class="hl">barking at strangers</span> is mine.</div>
+          <div class="jp">知らない人に吠えている犬は私のです。<br><span style="font-size:11px;color:var(--green);">→ barking&nbsp;at&nbsp;strangers（2語以上）→ 名詞の後ろ</span></div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 1語 → 前、2語以上 → 後ろ、このルールを使い分けよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：まとめ＋最短判断ルール -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 19 · レッスン1 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="question-title">今日の<span class="accent">ポイント整理</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">現在分詞（〜ing）＝「<strong>〜している</strong>」で名詞を説明する</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text"><strong>1語</strong>のとき → 名詞の<strong>前</strong>に置く（a&nbsp;sleeping&nbsp;cat）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text"><strong>2語以上</strong>のとき → 名詞の<strong>後ろ</strong>に置く（the&nbsp;cat&nbsp;sleeping&nbsp;on&nbsp;the&nbsp;sofa）</div>
+        </div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">⚡ 最短判断ルール</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">分詞（〜ing）が1語だけか？</div>
+        </div>
+        <div class="flow-arrow">↓ YES（1語）→ 名詞の<strong>前</strong></div>
+        <div class="flow-arrow">↓ NO（2語以上）→ 名詞の<strong>後ろ</strong></div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！演習で確かめてみよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'nexelia-unit19-lesson1-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>
