@@ -520,16 +520,13 @@
     const unitsContainer = document.getElementById("unitsContainer");
     const CHECK_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"/></svg>`;
 
-    const FREE_UNIT_LIMIT = 5;
-
     function getUnitNumber(unitLabel) {
       const match = String(unitLabel || "").match(/UNIT\s*(\d+)/i);
       return match ? Number(match[1]) : NaN;
     }
 
     function createLessonCard(lesson, unitLabel) {
-      const unitNumber = getUnitNumber(unitLabel);
-      const isDisabled = Number.isFinite(unitNumber) && unitNumber > FREE_UNIT_LIMIT;
+      const isDisabled = false;
 
       const card = document.createElement("article");
       card.className = "lesson-card";
@@ -583,23 +580,7 @@ const CLOCK_SVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><pol
       return { card };
     }
 
-    let premiumDividerInserted = false;
     units.forEach((unit) => {
-      if (unit.isPremium && !premiumDividerInserted) {
-        const divider = document.createElement("div");
-        divider.className = "premium-divider";
-        divider.innerHTML = `
-          <div class="premium-divider-line"></div>
-          <div class="premium-divider-label">
-            <span class="premium-divider-lock">🔒</span>
-            Unit 6以降はプレミアムプランの購入が必要です
-            <a href="https://nexelia.base.shop/items/142047103" target="_blank" rel="noopener" class="premium-divider-link">プランを見る →</a>
-          </div>
-          <div class="premium-divider-line"></div>
-        `;
-        unitsContainer.appendChild(divider);
-        premiumDividerInserted = true;
-      }
 
       const section = document.createElement("section");
       const grid = document.createElement("div");
