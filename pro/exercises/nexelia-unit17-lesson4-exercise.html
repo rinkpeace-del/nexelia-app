@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 17 総合演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --blue: #0277BD; --blue-light: #E1F5FE;
+  --warn: #E65100; --warn-light: #FFF3E0;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); }
+.q-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); background: var(--blue-light); border-radius: 6px; padding: 3px 10px; margin-top: 2px; }
+.q-text { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub  { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.q-highlight { font-size: 17px; color: var(--blue); font-weight: 700; line-height: 1.7; }
+
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
+.opt { padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt:disabled { cursor: default; transform: none; }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
+.opt-card { padding: 18px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.4; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 68px; }
+.opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt-card:disabled { cursor: default; transform: none; }
+
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+.dots { display: flex; gap: 7px; align-items: center; }
+.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s; cursor: pointer; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 22px; }
+
+/* 結果画面 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: flex-start; padding: 32px 0 40px; animation: fadeUp 0.4s ease both; gap: 16px; }
+.complete-wrap.active { display: flex; }
+
+.rank-badge { width: 88px; height: 88px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; color: white; flex-shrink: 0; }
+.rank-badge.s { background: linear-gradient(135deg, #F9A825, #F57F17); }
+.rank-badge.a { background: linear-gradient(135deg, #0277BD, #01579B); }
+.rank-badge.b { background: linear-gradient(135deg, #1B873B, #145a2c); }
+.rank-badge.c { background: linear-gradient(135deg, #888, #555); }
+
+.complete-title { font-size: 24px; font-weight: 700; text-align: center; }
+.score-badge { font-size: 32px; font-weight: 700; color: var(--blue); }
+.rank-msg { font-size: 15px; color: var(--sub); line-height: 1.8; text-align: center; max-width: 400px; }
+
+.recap-box { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; font-size: 14px; color: var(--blue); font-weight: 600; line-height: 1.8; text-align: left; width: 100%; max-width: 480px; }
+
+/* 動的ミス表示 */
+.my-mistakes { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 13px; color: var(--warn); font-weight: 600; line-height: 1.9; text-align: left; width: 100%; max-width: 480px; }
+.my-mistakes .mistake-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.my-mistakes.hidden { display: none; }
+
+.complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.cbtn { padding: 13px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+.cbtn.primary { background: var(--blue); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+.cbtn.retry { background: var(--warn-light); color: var(--warn); border: 1.5px solid var(--warn); }
+.cbtn.retry:hover { opacity: 0.85; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .quiz-card { padding: 24px 18px; }
+  .opt-card { font-size: 13px; min-height: 60px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 17 · 総合演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:20%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <div style="width:80px"></div>
+</nav>
+
+<main>
+
+  <!-- Q1：when / before / after の使い分け -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-label">問題 1 / 5</div>
+      <div class="q-tag">when / before / after</div>
+      <div class="q-text">（　）に入る正しい接続詞はどれ？</div>
+      <div class="q-highlight">Please wash your hands （　　） you eat.</div>
+      <div class="q-sub">「食べる<strong>前に</strong>手を洗って」— 前後関係に注目！</div>
+      <div class="options-grid" id="o0">
+        <button class="opt-card" data-correct="false">when</button>
+        <button class="opt-card" data-correct="true">before</button>
+        <button class="opt-card" data-correct="false">after</button>
+        <button class="opt-card" data-correct="false">if</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：because と so の使い分け -->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-label">問題 2 / 5</div>
+      <div class="q-tag">because / so</div>
+      <div class="q-text">正しい英文を<strong>すべて</strong>選べ。（複数あり）</div>
+      <div class="q-sub">because と so — どちらか1つだけ使うのがルール！</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">Because I was late, so I ran.</button>
+        <button class="opt" data-correct="true">I was late, so I ran.</button>
+        <button class="opt" data-correct="false">I ran so because I was late.</button>
+        <button class="opt" data-correct="true">Because I was late, I ran.</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：if 節の現在形ルール -->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-label">問題 3 / 5</div>
+      <div class="q-tag">if 節の動詞</div>
+      <div class="q-text">（　）に入る正しい形はどれ？</div>
+      <div class="q-highlight">If it （　　） tomorrow, we will cancel the game.</div>
+      <div class="q-sub">「もし明日雨なら」— if 節の中の動詞の形は？</div>
+      <div class="options-grid" id="o2">
+        <button class="opt-card" data-correct="false">will rain</button>
+        <button class="opt-card" data-correct="true">rains</button>
+        <button class="opt-card" data-correct="false">rained</button>
+        <button class="opt-card" data-correct="false">is raining</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：that を使った文の語順 -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">問題 4 / 5</div>
+      <div class="q-tag">that 節の語順</div>
+      <div class="q-text">日本語に合う正しい英文はどれ？</div>
+      <div class="q-highlight">「私は彼女が先生だということを知らなかった。」</div>
+      <div class="q-sub">didn't know の後ろの語順に注目！</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false">I didn't know that was she a teacher.</button>
+        <button class="opt" data-correct="false">I didn't know she that was a teacher.</button>
+        <button class="opt" data-correct="true">I didn't know that she was a teacher.</button>
+        <button class="opt" data-correct="false">That she was a teacher, I didn't know.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5：総合（接続詞選択＋語順＋コンマ） -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">問題 5 / 5</div>
+      <div class="q-tag">総合判断</div>
+      <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-highlight">「宿題を終えた後、もし時間があれば、ゲームをしてもいいよ。」</div>
+      <div class="q-sub">after・if・コンマ・if 節の動詞——全部チェック！</div>
+      <div class="options" id="o4">
+        <button class="opt" data-correct="false">After you finish your homework, if you will have time, you can play games.</button>
+        <button class="opt" data-correct="false">After you finish your homework if you have time, you can play games.</button>
+        <button class="opt" data-correct="true">After you finish your homework, if you have time, you can play games.</button>
+        <button class="opt" data-correct="false">When you finish your homework, because you have time, you can play games.</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div class="complete-wrap" id="complete">
+    <div class="rank-badge" id="c-rank-badge">S</div>
+    <div class="complete-title" id="c-title"></div>
+    <div class="score-badge" id="c-score"></div>
+    <div class="rank-msg" id="c-msg"></div>
+
+    <div class="recap-box">
+      💡 <strong>when / before / after</strong> ＝ 時　／　<strong>because</strong> ＝ 理由（so と一緒に使わない）<br>
+      <strong>if</strong> ＝ 条件（節の中は現在形！）　／　<strong>that</strong> ＝「〜ということ」（省略可）<br>
+      文頭に来る接続詞節（that 以外）→ <strong>コンマ（,）</strong>を忘れずに
+    </div>
+
+    <div class="my-mistakes hidden" id="my-mistakes">
+      <div class="mistake-title">⚠ あなたが間違えた問題</div>
+      <div id="mistake-list"></div>
+    </div>
+
+    <div class="complete-btns">
+      <button class="cbtn retry" id="btn-retry">もう一度挑戦</button>
+      <a href="nexelia-unit17-lesson4.html" class="cbtn secondary">← まとめへ</a>
+      <a href="#" class="cbtn primary">次の Unit へ →</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+  let correct = 0;
+  const answered = {};
+  const mistakes = [];   // {q: index, label: string}
+
+  const Q_LABELS = [
+    'Q1：when / before / after の使い分け',
+    'Q2：because と so を同じ文に使ってしまった',
+    'Q3：if 節の中に will を使ってしまった',
+    'Q4：that 節の語順（that ＋ 主語 ＋ 動詞）',
+    'Q5：after / if / コンマ / if 節の現在形の複合問題'
+  ];
+
+  const FB = [
+    {
+      ok: '✓ 正解！「食べる前に」→ before。before の後ろに「食べる（you eat）」が続く形！',
+      ng: '✗ 惜しい！「〜する前に」は before。after は「〜した後に」、when は「〜するとき」だよ。'
+    },
+    {
+      ok: '✓ 正解！because と so はどちらか1つだけ使う。「I was late, so I ran.」も「Because I was late, I ran.」もどちらも正しい形！',
+      ng: '✗ 惜しい！because と so を同じ文で両方使うのは NG。「I was late, so I ran.」または「Because I was late, I ran.」のどちらかが正しい。'
+    },
+    {
+      ok: '✓ 正解！if 節の中は未来のことでも現在形。「rains」が正しい。will rain は if 節の外（主節）に置く！',
+      ng: '✗ 惜しい！if 節の中は未来でも will を使わず現在形にする。「If it rains tomorrow」が正しい形！'
+    },
+    {
+      ok: '✓ 正解！know の後ろは「that ＋ 主語（she）＋ 動詞（was）」の語順。「I didn\'t know that she was a teacher.」が完璧！',
+      ng: '✗ 惜しい！接続詞の that は動詞（know）の後ろに置く。そして that の後ろは「主語 ＋ 動詞」の語順。「I didn\'t know that she was a teacher.」が正しい形！'
+    },
+    {
+      ok: '✓ 完璧！after 節にコンマ、if 節にコンマ、if 節の動詞は現在形（have）— 全部正しい！',
+      ng: '✗ 惜しい！正解は「After you finish …, if you have time, you can play games.」— after 節の後コンマ・if 節は現在形（have）・if 節の後コンマの3点を確認しよう。'
+    }
+  ];
+
+  const RANKS = {
+    5: { rank: 'S', label: '満点！完璧マスター', cls: 's', msg: '接続詞 Unit 17 を完全制覇！\n全ての接続詞を正確に使いこなせています。' },
+    4: { rank: 'A', label: 'Aランク！ほぼ完璧', cls: 'a', msg: '4問正解！あと1問で満点。\n間違えた問題をもう一度確認しよう。' },
+    3: { rank: 'B', label: 'Bランク！もう少し', cls: 'b', msg: '3問正解。基本は理解できてる！\n間違えたポイントをスライドで確認しよう。' },
+    2: { rank: 'C', label: 'Cランク！復習しよう', cls: 'c', msg: '2問以下。接続詞のルールをもう一度スライドから見直そう。\nもう一度挑戦してみて！' }
+  };
+
+  function getRank(n) {
+    if (n === 5) return RANKS[5];
+    if (n === 4) return RANKS[4];
+    if (n === 3) return RANKS[3];
+    return RANKS[2];
+  }
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s' + cur).classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+
+    const r = getRank(correct);
+    const badge = document.getElementById('c-rank-badge');
+    badge.textContent = r.rank;
+    badge.className = 'rank-badge ' + r.cls;
+    document.getElementById('c-title').textContent = r.label;
+    document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
+    document.getElementById('c-msg').textContent = r.msg;
+
+    if (mistakes.length > 0) {
+      const box = document.getElementById('my-mistakes');
+      box.classList.remove('hidden');
+      const list = document.getElementById('mistake-list');
+      list.innerHTML = mistakes.map(function(m) {
+        return '・' + Q_LABELS[m];
+      }).join('<br>');
+    }
+  }
+
+  function retry() {
+    cur = 0;
+    correct = 0;
+    mistakes.length = 0;
+    Object.keys(answered).forEach(function(k) { delete answered[k]; });
+
+    document.getElementById('complete').classList.remove('active');
+    document.getElementById('s0').classList.add('active');
+    document.getElementById('nav-fill').style.width = '20%';
+    document.getElementById('nav-count').textContent = '1 / ' + TOTAL;
+    document.getElementById('my-mistakes').classList.add('hidden');
+    document.getElementById('mistake-list').innerHTML = '';
+
+    for (var q = 0; q < TOTAL; q++) {
+      var container = document.getElementById('o' + q);
+      var opts = container.querySelectorAll('.opt, .opt-card');
+      opts.forEach(function(b) {
+        b.disabled = false;
+        b.classList.remove('correct', 'wrong');
+      });
+      var fb = document.getElementById('f' + q);
+      fb.classList.remove('show', 'ok', 'ng');
+      fb.textContent = '';
+      if (q > 0) document.getElementById('n' + q).disabled = true;
+    }
+    document.getElementById('n0').disabled = true;
+    renderDots(0);
+  }
+
+  for (var q = 0; q < TOTAL; q++) {
+    (function(qIdx) {
+      var container = document.getElementById('o' + qIdx);
+      var opts = container.querySelectorAll('.opt, .opt-card');
+      opts.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (answered[qIdx]) return;
+          answered[qIdx] = true;
+          var isCorrect = btn.dataset.correct === 'true';
+          if (isCorrect) {
+            correct++;
+          } else {
+            mistakes.push(qIdx);
+          }
+          opts.forEach(function(b) {
+            b.disabled = true;
+            if (b.dataset.correct === 'true') b.classList.add('correct');
+          });
+          if (!isCorrect) btn.classList.add('wrong');
+          var fb = document.getElementById('f' + qIdx);
+          fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+          fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
+          document.getElementById('n' + qIdx).disabled = false;
+        });
+      });
+    })(q);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { finish(); });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+  document.getElementById('btn-retry').addEventListener('click', retry);
+
+  renderDots(0);
+</script>
+<script src="../assets/exercise-retry.js"></script>
+</body>
+</html>
