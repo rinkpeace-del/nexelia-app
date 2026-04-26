@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 20 レッスン2 · 演習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #D32F2F;
+  --green: #1B873B; --green-light: #E6F4EA;
+  --wrong: #C62828; --wrong-light: #FFEBEE;
+  --text: #1A1A1A; --sub: #888; --border: #E8E8E8; --white: #FFFFFF; --bg: #F9F9F9;
+  --blue: #0277BD; --blue-light: #E1F5FE;
+  --warn: #E65100; --warn-light: #FFF3E0;
+}
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.5s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 40px 44px; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+.q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); }
+.q-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); background: var(--blue-light); border-radius: 6px; padding: 3px 10px; margin-top: 2px; }
+.q-text { font-size: 20px; font-weight: 700; line-height: 1.5; }
+.q-sub  { font-size: 14px; color: var(--sub); line-height: 1.6; }
+.q-highlight { font-size: 18px; color: var(--blue); font-weight: 700; line-height: 1.7; }
+
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: auto; }
+.opt { padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--white); font-size: 15px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.5; transition: border-color 0.12s, background 0.12s, transform 0.1s; }
+.opt:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt:disabled { cursor: default; transform: none; }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
+.opt-card { padding: 20px 12px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--white); font-size: 18px; font-weight: 700; color: var(--text); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; text-align: center; line-height: 1.4; transition: border-color 0.12s, background 0.12s, transform 0.1s; display: flex; align-items: center; justify-content: center; min-height: 72px; }
+.opt-card:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); transform: translateY(-2px); }
+.opt-card.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.opt-card.wrong   { background: var(--wrong-light); border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.opt-card:disabled { cursor: default; transform: none; }
+
+.feedback { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-light); color: var(--green); }
+.feedback.ng { background: var(--wrong-light); color: var(--wrong); }
+
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+.dots { display: flex; gap: 7px; align-items: center; }
+.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 22px; }
+
+/* 結果画面 */
+.complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
+.complete-wrap.active { display: flex; }
+.complete-icon { font-size: 52px; margin-bottom: 20px; }
+.complete-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.score-badge { font-size: 34px; font-weight: 700; color: var(--blue); margin-bottom: 16px; }
+.complete-wrap p { font-size: 15px; color: var(--sub); line-height: 1.85; margin-bottom: 28px; }
+.recap-box { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; font-size: 14px; color: var(--blue); font-weight: 600; line-height: 1.8; margin-bottom: 16px; text-align: left; width: 100%; max-width: 460px; }
+.mistake-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 16px 20px; font-size: 13px; color: var(--warn); font-weight: 600; line-height: 1.8; margin-bottom: 24px; text-align: left; width: 100%; max-width: 460px; }
+.mistake-box .mistake-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
+.complete-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cbtn { padding: 13px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+.cbtn.primary { background: var(--blue); color: white; border: none; }
+.cbtn.primary:hover { opacity: 0.88; }
+.cbtn.secondary { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.cbtn.secondary:hover { border-color: #aaa; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .quiz-card { padding: 24px 18px; }
+  .opt-card { font-size: 16px; min-height: 64px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 20 · were と would/could · 演習</span>
+    <div class="nav-track"><div class="nav-fill" id="nav-fill" style="width:20%"></div></div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <div style="width:80px"></div>
+</nav>
+
+<main>
+
+  <!-- Q1：超簡単 — he でも were を選ぶ -->
+  <div class="slide active" id="s0">
+    <div class="quiz-card">
+      <div class="q-label">問題 1 / 5</div>
+      <div class="q-tag">were の使い方</div>
+      <div class="q-text">（　）に入る正しい語はどれ？</div>
+      <div class="q-highlight">If he （　　） taller, he&nbsp;would&nbsp;join&nbsp;the&nbsp;team.</div>
+      <div class="q-sub">仮定法の be動詞——主語が he でも同じルール！</div>
+      <div class="options-grid" id="o0">
+        <button class="opt-card" data-correct="false">is</button>
+        <button class="opt-card" data-correct="false">was</button>
+        <button class="opt-card" data-correct="true">were</button>
+        <button class="opt-card" data-correct="false">be</button>
+      </div>
+      <div class="feedback" id="f0"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q2：超簡単 — would / could の使い分け -->
+  <div class="slide" id="s1">
+    <div class="quiz-card">
+      <div class="q-label">問題 2 / 5</div>
+      <div class="q-tag">would と could</div>
+      <div class="q-text">日本語に合う英文はどれ？</div>
+      <div class="q-highlight">「もし自転車があれば、学校まで乗っていけるのに。」</div>
+      <div class="q-sub">「できる」のか「する」のか——どちらの意味？</div>
+      <div class="options" id="o1">
+        <button class="opt" data-correct="false">If I had&nbsp;a&nbsp;bike, I&nbsp;would ride to school.</button>
+        <button class="opt" data-correct="true">If I had&nbsp;a&nbsp;bike, I&nbsp;could ride to school.</button>
+        <button class="opt" data-correct="false">If I had&nbsp;a&nbsp;bike, I&nbsp;will ride to school.</button>
+        <button class="opt" data-correct="false">If I have&nbsp;a&nbsp;bike, I&nbsp;could ride to school.</button>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q3：普通 — 否定文の語順 -->
+  <div class="slide" id="s2">
+    <div class="quiz-card">
+      <div class="q-label">問題 3 / 5</div>
+      <div class="q-tag">否定文の形</div>
+      <div class="q-text">日本語に合う正しい英文はどれ？</div>
+      <div class="q-highlight">「もし忙しくなければ、あなたを手伝うのに。」</div>
+      <div class="q-sub">not はどこに入る？</div>
+      <div class="options" id="o2">
+        <button class="opt" data-correct="true">If I were&nbsp;not&nbsp;busy, I&nbsp;would help you.</button>
+        <button class="opt" data-correct="false">If I not&nbsp;were&nbsp;busy, I&nbsp;would help you.</button>
+        <button class="opt" data-correct="false">If I were&nbsp;busy&nbsp;not, I&nbsp;would help you.</button>
+        <button class="opt" data-correct="false">If I were&nbsp;busy, I&nbsp;would not&nbsp;help you.</button>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q4：普通 — 総合（were + would の両方を判断） -->
+  <div class="slide" id="s3">
+    <div class="quiz-card">
+      <div class="q-label">問題 4 / 5</div>
+      <div class="q-tag">総合判断</div>
+      <div class="q-text">日本語に合う<strong>正しい</strong>英文はどれ？</div>
+      <div class="q-highlight">「もし私があなたなら、もっと練習するのに。」</div>
+      <div class="q-sub">were の形・would のあとの動詞——両方チェック！</div>
+      <div class="options" id="o3">
+        <button class="opt" data-correct="false">If I was&nbsp;you, I&nbsp;would practiced more.</button>
+        <button class="opt" data-correct="false">If I am&nbsp;you, I&nbsp;would practice more.</button>
+        <button class="opt" data-correct="true">If I were&nbsp;you, I&nbsp;would practice more.</button>
+        <button class="opt" data-correct="false">If I were&nbsp;you, I&nbsp;will practice more.</button>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3" disabled>つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- Q5：少し応用 — 誤文発見（was / would + 過去形 / could + 過去形） -->
+  <div class="slide" id="s4">
+    <div class="quiz-card">
+      <div class="q-label">問題 5 / 5</div>
+      <div class="q-tag">誤文発見</div>
+      <div class="q-text">文法的に<strong>まちがっている</strong>英文はどれ？</div>
+      <div class="q-sub">were の形・would / could のあとの動詞——全部チェック！</div>
+      <div class="options" id="o4">
+        <button class="opt" data-correct="false">If I were free, I&nbsp;would go&nbsp;shopping.</button>
+        <button class="opt" data-correct="false">If she were here, she&nbsp;could help&nbsp;us.</button>
+        <button class="opt" data-correct="true">If he were rich, he&nbsp;could bought&nbsp;a&nbsp;house.</button>
+        <button class="opt" data-correct="false">If they weren't busy, they&nbsp;would join&nbsp;us.</button>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4" disabled>結果を見る →</button>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div class="complete-wrap" id="complete">
+    <div class="complete-icon" id="c-icon"></div>
+    <h1 id="c-title"></h1>
+    <div class="score-badge" id="c-score"></div>
+    <div class="recap-box">
+      💡 仮定法の be動詞は主語に関わらず基本的に <strong>were</strong>（試験では were が正解）<br>
+      <strong>would</strong>＝「〜するのに」／ <strong>could</strong>＝「〜できるのに」<br>
+      否定は were not（weren't）・would not（wouldn't）
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-title">⚠ よくあるミス TOP 3</div>
+      1. If he <u>was</u> → If he <strong>were</strong>（試験では were が基本！）<br>
+      2. I would <u>practiced</u> → I would <strong>practice</strong>（would のあとは原形！）<br>
+      3. he could <u>bought</u> → he could <strong>buy</strong>（could のあとも原形！）
+    </div>
+    <p id="c-msg"></p>
+    <div class="complete-btns">
+      <a href="nexelia-unit20-lesson2.html" class="cbtn secondary">← スライドへ</a>
+      <a href="nexelia-unit20-lesson3.html" class="cbtn primary">次のレッスンへ →</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+  let correct = 0;
+  const answered = {};
+
+  const FB = [
+    {
+      ok: '✓ 正解！仮定法では主語が he でも were を使います。試験では were が正解です。',
+      ng: '✗ 惜しい！仮定法の be動詞は主語に関わらず基本的に were を使います。「was」は口語では使われますが、試験では were が正解です。'
+    },
+    {
+      ok: '✓ 正解！「乗っていける」は可能・能力の意味なので could を使います。',
+      ng: '✗ 惜しい！「できるのに」という意味には could を使います。would は「するのに」、will は仮定法では使いません。If 節のあとは過去形が基本です。'
+    },
+    {
+      ok: '✓ 正解！not は were のあとに置きます。「If I were not busy」が正しい語順です。',
+      ng: '✗ 惜しい！not は be動詞（were）のあとに置きます。「If I were not busy」が正しい形です。'
+    },
+    {
+      ok: '✓ 完璧！were（be動詞）＋ would practice（原形）——両方バッチリです！',
+      ng: '✗ 惜しい！正解は「If I were you, I would practice more.」。were の形と would のあとの原形、両方確認してみてください。'
+    },
+    {
+      ok: '✓ 正解！「could bought」の bought は過去形。could のあとも動詞の原形を使うので「could buy」が正しい形です。',
+      ng: '✗ 惜しい！「could bought」の部分がまちがいです。could のあとも would と同じく動詞の原形を使います。「could buy」が正解です。'
+    }
+  ];
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  function finish() {
+    document.getElementById('s' + cur).classList.remove('active');
+    document.getElementById('complete').classList.add('active');
+    document.getElementById('nav-fill').style.width = '100%';
+    document.getElementById('nav-count').textContent = '完了';
+    document.getElementById('c-score').textContent = correct + ' / ' + TOTAL + ' 問正解';
+
+    if (correct === 5) {
+      document.getElementById('c-icon').textContent = '🎉';
+      document.getElementById('c-title').textContent = '全問正解！';
+      document.getElementById('c-msg').innerHTML = 'were・would・could の使い方はバッチリ！<br>次のレッスンへ進もう！';
+    } else if (correct >= 3) {
+      document.getElementById('c-icon').textContent = '👍';
+      document.getElementById('c-title').textContent = 'もう少し！';
+      document.getElementById('c-msg').innerHTML = 'were の形と would / could のあとの動詞を<br>もう一度スライドで確認しよう！';
+    } else {
+      document.getElementById('c-icon').textContent = '📖';
+      document.getElementById('c-title').textContent = 'スライドを見直そう';
+      document.getElementById('c-msg').innerHTML = 'were・would・could の形をスライドで確認してから<br>再チャレンジしよう！';
+    }
+  }
+
+  for (var q = 0; q < TOTAL; q++) {
+    (function(qIdx) {
+      const container = document.getElementById('o' + qIdx);
+      const opts = container.querySelectorAll('.opt, .opt-card');
+      opts.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (answered[qIdx]) return;
+          answered[qIdx] = true;
+          const isCorrect = btn.dataset.correct === 'true';
+          if (isCorrect) correct++;
+          opts.forEach(function(b) {
+            b.disabled = true;
+            if (b.dataset.correct === 'true') b.classList.add('correct');
+          });
+          if (!isCorrect) btn.classList.add('wrong');
+          const fb = document.getElementById('f' + qIdx);
+          fb.classList.add('show', isCorrect ? 'ok' : 'ng');
+          fb.textContent = isCorrect ? FB[qIdx].ok : FB[qIdx].ng;
+          document.getElementById('n' + qIdx).disabled = false;
+        });
+      });
+    })(q);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { finish(); });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+</script>
+<script src="../assets/exercise-retry.js"></script>
+</body>
+</html>
