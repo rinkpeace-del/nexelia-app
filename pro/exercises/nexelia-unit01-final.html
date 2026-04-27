@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -81,7 +81,7 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .btn-nav:disabled { opacity: 0.3; cursor: default; }
 
 .dots { display: flex; gap: 7px; align-items: center; }
-.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); transition: width 0.2s, background 0.2s;; border: none; padding: 0; cursor: pointer; }
 .dot.done   { background: rgba(2,119,189,0.3); }
 .dot.active { background: var(--blue); width: 22px; }
 
@@ -366,8 +366,11 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     if (!el) return;
     el.innerHTML = '';
     for (var i = 0; i < TOTAL; i++) {
-      const d = document.createElement('div');
+      const d = document.createElement('button');
+      d.type = 'button';
       d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.setAttribute('aria-label', (i + 1) + '枚目へ');
+      d.addEventListener('click', function() { go(i); });
       el.appendChild(d);
     }
   }
@@ -467,3 +470,4 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 </script>
 </body>
 </html>
+

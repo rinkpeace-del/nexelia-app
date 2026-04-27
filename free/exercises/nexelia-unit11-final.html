@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -56,7 +56,7 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
 .btn-nav:disabled { opacity: 0.3; cursor: default; }
 .dots { display: flex; gap: 5px; align-items: center; }
-.dot { width: 5px; height: 5px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot { width: 5px; height: 5px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s;; border: none; padding: 0; cursor: pointer; }
 .dot.done { background: rgba(40,53,147,0.3); }
 .dot.active { background: var(--indigo); width: 16px; }
 .complete-wrap { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; animation: fadeUp 0.4s ease both; }
@@ -374,9 +374,11 @@ function renderDots(id) {
     actualId = id - 3;
   }
   for (let i = 0; i < dotCount; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i < actualId ? ' done' : i === actualId ? ' active' : '');
-    el.appendChild(d);
+    const d = document.createElement('button');
+      d.type = 'button';
+            d.setAttribute('aria-label', (i + 1) + '枚目へ');
+      d.addEventListener('click', function() { go(i); });
+      el.appendChild(d);
   }
 }
 
@@ -453,3 +455,4 @@ function getCurrentContent() {    const activeSlide = document.querySelector('.s
 <script src="../assets/exercise-retry.js"></script>
 </body>
 </html>
+

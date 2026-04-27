@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -64,7 +64,7 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
 .btn-nav:disabled { opacity: 0.3; cursor: default; }
 .dots { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; max-width: 200px; justify-content: center; }
-.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; flex-shrink: 0; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; flex-shrink: 0;; border: none; padding: 0; cursor: pointer; }
 .dot.done   { background: rgba(40,53,147,0.3); }
 .dot.active { background: var(--indigo); width: 18px; }
 
@@ -584,7 +584,11 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
       dotCount = 10;
       actualId = id - 3;
     }
-    for (let i = 0; i < dotCount; i++) { const d = document.createElement('div'); d.className = 'dot' + (i < actualId ? ' done' : i === actualId ? ' active' : ''); el.appendChild(d); }
+    for (let i = 0; i < dotCount; i++) { const d = document.createElement('button');
+      d.type = 'button';
+            d.setAttribute('aria-label', (i + 1) + '枚目へ');
+      d.addEventListener('click', function() { go(i); });
+      el.appendChild(d); }
   }
   function go(idx) {
     document.getElementById('s' + cur).classList.remove('active'); cur = idx;
@@ -678,4 +682,6 @@ function getCurrentContent() {    const activeSlide = document.querySelector('.s
 </script>
 </body>
 </html>
+
+
 

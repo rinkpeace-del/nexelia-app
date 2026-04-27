@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -74,7 +74,7 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 .btn-nav:disabled { opacity: 0.3; cursor: default; }
 
 .dots { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; max-width: 200px; justify-content: center; }
-.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s;; border: none; padding: 0; cursor: pointer; }
 .dot.done    { background: rgba(2,119,189,0.3); }
 .dot.correct { background: var(--green); }
 .dot.wrong-d { background: var(--wrong); }
@@ -463,7 +463,8 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
     if (!el) return;
     el.innerHTML = '';
     for (let i = 0; i < TOTAL; i++) {
-      const d = document.createElement('div');
+      const d = document.createElement('button');
+      d.type = 'button';
       let cls = 'dot';
       if (i < id) {
         cls += results[i] && results[i].isCorrect ? ' correct' : ' wrong-d';
@@ -471,6 +472,8 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
         cls += ' active';
       }
       d.className = cls;
+      d.setAttribute('aria-label', (i + 1) + '枚目へ');
+      d.addEventListener('click', function() { go(i); });
       el.appendChild(d);
     }
   }
@@ -617,3 +620,5 @@ main { flex: 1; display: flex; flex-direction: column; max-width: 680px; width: 
 </script>
 </body>
 </html>
+
+

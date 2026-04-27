@@ -1,0 +1,331 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 22 レッスン4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 22px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.question-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.question-title .accent { color: var(--accent); }
+
+/* まとめブロック */
+.summary-blocks { display: flex; flex-direction: column; gap: 10px; }
+.s-block { border-radius: 12px; padding: 14px 18px; border: 1.5px solid #B3E5FC; background: var(--blue-light); }
+.s-block.warn-block { border-color: var(--warn); background: var(--warn-light); }
+.s-block.green-block { border-color: var(--green); background: var(--green-light); }
+.s-block-head { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue); margin-bottom: 6px; }
+.s-block-head.warn-head { color: var(--warn); }
+.s-block-head.green-head { color: var(--green); }
+.s-block-body { font-size: 14px; font-weight: 700; line-height: 1.7; }
+
+/* 混同ミス表 */
+.mistake-list { display: flex; flex-direction: column; gap: 8px; }
+.mk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mk-cell { padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; line-height: 1.4; }
+.mk-cell.ng { background: var(--wrong-light); border: 1px solid #FFCDD2; color: var(--wrong); }
+.mk-cell.ok { background: var(--green-light); border: 1px solid #A5D6A7; color: var(--green); }
+.mk-cell.header { background: var(--bg); border: 1px solid var(--border); color: var(--sub); font-size: 11px; letter-spacing: 0.04em; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 8px; }
+.ex-single { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.ex-single .en { padding: 12px 18px; font-size: 15px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 8px 18px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); font-weight: 700; }
+.hl-warn { color: var(--warn); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+
+/* チェックリスト */
+.check-list { display: flex; flex-direction: column; gap: 8px; }
+.check-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--white); border: 1px solid var(--border); border-radius: 10px; }
+.check-num { width: 26px; height: 26px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.check-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.check-item.warn-item .check-num { background: var(--warn); }
+.check-text { font-size: 14px; font-weight: 600; line-height: 1.6; }
+
+/* 注目ボックス */
+.notice-box { background: var(--warn-light); border: 1.5px solid var(--warn); border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 700; color: var(--warn); line-height: 1.7; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* エール画面 */
+.cheer-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 20px; flex: 1; }
+.cheer-icon { font-size: 56px; }
+.cheer-title { font-size: 24px; font-weight: 700; line-height: 1.4; }
+.cheer-title .accent { color: var(--accent); }
+.cheer-sub { font-size: 15px; color: var(--sub); line-height: 1.8; }
+.cheer-checks { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 400px; }
+.cheer-check { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--blue-light); border: 1px solid #B3E5FC; border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--blue); }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover:not(:disabled) { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+.btn-nav:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 18px; }
+  .question-title { font-size: 18px; }
+  .mk-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 22 · 総まとめ</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:25%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 4</span>
+  </div>
+  <span style="width:80px"></span>
+</nav>
+
+<main>
+
+  <!-- スライド1：時制の総まとめ -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 22 · レッスン4 · スライド 1</div>
+      <div class="question-title"><span class="accent">時制</span>の総まとめ</div>
+
+      <div class="summary-blocks">
+        <div class="s-block">
+          <div class="s-block-head">現在形 vs 現在進行形</div>
+          <div class="s-block-body">
+            習慣・事実 → <strong>現在形</strong>（play / plays）<br>
+            今まさに動作中 → <strong>現在進行形</strong>（am / is / are playing）<br>
+            know / like など状態動詞 → <strong>進行形にしない</strong>
+          </div>
+        </div>
+        <div class="s-block warn-block">
+          <div class="s-block-head warn-head">過去形 vs 現在完了形</div>
+          <div class="s-block-body">
+            yesterday / ago → <strong>必ず過去形</strong>（現在完了は使えない）<br>
+            今とのつながりがある → <strong>現在完了形</strong>（have / has ＋ 過去分詞）
+          </div>
+        </div>
+        <div class="s-block green-block">
+          <div class="s-block-head green-head">現在完了の3用法キーワード</div>
+          <div class="s-block-body">
+            経験：<strong>ever / never / before</strong><br>
+            継続：<strong>for / since</strong><br>
+            完了：<strong>just / already / yet</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 迷ったら「いつの話？今と関係ある？」を確認！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド2：準動詞の総まとめ -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 22 · レッスン4 · スライド 2</div>
+      <div class="question-title"><span class="accent">準動詞</span>の総まとめ</div>
+
+      <div class="summary-blocks">
+        <div class="s-block">
+          <div class="s-block-head">不定詞（to ＋ 原形）の3用法</div>
+          <div class="s-block-body">
+            名詞的：「〜すること」→ I want <strong>to play</strong>.<br>
+            副詞的：「〜するために」→ I study <strong>to pass</strong>.<br>
+            形容詞的：「〜するための」→ homework <strong>to do</strong>
+          </div>
+        </div>
+        <div class="s-block warn-block">
+          <div class="s-block-head warn-head">動名詞（ing形）を続ける動詞</div>
+          <div class="s-block-body">
+            enjoy / finish / stop / practice / give up<br>
+            → 後ろは<strong>基本、動名詞（ing形）</strong>
+          </div>
+        </div>
+        <div class="s-block green-block">
+          <div class="s-block-head green-head">分詞の使い分け</div>
+          <div class="s-block-body">
+            現在分詞（〜ing）＝ 能動「〜している」<br>
+            過去分詞 ＝ 受動「〜された」<br>
+            exciting（させる側）vs <strong>excited（感じる側）</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-box">⚠️ enjoy <u>to play</u> はNG → enjoy <strong>playing</strong>（ing形）が正しい！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド3：比較・受け身・関係代名詞の総まとめ -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 22 · レッスン4 · スライド 3</div>
+      <div class="question-title"><span class="accent">比較・受け身・関係代名詞</span>の総まとめ</div>
+
+      <div class="summary-blocks">
+        <div class="s-block">
+          <div class="s-block-head">比較の3段階</div>
+          <div class="s-block-body">
+            原級：<strong>as 〜 as</strong> ／ 比較級：<strong>〜er than</strong> ／ 最上級：<strong>the 〜est</strong><br>
+            長い語 → more / most ／ 最上級には必ず <strong>the</strong><br>
+            more taller / most tallest → <strong>二重比較はNG</strong>
+          </div>
+        </div>
+        <div class="s-block warn-block">
+          <div class="s-block-head warn-head">受け身（be ＋ 過去分詞）</div>
+          <div class="s-block-body">
+            現在：is / am / are ＋ 過去分詞<br>
+            過去：was / were ＋ 過去分詞<br>
+            「〜によって」は <strong>by</strong> を使う
+          </div>
+        </div>
+        <div class="s-block green-block">
+          <div class="s-block-head green-head">関係代名詞</div>
+          <div class="s-block-body">
+            先行詞が人 → <strong>who</strong> ／ もの・動物 → <strong>which</strong> ／ どちらも → <strong>that</strong><br>
+            主語が足りない → 関係代名詞が主語になる（who lives…）<br>
+            主語がある → 関係代名詞が目的語になる（who I met…）
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 この3つは入試頻出！形・語順・theのつけ忘れに注意。</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド4：エール＋総合演習へ -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 22 · レッスン4 · スライド 4</div>
+
+      <div class="cheer-wrap">
+        <div class="cheer-icon">🎓</div>
+        <div class="cheer-title">中学英文法、<span class="accent">全部おさらいした！</span></div>
+        <div class="cheer-sub">Unit 1 から Unit 22 まで、よくここまで来たね。<br>あとは総合演習で全部まとめて確かめよう！</div>
+
+        <div class="cheer-checks">
+          <div class="cheer-check">✅ 時制（現在・過去・進行・完了）</div>
+          <div class="cheer-check">✅ 準動詞（不定詞・動名詞・分詞）</div>
+          <div class="cheer-check">✅ 比較・受け身・関係代名詞</div>
+        </div>
+
+        <div class="cheer-sub" style="margin-top:8px;">総合演習は10問。<br>全部の文法が混ざって出てくるよ。<br>これまでの力を全部出し切ろう！</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav cta" id="n3">総合演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 4;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { location.href = 'nexelia-unit22-lesson4-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+
+  renderDots(0);
+</script>
+</body>
+</html>
+
