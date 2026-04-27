@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXELIA — Unit 20 レッスン4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #D32F2F;
+  --text: #1A1A1A;
+  --sub: #888;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --bg: #F9F9F9;
+  --blue: #0277BD;
+  --blue-light: #E1F5FE;
+  --accent: #0277BD;
+  --accent-light: #E1F5FE;
+  --warn: #E65100;
+  --warn-light: #FFF3E0;
+  --green: #1B873B;
+  --green-light: #E6F4EA;
+}
+
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+nav { background: var(--white); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
+.nav-logo { font-weight: 700; font-size: 20px; color: var(--red); letter-spacing: 0.08em; text-decoration: none; }
+.nav-center { flex: 1; max-width: 400px; margin: 0 40px; display: flex; align-items: center; gap: 12px; }
+.lesson-name { font-size: 13px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.nav-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s ease; }
+.nav-count { font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+.btn-exit { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--sub); text-decoration: none; }
+.btn-exit:hover { border-color: #aaa; color: var(--text); }
+
+main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 36px 24px 28px; }
+
+.slide { display: none; flex-direction: column; flex: 1; animation: fadeUp 0.3s ease both; }
+.slide.active { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 52px; flex: 1; display: flex; flex-direction: column; gap: 26px; }
+
+.slide-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--blue); }
+.slide-title { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.slide-title .accent { color: var(--accent); }
+
+/* 整理テーブル */
+.review-table { display: flex; flex-direction: column; gap: 8px; }
+.review-row { display: grid; grid-template-columns: 90px 1fr; gap: 12px; align-items: stretch; }
+.review-row.header { display: grid; grid-template-columns: 90px 1fr; gap: 12px; }
+.review-label { display: flex; align-items: center; justify-content: center; border-radius: 10px; padding: 10px 6px; font-size: 12px; font-weight: 700; text-align: center; line-height: 1.4; }
+.review-label.l1 { background: var(--blue-light); color: var(--blue); border: 1.5px solid #B3E5FC; }
+.review-label.l2 { background: var(--green-light); color: var(--green); border: 1.5px solid var(--green); }
+.review-label.l3 { background: var(--warn-light); color: var(--warn); border: 1.5px solid var(--warn); }
+.review-content { border-radius: 10px; padding: 12px 16px; border: 1px solid var(--border); background: var(--white); display: flex; flex-direction: column; gap: 4px; }
+.review-rule { font-size: 14px; font-weight: 700; line-height: 1.4; }
+.review-ex { font-size: 13px; color: var(--sub); font-weight: 500; }
+
+/* ミスリスト */
+.miss-list { display: flex; flex-direction: column; gap: 10px; }
+.miss-item { border-radius: 12px; padding: 14px 18px; border: 1.5px solid var(--warn); background: var(--warn-light); display: flex; flex-direction: column; gap: 6px; }
+.miss-num { font-size: 11px; font-weight: 700; color: var(--warn); letter-spacing: 0.06em; }
+.miss-ng { font-size: 15px; font-weight: 700; color: #C62828; }
+.miss-ok { font-size: 15px; font-weight: 700; color: var(--green); }
+.miss-reason { font-size: 12px; color: var(--sub); font-weight: 500; }
+
+/* 例文 */
+.ex-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-single { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.ex-single .en { padding: 14px 20px; font-size: 16px; font-weight: 700; background: var(--white); border-bottom: 1px solid var(--border); line-height: 1.5; }
+.ex-single .jp { padding: 10px 20px; font-size: 13px; color: var(--sub); background: var(--bg); }
+.hl { color: var(--blue); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+.hl-warn { color: var(--warn); font-weight: 700; }
+
+/* 判断フロー */
+.flow-box { background: var(--blue-light); border: 1.5px solid #B3E5FC; border-radius: 14px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+.flow-title { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 2px; }
+.flow-step { display: flex; align-items: flex-start; gap: 12px; }
+.flow-num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.flow-text { font-size: 14px; font-weight: 700; color: var(--blue); line-height: 1.5; }
+.flow-arrow { font-size: 16px; color: var(--blue); padding-left: 36px; }
+
+/* ポイントボックス */
+.point-box { background: var(--accent-light); border-radius: 12px; padding: 16px 20px; font-size: 15px; color: var(--blue); font-weight: 600; line-height: 1.7; margin-top: auto; }
+
+/* まとめリスト */
+.summary-list { display: flex; flex-direction: column; gap: 10px; }
+.summary-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; }
+.summary-num { width: 28px; height: 28px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.summary-item.warn-item { border-color: var(--warn); background: var(--warn-light); }
+.summary-item.warn-item .summary-num { background: var(--warn); }
+.summary-text { font-size: 15px; font-weight: 600; line-height: 1.6; }
+
+/* ナビ */
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.btn-nav { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: white; color: var(--sub); }
+.btn-nav:hover { border-color: #aaa; color: var(--text); }
+.btn-nav.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-nav.primary:hover { opacity: 0.88; }
+.btn-nav.cta { background: var(--blue); border-color: var(--blue); color: white; font-size: 15px; padding: 14px 32px; }
+.btn-nav.cta:hover { opacity: 0.88; }
+
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.dot.done   { background: rgba(2,119,189,0.3); }
+.dot.active { background: var(--blue); width: 20px; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-center { display: none; }
+  main { padding: 20px 16px; }
+  .slide-card { padding: 28px 20px; gap: 20px; }
+  .slide-title { font-size: 18px; }
+  .review-row { grid-template-columns: 64px 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../lessons.html" class="nav-logo">NEXELIA</a>
+  <div class="nav-center">
+    <span class="lesson-name">Unit 20 · まとめ</span>
+    <div class="nav-track">
+      <div class="nav-fill" id="nav-fill" style="width:20%"></div>
+    </div>
+    <span class="nav-count" id="nav-count">1 / 5</span>
+  </div>
+  <div style="width:80px"></div>
+</nav>
+
+<main>
+
+  <!-- スライド 1：3つの用法を横断整理 -->
+  <div class="slide active" id="s0">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · スライド 1</div>
+      <div class="slide-title">Unit 20 の<span class="accent">3つの用法</span>を整理しよう！</div>
+
+      <div class="review-table">
+        <div class="review-row">
+          <div class="review-label l1">直説法<br>（L1）</div>
+          <div class="review-content">
+            <div class="review-rule">If ＋ 現在形, will〜　→ 本当にありえる条件</div>
+            <div class="review-ex">If it rains tomorrow, I will stay home.</div>
+          </div>
+        </div>
+        <div class="review-row">
+          <div class="review-label l2">If 仮定法<br>（L1・L2）</div>
+          <div class="review-content">
+            <div class="review-rule">If ＋ 過去形, would〜　→ 現実と違う想像</div>
+            <div class="review-ex">If I were rich, I would travel the world.</div>
+          </div>
+        </div>
+        <div class="review-row">
+          <div class="review-label l3">I wish<br>（L3）</div>
+          <div class="review-content">
+            <div class="review-rule">I wish ＋ 過去形　→ 今の現実への願望</div>
+            <div class="review-ex">I wish I could fly.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 直説法 ＝ 現在形・will ／ 仮定法 ＝ 過去形・would<br>この2つの区別がいちばん大切！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" disabled style="opacity:0.3;cursor:default;pointer-events:none;">← もどる</button>
+      <div class="dots" id="d0"></div>
+      <button class="btn-nav primary" id="n0">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 2：仮定法の形を一気に確認 -->
+  <div class="slide" id="s1">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · スライド 2</div>
+      <div class="slide-title">仮定法の<span class="accent">形</span>を一気に確認！</div>
+
+      <div class="ex-list">
+        <div class="ex-single">
+          <div class="en">If I <span class="hl">were</span> you, I <span class="hl">would</span> study harder.</div>
+          <div class="jp">もし私があなたなら、もっと勉強するのに。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">If she <span class="hl">had</span> time, she <span class="hl">could</span> help us.</div>
+          <div class="jp">もし彼女に時間があれば、助けてくれるのに。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I wish I <span class="hl-warn">were</span> taller.</div>
+          <div class="jp">もっと背が高ければいいのに。</div>
+        </div>
+        <div class="ex-single">
+          <div class="en">I wish I <span class="hl-warn">could</span> speak Spanish.</div>
+          <div class="jp">スペイン語が話せたらいいのに。</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 If 仮定法・I wish —— どちらも<strong>過去形（were / had / could）</strong>がセット！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back1">← もどる</button>
+      <div class="dots" id="d1"></div>
+      <button class="btn-nav primary" id="n1">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 3：よくあるミス集 -->
+  <div class="slide" id="s2">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · スライド 3</div>
+      <div class="slide-title">よくある<span class="accent">ミス</span>を確認しよう！</div>
+
+      <div class="miss-list">
+        <div class="miss-item">
+          <div class="miss-num">ミス 1</div>
+          <div class="miss-ng">If I am rich, I would buy it.</div>
+          <div class="miss-ok">→ If I were rich, I would buy it.</div>
+          <div class="miss-reason">If 節は過去形。am → were に変える</div>
+        </div>
+        <div class="miss-item">
+          <div class="miss-num">ミス 2</div>
+          <div class="miss-ng">If I had time, I would went there.</div>
+          <div class="miss-ok">→ If I had time, I would go there.</div>
+          <div class="miss-reason">would のあとは動詞の原形。went → go</div>
+        </div>
+        <div class="miss-item">
+          <div class="miss-num">ミス 3</div>
+          <div class="miss-ng">I wish I am taller.</div>
+          <div class="miss-ok">→ I wish I were taller.</div>
+          <div class="miss-reason">wish のあとも過去形。am → were</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back2">← もどる</button>
+      <div class="dots" id="d2"></div>
+      <button class="btn-nav primary" id="n2">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 4：判断フロー -->
+  <div class="slide" id="s3">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · スライド 4</div>
+      <div class="slide-title">仮定法の<span class="accent">判断フロー</span></div>
+
+      <div class="flow-box">
+        <div class="flow-title">⚡ どの形を使う？判断フロー</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">「本当にありえる条件」か？<br>→ YES：If ＋ 現在形, will〜（直説法）</div>
+        </div>
+        <div class="flow-arrow">↓ NO（現実と違う想像）</div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text">「条件→結果」の2文セットか？<br>→ YES：If ＋ 過去形, would / could〜（If 仮定法）</div>
+        </div>
+        <div class="flow-arrow">↓ NO（願望だけを言いたい）</div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-text">「〜だったらいいのに」という願望か？<br>→ YES：I wish ＋ 過去形</div>
+        </div>
+      </div>
+
+      <div class="point-box">💡 最短判断：現在形・will → 直説法 ／ 過去形・would → 仮定法</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back3">← もどる</button>
+      <div class="dots" id="d3"></div>
+      <button class="btn-nav primary" id="n3">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- スライド 5：総合演習へ -->
+  <div class="slide" id="s4">
+    <div class="slide-card">
+      <div class="slide-label">Unit 20 · レッスン4 · まとめ</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px;">まとめ</div>
+        <div class="slide-title">Unit 20 <span class="accent">総まとめ</span></div>
+      </div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <div class="summary-num">1</div>
+          <div class="summary-text">直説法（現在形・will）＝ 本当にありえる条件</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">2</div>
+          <div class="summary-text">If 仮定法（過去形・would / could）＝ 現実と違う想像</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">3</div>
+          <div class="summary-text">be動詞は基本的に <strong>were</strong>（主語に関わらず）</div>
+        </div>
+        <div class="summary-item warn-item">
+          <div class="summary-num">4</div>
+          <div class="summary-text">I wish ＋ 過去形 ＝「〜だったらいいのに」（現在形は使わない）</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-num">5</div>
+          <div class="summary-text">would / could のあとは<strong>動詞の原形</strong></div>
+        </div>
+      </div>
+
+      <div class="point-box">👏 おつかれさま！総合演習で Unit 20 を完成させよう！</div>
+    </div>
+    <div class="bottom-nav">
+      <button class="btn-nav" id="back4">← もどる</button>
+      <div class="dots" id="d4"></div>
+      <button class="btn-nav cta" id="n4">総合演習へ →</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const TOTAL = 5;
+  let cur = 0;
+
+  function renderDots(id) {
+    const el = document.getElementById('d' + id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < id ? ' done' : i === id ? ' active' : '');
+      d.style.cursor = 'pointer';
+      d.title = 'スライド ' + (i + 1);
+      (function(idx) { d.addEventListener('click', function() { go(idx); }); })(i);
+      el.appendChild(d);
+    }
+  }
+
+  function go(idx) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = idx;
+    document.getElementById('s' + cur).classList.add('active');
+    document.getElementById('nav-fill').style.width = ((cur + 1) / TOTAL * 100) + '%';
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + TOTAL;
+    renderDots(cur);
+  }
+
+  document.getElementById('n0').addEventListener('click', function() { go(1); });
+  document.getElementById('n1').addEventListener('click', function() { go(2); });
+  document.getElementById('n2').addEventListener('click', function() { go(3); });
+  document.getElementById('n3').addEventListener('click', function() { go(4); });
+  document.getElementById('n4').addEventListener('click', function() { location.href = 'nexelia-unit20-lesson4-exercise.html'; });
+  document.getElementById('back1').addEventListener('click', function() { go(0); });
+  document.getElementById('back2').addEventListener('click', function() { go(1); });
+  document.getElementById('back3').addEventListener('click', function() { go(2); });
+  document.getElementById('back4').addEventListener('click', function() { go(3); });
+
+  renderDots(0);
+</script>
+
+</body>
+</html>
