@@ -156,27 +156,6 @@ nav {
 .feat-card p { font-size: 14px; color: #888; line-height: 1.75; }
 
 
-/* ── STEPS ── */
-.steps {
-  padding: 80px 40px;
-  border-top: 1px solid var(--border);
-}
-.steps-inner { max-width: 760px; margin: 0 auto; }
-.steps-head { margin-bottom: 40px; }
-.step-item {
-  display: flex; gap: 28px; align-items: flex-start;
-  padding: 32px 0;
-}
-.step-item { border-bottom: 1px solid var(--border); }
-.steps-inner > .reveal:last-child .step-item { border-bottom: none; }
-.step-num {
-  font-weight: 800; font-size: 36px; line-height: 1;
-  flex-shrink: 0; width: 56px;
-}
-.step-num.active { color: var(--red); }
-.step-num.inactive { color: #E8E8E8; }
-.step-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-.step-body { font-size: 14px; color: #888; line-height: 1.75; }
 
 /* ── PRICING ── */
 .pricing {
@@ -321,7 +300,6 @@ footer {
   <img src="assets/nexelia-logo.png" alt="NEXELIA" class="nav-logo-img">
   <div class="nav-links">
     <a href="#features" class="nav-link">特徴</a>
-    <a href="#steps" class="nav-link">使い方</a>
     <a href="#pricing" class="nav-link">料金</a>
     <a href="#faq" class="nav-link">FAQ</a>
     <a href="lessons.html" class="btn-blue">無料で学習を始める</a>
@@ -359,43 +337,6 @@ footer {
       <div class="feat-card reveal" style="transition-delay:0.16s">
         <h3>どこでもスマホで学べる</h3>
         <p>アプリ不要。ブラウザだけでOK。スキマ時間に5分から学習できる。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── STEPS ── -->
-<section class="steps" id="steps">
-  <div class="steps-inner">
-    <div class="steps-head reveal">
-      <div class="section-label">How it works</div>
-      <h2 class="section-title">3ステップで英語が身につく</h2>
-    </div>
-    <div class="reveal" style="transition-delay:0s">
-      <div class="step-item">
-        <div class="step-num active">01</div>
-        <div>
-          <div class="step-title">スライドで学ぶ</div>
-          <div class="step-body">シンプルなスライドで英単語・英文法を学習。1テーマ5分以内で完結。</div>
-        </div>
-      </div>
-    </div>
-    <div class="reveal" style="transition-delay:0.1s">
-      <div class="step-item">
-        <div class="step-num inactive">02</div>
-        <div>
-          <div class="step-title">クイズで確認</div>
-          <div class="step-body">学んだ直後に小テスト。正解・不正解をすぐに知ることができます。</div>
-        </div>
-      </div>
-    </div>
-    <div class="reveal" style="transition-delay:0.2s">
-      <div class="step-item">
-        <div class="step-num inactive">03</div>
-        <div>
-          <div class="step-title">繰り返して定着</div>
-          <div class="step-body">苦手な単元を繰り返し学習。プレミアムでは復習スケジュールも自動設定。</div>
-        </div>
       </div>
     </div>
   </div>
