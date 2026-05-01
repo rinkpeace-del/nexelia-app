@@ -155,59 +155,31 @@ nav {
 .feat-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 12px; }
 .feat-card p { font-size: 14px; color: #888; line-height: 1.75; }
 
-/* ── DEMO ── */
-.demo {
+/* ── TRY ── */
+.try-section {
   padding: 80px 40px;
   border-top: 1px solid var(--border);
   background: var(--bg);
+  text-align: center;
 }
-.demo-inner { max-width: 760px; margin: 0 auto; }
-.demo-head { margin-bottom: 40px; text-align: center; }
-.demo-cards {
-  display: flex; gap: 20px; flex-wrap: wrap;
-  justify-content: center; max-width: 680px; margin: 0 auto;
+.try-inner { max-width: 520px; margin: 0 auto; }
+.try-title {
+  font-size: clamp(20px, 3vw, 28px); font-weight: 700;
+  margin-bottom: 12px;
 }
-.demo-slide {
-  flex: 1 1 260px; min-width: 240px;
-  border: 1.5px solid var(--red); border-radius: 16px;
-  padding: 32px 28px; background: #fff;
+.try-sub {
+  font-size: 14px; color: #888; line-height: 1.75;
+  margin-bottom: 32px;
 }
-.demo-quiz {
-  flex: 1 1 260px; min-width: 240px;
-  border: 1.5px solid var(--border); border-radius: 16px;
-  padding: 32px 28px; background: #fff;
-}
-.demo-card-label {
-  font-size: 11px; letter-spacing: 2px; color: #aaa;
-  text-transform: uppercase; margin-bottom: 20px;
-}
-.demo-word {
-  font-size: 44px; font-weight: 800; color: var(--red);
-  line-height: 1; margin-bottom: 8px;
-}
-.demo-phonetic { font-size: 13px; color: #aaa; margin-bottom: 12px; }
-.demo-ja { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
-.demo-ex {
-  font-size: 13px; color: #666; line-height: 1.7;
-  background: #F9F9F9; border-radius: 8px; padding: 10px 14px;
-}
-.demo-quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 20px; }
-.demo-options { display: flex; flex-direction: column; gap: 10px; }
-.demo-opt {
-  padding: 11px 16px; border-radius: 8px;
-  background: #fff; border: 1.5px solid var(--border);
-  color: #1A1A1A; font-size: 14px; font-weight: 500;
-  cursor: pointer; text-align: left;
+.btn-try {
+  display: inline-block; padding: 16px 44px;
+  background: var(--blue); color: white;
+  font-size: 16px; font-weight: 700;
+  border-radius: 10px; text-decoration: none;
   font-family: 'Noto Sans JP', sans-serif;
-  transition: border-color 0.15s;
+  transition: background 0.15s;
 }
-.demo-opt.correct { border-color: var(--red); color: var(--red); background: #FFF5F5; }
-.demo-opt.wrong { border-color: var(--border); color: #bbb; }
-.demo-result {
-  margin-top: 16px; font-size: 13px; font-weight: 700;
-  color: var(--red); text-align: center; min-height: 20px;
-}
-.demo-result.miss { color: #aaa; }
+.btn-try:hover { background: var(--blue-dark); }
 
 /* ── STEPS ── */
 .steps {
@@ -417,30 +389,14 @@ footer {
   </div>
 </section>
 
-<!-- ── DEMO ── -->
-<section class="demo" id="demo">
-  <div class="demo-inner">
-    <div class="demo-head reveal">
-      <div class="section-label">Demo</div>
-      <h2 class="section-title">実際に試してみよう</h2>
-      <p class="section-sub">スライドで学んで、クイズで確認。そのまま体験できます。</p>
-    </div>
-    <div class="reveal" style="transition-delay:0.1s">
-      <div class="demo-cards">
-        <div class="demo-slide">
-          <div class="demo-card-label">Lesson <span id="demo-step">1</span> / 3</div>
-          <div class="demo-word" id="demo-word"></div>
-          <div class="demo-phonetic" id="demo-phonetic"></div>
-          <div class="demo-ja" id="demo-ja"></div>
-          <div class="demo-ex" id="demo-ex"></div>
-        </div>
-        <div class="demo-quiz">
-          <div class="demo-card-label">Quick Check</div>
-          <div class="demo-quiz-q" id="demo-q"></div>
-          <div class="demo-options" id="demo-options"></div>
-          <div class="demo-result" id="demo-result"></div>
-        </div>
-      </div>
+<!-- ── TRY ── -->
+<section class="try-section" id="demo">
+  <div class="try-inner">
+    <div class="reveal">
+      <div class="section-label">Try it</div>
+      <h2 class="try-title">実際の英文法レッスンを体験する</h2>
+      <p class="try-sub">be動詞・助動詞・仮定法など、中学英語を Unit 別にスライドで学んで、すぐに確認クイズで定着できます。</p>
+      <a href="lessons.html" class="btn-try">無料でレッスンを始める →</a>
     </div>
   </div>
 </section>
@@ -618,55 +574,6 @@ function toggleFaq(btn) {
   }
 }
 
-/* ── DEMO ── */
-const CARDS = [
-  { word: 'apple',  phonetic: '/ˈæp.əl/', ja: 'りんご', ex: 'I eat an apple every day.',    options: ['りんご', '学校', 'ねこ', '本'], correct: 0 },
-  { word: 'school', phonetic: '/skuːl/',   ja: '学校',   ex: 'She goes to school by bus.',    options: ['りんご', '学校', '川', '空'], correct: 1 },
-  { word: 'friend', phonetic: '/frend/',   ja: '友達',   ex: 'He is my best friend.',          options: ['友達', '先生', '本', '空'],   correct: 0 }
-];
-let demoStep = 0;
-let demoAnswered = false;
-
-function renderDemo() {
-  const c = CARDS[demoStep];
-  document.getElementById('demo-step').textContent = demoStep + 1;
-  document.getElementById('demo-word').textContent = c.word;
-  document.getElementById('demo-phonetic').textContent = c.phonetic;
-  document.getElementById('demo-ja').textContent = c.ja;
-  document.getElementById('demo-ex').textContent = c.ex;
-  document.getElementById('demo-q').textContent = '「' + c.word + '」の意味は？';
-  document.getElementById('demo-result').textContent = '';
-  document.getElementById('demo-result').className = 'demo-result';
-  demoAnswered = false;
-
-  const opts = document.getElementById('demo-options');
-  opts.innerHTML = '';
-  c.options.forEach(function(opt, i) {
-    const btn = document.createElement('button');
-    btn.className = 'demo-opt';
-    btn.textContent = opt;
-    btn.addEventListener('click', function() {
-      if (demoAnswered) return;
-      demoAnswered = true;
-      const resultEl = document.getElementById('demo-result');
-      opts.querySelectorAll('.demo-opt').forEach(function(b, j) {
-        if (j === c.correct) b.classList.add('correct');
-        else if (j === i) b.classList.add('wrong');
-      });
-      if (i === c.correct) {
-        resultEl.textContent = '✓ 正解！次へ…';
-        resultEl.className = 'demo-result';
-        setTimeout(function() { demoStep = (demoStep + 1) % CARDS.length; renderDemo(); }, 1100);
-      } else {
-        resultEl.textContent = '正解は「' + c.options[c.correct] + '」';
-        resultEl.className = 'demo-result miss';
-      }
-    });
-    opts.appendChild(btn);
-  });
-}
-
-renderDemo();
 </script>
 </body>
 </html>
