@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -11,8 +11,10 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXELIA — 次世代の英語学習体験</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>NEXELIA — 中学生向け英語学習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -34,265 +36,636 @@ body {
   background: var(--white);
   color: var(--text);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
 
 /* ── NAV ── */
 nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  background: var(--white);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 0 40px;
 }
-
-.nav-logo {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 700;
-  font-size: 22px;
-  color: var(--red);
-  letter-spacing: 0.08em;
-  text-decoration: none;
+.nav-logo-img { height: 26px; object-fit: contain; display: block; }
+.nav-links { display: flex; align-items: center; gap: 24px; }
+.nav-link {
+  font-size: 14px; color: #888; text-decoration: none; font-weight: 500;
+  transition: color 0.15s;
 }
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
+.nav-link:hover { color: var(--text); }
 .btn-blue {
-  padding: 12px 26px;
-  background: var(--blue);
-  color: white;
-  font-size: 15px;
-  font-weight: 700;
-  border-radius: 10px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
+  padding: 10px 22px;
+  background: var(--blue); color: white;
+  font-size: 13px; font-weight: 700;
+  border-radius: 8px; text-decoration: none;
   font-family: 'Noto Sans JP', sans-serif;
-  transition: background 0.15s, transform 0.1s;
-  display: inline-block;
+  transition: background 0.15s;
+  white-space: nowrap;
 }
-.btn-blue:hover { background: var(--blue-dark); transform: translateY(-1px); }
-
-.btn-ghost {
-  padding: 12px 26px;
-  background: transparent;
-  color: var(--text);
-  font-size: 15px;
-  font-weight: 700;
-  border-radius: 10px;
-  text-decoration: none;
-  border: 1.5px solid var(--border);
-  cursor: pointer;
-  font-family: 'Noto Sans JP', sans-serif;
-  transition: border-color 0.15s, color 0.15s;
-  display: inline-block;
-}
-.btn-ghost:hover { border-color: #aaa; color: var(--text); }
+.btn-blue:hover { background: var(--blue-dark); }
 
 /* ── HERO ── */
 .hero {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
   text-align: center;
   padding: 120px 24px 80px;
-  background: var(--white);
+  background: #fff;
 }
-
-.hero-name {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 700;
-  font-size: clamp(52px, 9vw, 100px);
-  color: var(--red);
-  letter-spacing: 0.08em;
-  line-height: 1.2;
-  margin-bottom: 28px;
+.hero-inner { max-width: 680px; }
+.hero-logo {
+  width: 400px; max-width: 80vw; height: 90px;
+  object-fit: contain;
+  display: block; margin: 0 auto 32px;
   animation: fadeUp 0.5s ease both;
 }
-
 .hero-tagline {
-  font-size: clamp(22px, 4vw, 34px);
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 16px;
+  font-size: clamp(20px, 3.5vw, 30px);
+  font-weight: 700; color: #1A1A1A;
+  margin-bottom: 40px; line-height: 1.5;
   animation: fadeUp 0.5s 0.1s ease both;
 }
-
-.hero-beta-note {
-  font-size: 13px;
-  color: #AAAAAA;
-  margin-bottom: 24px;
-  font-weight: 400;
-  animation: fadeUp 0.5s 0.25s ease both;
-}
-
 .hero-btns {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  animation: fadeUp 0.5s 0.3s ease both;
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.5s 0.2s ease both;
 }
+.btn-blue-lg {
+  padding: 16px 40px;
+  background: var(--blue); color: white;
+  font-size: 16px; font-weight: 700;
+  border-radius: 10px; text-decoration: none;
+  display: inline-block;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: background 0.15s;
+}
+.btn-blue-lg:hover { background: var(--blue-dark); }
+.btn-ghost-lg {
+  padding: 16px 40px;
+  background: white; color: var(--text);
+  font-size: 16px; font-weight: 700;
+  border-radius: 10px; text-decoration: none;
+  border: 1.5px solid var(--border);
+  display: inline-block;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: border-color 0.15s;
+}
+.btn-ghost-lg:hover { border-color: #aaa; }
+
+/* ── SECTION COMMON ── */
+.section-label {
+  font-size: 11px; letter-spacing: 3px; color: #aaa;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.section-title { font-size: clamp(22px, 3vw, 32px); font-weight: 700; }
+.section-sub { font-size: 14px; color: #888; margin-top: 8px; }
 
 /* ── FEATURES ── */
 .features {
   padding: 80px 40px;
-  background: var(--white);
   border-top: 1px solid var(--border);
 }
-
-.features-grid {
-  max-width: 760px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-}
-
+.features-inner { max-width: 760px; margin: 0 auto; }
+.features-head { margin-bottom: 40px; }
+.feat-cards { display: flex; flex-direction: column; gap: 16px; }
 .feat-card {
-  border: 1.5px solid var(--border);
-  border-radius: 16px;
-  padding: 36px 32px;
-  background: var(--white);
+  border: 1.5px solid var(--border); border-radius: 16px;
+  padding: 32px; background: #fff;
   transition: box-shadow 0.2s, transform 0.2s;
 }
-
 .feat-card:hover {
-  transform: translateY(-3px);
   box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+  transform: translateY(-2px);
 }
+.feat-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 12px; }
+.feat-card p { font-size: 14px; color: #888; line-height: 1.75; }
 
-.feat-card h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 14px;
+/* ── DEMO ── */
+.demo {
+  padding: 80px 40px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
 }
+.demo-inner { max-width: 760px; margin: 0 auto; }
+.demo-head { margin-bottom: 40px; text-align: center; }
+.demo-cards {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  justify-content: center; max-width: 680px; margin: 0 auto;
+}
+.demo-slide {
+  flex: 1 1 260px; min-width: 240px;
+  border: 1.5px solid var(--red); border-radius: 16px;
+  padding: 32px 28px; background: #fff;
+}
+.demo-quiz {
+  flex: 1 1 260px; min-width: 240px;
+  border: 1.5px solid var(--border); border-radius: 16px;
+  padding: 32px 28px; background: #fff;
+}
+.demo-card-label {
+  font-size: 11px; letter-spacing: 2px; color: #aaa;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.demo-word {
+  font-size: 44px; font-weight: 800; color: var(--red);
+  line-height: 1; margin-bottom: 8px;
+}
+.demo-phonetic { font-size: 13px; color: #aaa; margin-bottom: 12px; }
+.demo-ja { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
+.demo-ex {
+  font-size: 13px; color: #666; line-height: 1.7;
+  background: #F9F9F9; border-radius: 8px; padding: 10px 14px;
+}
+.demo-quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 20px; }
+.demo-options { display: flex; flex-direction: column; gap: 10px; }
+.demo-opt {
+  padding: 11px 16px; border-radius: 8px;
+  background: #fff; border: 1.5px solid var(--border);
+  color: #1A1A1A; font-size: 14px; font-weight: 500;
+  cursor: pointer; text-align: left;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: border-color 0.15s;
+}
+.demo-opt.correct { border-color: var(--red); color: var(--red); background: #FFF5F5; }
+.demo-opt.wrong { border-color: var(--border); color: #bbb; }
+.demo-result {
+  margin-top: 16px; font-size: 13px; font-weight: 700;
+  color: var(--red); text-align: center; min-height: 20px;
+}
+.demo-result.miss { color: #aaa; }
 
-.feat-card p {
-  font-size: 14px;
-  color: var(--sub);
-  line-height: 1.75;
+/* ── STEPS ── */
+.steps {
+  padding: 80px 40px;
+  border-top: 1px solid var(--border);
 }
+.steps-inner { max-width: 760px; margin: 0 auto; }
+.steps-head { margin-bottom: 40px; }
+.step-item {
+  display: flex; gap: 28px; align-items: flex-start;
+  padding: 32px 0;
+}
+.step-item:not(:last-child) { border-bottom: 1px solid var(--border); }
+.step-num {
+  font-weight: 800; font-size: 36px; line-height: 1;
+  flex-shrink: 0; width: 56px;
+}
+.step-num.active { color: var(--red); }
+.step-num.inactive { color: #E8E8E8; }
+.step-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.step-body { font-size: 14px; color: #888; line-height: 1.75; }
 
-.feat-card-split {
-  display: block;
+/* ── PRICING ── */
+.pricing {
+  padding: 80px 40px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
 }
+.pricing-inner { max-width: 680px; margin: 0 auto; }
+.pricing-head { margin-bottom: 40px; }
+.pricing-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.plan-card {
+  border: 1.5px solid var(--border); border-radius: 16px;
+  padding: 36px 28px; background: #fff;
+  display: flex; flex-direction: column; gap: 20px;
+  position: relative;
+}
+.plan-card.featured { border-color: var(--red); }
+.plan-badge {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--red); color: white;
+  font-size: 10px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px; letter-spacing: 1px;
+}
+.plan-label {
+  font-size: 11px; letter-spacing: 2px; color: #aaa;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.plan-price { font-size: 36px; font-weight: 800; }
+.plan-price span { font-size: 14px; font-weight: 400; color: #aaa; }
+.plan-price-wrap { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.plan-old-price {
+  font-size: 15px; font-weight: 500; color: #aaa; text-decoration: line-through;
+}
+.plan-discount {
+  display: inline-block; background: #FFF0F0; color: var(--red);
+  font-size: 11px; font-weight: 700; padding: 3px 10px;
+  border-radius: 100px; letter-spacing: 1px; margin-top: 4px;
+}
+.plan-divider { height: 1px; background: var(--border); }
+.plan-features { display: flex; flex-direction: column; gap: 10px; }
+.plan-feat {
+  display: flex; gap: 10px; font-size: 13px; color: #555; align-items: flex-start;
+}
+.plan-feat.disabled { color: #ccc; }
+.plan-check { color: var(--red); font-weight: 700; flex-shrink: 0; }
+.plan-cross { flex-shrink: 0; }
+.btn-plan-free {
+  display: block; text-align: center; padding: 13px;
+  border-radius: 8px; border: 1.5px solid var(--red);
+  color: var(--red); font-weight: 700; text-decoration: none;
+  font-size: 14px; font-family: 'Noto Sans JP', sans-serif;
+  transition: background 0.15s;
+}
+.btn-plan-free:hover { background: #FFF5F5; }
+.btn-plan-premium {
+  display: block; text-align: center; padding: 13px;
+  border-radius: 8px; background: var(--red);
+  color: white; font-weight: 700; text-decoration: none;
+  font-size: 14px; font-family: 'Noto Sans JP', sans-serif;
+  transition: background 0.15s;
+}
+.btn-plan-premium:hover { background: #b71c1c; }
 
-.feat-copy {
-  flex: 1;
+/* ── FAQ ── */
+.faq {
+  padding: 80px 40px;
+  border-top: 1px solid var(--border);
 }
-
-.feat-card-split .feat-copy h3 {
-  margin-top: 0;
+.faq-inner { max-width: 640px; margin: 0 auto; }
+.faq-head { margin-bottom: 40px; }
+.faq-list { border-top: 1px solid var(--border); }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-btn {
+  width: 100%; background: none; border: none; padding: 20px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; cursor: pointer; text-align: left;
+  font-family: 'Noto Sans JP', sans-serif;
 }
+.faq-q { font-size: 15px; font-weight: 700; color: #1A1A1A; line-height: 1.5; }
+.faq-icon {
+  width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+  background: #F0F0F0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #888; font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+  line-height: 1;
+}
+.faq-icon.open { background: var(--red); color: white; }
+.faq-body-wrap { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.faq-body { padding-bottom: 20px; font-size: 14px; color: #888; line-height: 1.8; }
 
 /* ── CTA ── */
-.cta {
+.cta-section {
   padding: 100px 40px;
-  background: var(--white);
   border-top: 1px solid var(--border);
   text-align: center;
 }
-
-.cta h2 {
-  font-size: clamp(24px, 4vw, 38px);
-  font-weight: 700;
-  margin-bottom: 40px;
-  color: var(--text);
+.cta-inner { max-width: 520px; margin: 0 auto; }
+.cta-logo { height: 48px; object-fit: contain; display: block; margin: 0 auto 24px; opacity: 0.8; }
+.cta-title {
+  font-size: clamp(20px, 3vw, 28px); font-weight: 700;
+  margin-bottom: 36px; color: #1A1A1A;
 }
+.btn-cta {
+  display: inline-block; padding: 18px 48px;
+  background: var(--blue); color: white;
+  font-size: 17px; font-weight: 700;
+  border-radius: 10px; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: background 0.15s;
+}
+.btn-cta:hover { background: var(--blue-dark); }
 
 /* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--border);
   padding: 28px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
 }
-
-.footer-copy { font-size: 13px; color: var(--sub); }
-
-/* ── ANIM ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-.reveal.in { opacity: 1; transform: translateY(0); }
+.footer-logo { height: 20px; object-fit: contain; opacity: 0.5; }
+.footer-copy { font-size: 13px; color: #aaa; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 800px) {
   nav { padding: 0 20px; }
-  .features { padding: 60px 20px; }
-  .features-grid { grid-template-columns: 1fr; }
-  .feat-card-split { display: block; }
-  .cta { padding: 72px 20px; }
+  .nav-link { display: none; }
+  .hero-logo { width: 280px; height: 64px; }
+  .features, .demo, .steps, .pricing, .faq, .cta-section { padding: 60px 20px; }
   footer { padding: 24px 20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ── NAV ── -->
 <nav>
-  <a href="#" class="nav-logo">NEXELIA</a>
-  <div class="nav-right">
+  <img src="assets/nexelia-logo.png" alt="NEXELIA" class="nav-logo-img">
+  <div class="nav-links">
+    <a href="#features" class="nav-link">特徴</a>
+    <a href="#steps" class="nav-link">使い方</a>
+    <a href="#pricing" class="nav-link">料金</a>
+    <a href="#faq" class="nav-link">FAQ</a>
     <a href="lessons.html" class="btn-blue">無料で学習を始める</a>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-name">NEXELIA</div>
-  <div class="hero-tagline">短く学ぶ。すぐ解く。<br>中学生向け英語学習</div>
-  <p class="hero-beta-note">＊現在ベータ版です。英語教材を順次追加しています。</p>
-  <div class="hero-btns">
-    <a href="lessons.html" class="btn-blue">無料で学習を始める</a>
+  <div class="hero-inner">
+    <img src="assets/nexelia-logo.png" alt="NEXELIA" class="hero-logo">
+    <div class="hero-tagline">短く学ぶ。すぐ解く。<br>中学生向け英語学習</div>
+    <div class="hero-btns">
+      <a href="lessons.html" class="btn-blue-lg">無料で学習を始める</a>
+      <a href="#features" class="btn-ghost-lg">詳しく見る</a>
+    </div>
   </div>
 </section>
 
-<!-- FEATURES -->
+<!-- ── FEATURES ── -->
 <section class="features" id="features">
-  <div class="features-grid">
-    <div class="feat-card reveal feat-card-split">
-      <div class="feat-copy">
+  <div class="features-inner">
+    <div class="features-head reveal">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">NEXELIAが選ばれる理由</h2>
+    </div>
+    <div class="feat-cards">
+      <div class="feat-card reveal" style="transition-delay:0s">
         <h3>わかりやすいスライドで解説</h3>
-        <p>要点だけを短時間で理解。情報を詰め込みすぎず、1スライドに1つの学習ポイントを凝縮しています。</p>
+        <p>要点だけを短時間で理解。1スライドに1つの学習ポイントを凝縮。情報過多にならず、頭に残る。</p>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:0.08s">
+        <h3>すぐに確認クイズ</h3>
+        <p>学んだ直後に演習で定着。インプット直後に小問で確認することで、記憶の定着率が大幅に向上。</p>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:0.16s">
+        <h3>どこでもスマホで学べる</h3>
+        <p>アプリ不要。ブラウザだけでOK。スキマ時間に5分から学習できる。</p>
       </div>
     </div>
-    <div class="feat-card reveal">
-      <h3>すぐに確認</h3>
-      <p>学んだ直後に演習で定着。インプット直後に小問で確認することで、記憶の定着率が大幅に上がります。</p>
+  </div>
+</section>
+
+<!-- ── DEMO ── -->
+<section class="demo" id="demo">
+  <div class="demo-inner">
+    <div class="demo-head reveal">
+      <div class="section-label">Demo</div>
+      <h2 class="section-title">実際に試してみよう</h2>
+      <p class="section-sub">スライドで学んで、クイズで確認。そのまま体験できます。</p>
     </div>
-</div>
+    <div class="reveal" style="transition-delay:0.1s">
+      <div class="demo-cards">
+        <div class="demo-slide">
+          <div class="demo-card-label">Lesson <span id="demo-step">1</span> / 3</div>
+          <div class="demo-word" id="demo-word"></div>
+          <div class="demo-phonetic" id="demo-phonetic"></div>
+          <div class="demo-ja" id="demo-ja"></div>
+          <div class="demo-ex" id="demo-ex"></div>
+        </div>
+        <div class="demo-quiz">
+          <div class="demo-card-label">Quick Check</div>
+          <div class="demo-quiz-q" id="demo-q"></div>
+          <div class="demo-options" id="demo-options"></div>
+          <div class="demo-result" id="demo-result"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- CTA -->
-<section class="cta" id="signup">
-  <h2 class="reveal">英語レッスンを今すぐ始める</h2>
-  <a href="lessons.html" class="btn-blue reveal" style="font-size:16px;padding:16px 48px;">はじめる</a>
+<!-- ── STEPS ── -->
+<section class="steps" id="steps">
+  <div class="steps-inner">
+    <div class="steps-head reveal">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">3ステップで英語が身につく</h2>
+    </div>
+    <div class="reveal" style="transition-delay:0s">
+      <div class="step-item">
+        <div class="step-num active">01</div>
+        <div>
+          <div class="step-title">スライドで学ぶ</div>
+          <div class="step-body">シンプルなスライドで英単語・英文法を学習。1テーマ5分以内で完結。</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:0.1s">
+      <div class="step-item">
+        <div class="step-num inactive">02</div>
+        <div>
+          <div class="step-title">クイズで確認</div>
+          <div class="step-body">学んだ直後に小テスト。正解・不正解をすぐに知ることができます。</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:0.2s">
+      <div class="step-item">
+        <div class="step-num inactive">03</div>
+        <div>
+          <div class="step-title">繰り返して定着</div>
+          <div class="step-body">苦手な単元を繰り返し学習。プレミアムでは復習スケジュールも自動設定。</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── PRICING ── -->
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-head reveal">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">シンプルな料金プラン</h2>
+      <p class="section-sub">まずは無料から。いつでもアップグレードできます。</p>
+    </div>
+    <div class="pricing-cards">
+      <div class="plan-card reveal">
+        <div>
+          <div class="plan-label">Free</div>
+          <div class="plan-price">¥0<span>/月</span></div>
+        </div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="plan-feat"><span class="plan-check">✓</span>基礎レッスン・クイズ（全単元）</div>
+          <div class="plan-feat"><span class="plan-check">✓</span>ブラウザですぐ利用可能</div>
+          <div class="plan-feat"><span class="plan-check">✓</span>スマホ・PC・タブレット対応</div>
+          <div class="plan-feat disabled"><span class="plan-cross">✕</span>広告あり</div>
+          <div class="plan-feat disabled"><span class="plan-cross">✕</span>復習モードなし</div>
+        </div>
+        <a href="lessons.html" class="btn-plan-free">無料で始める</a>
+      </div>
+      <div class="plan-card featured reveal" style="transition-delay:0.1s">
+        <div class="plan-badge">おすすめ</div>
+        <div>
+          <div class="plan-label">Premium</div>
+          <div class="plan-price-wrap">
+            <span class="plan-old-price">¥2,980</span>
+            <span class="plan-price">¥1,490<span>/月</span></span>
+          </div>
+          <div class="plan-discount">50% OFF</div>
+        </div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="plan-feat"><span class="plan-check">✓</span>基礎レッスン・クイズ（全単元）</div>
+          <div class="plan-feat"><span class="plan-check">✓</span>ブラウザですぐ利用可能</div>
+          <div class="plan-feat"><span class="plan-check">✓</span>スマホ・PC・タブレット対応</div>
+          <div class="plan-feat"><span class="plan-check">✓</span>広告なし</div>
+          <div class="plan-feat"><span class="plan-check">✓</span>復習モード（弱点を自動特定）</div>
+          <div class="plan-feat"><span class="plan-check">✓</span>進捗分析レポート（保護者用）</div>
+        </div>
+        <a href="https://nexelia.base.shop/items/142047103" target="_blank" rel="noopener" class="btn-plan-premium">プレミアムを始める</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div class="faq-head reveal">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">よくある質問</h2>
+    </div>
+    <div class="faq-list reveal" style="transition-delay:0.1s">
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">無料プランで何ができますか？</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body-wrap">
+          <div class="faq-body">すべての基礎レッスンと確認クイズを無制限で利用できます。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">プレミアムプランとの違いは？</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body-wrap">
+          <div class="faq-body">プレミアムでは広告非表示・全レッスン解放・復習モード・進捗分析レポートが利用できます。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">どの端末で使えますか？</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body-wrap">
+          <div class="faq-body">スマートフォン・タブレット・PCのブラウザからアクセスできます。アプリのインストール不要です。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">保護者も内容を確認できますか？</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body-wrap">
+          <div class="faq-body">はい。プレミアムプランでは保護者向けの学習レポート機能が利用できます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <img src="assets/nexelia-logo.png" alt="NEXELIA" class="cta-logo">
+    <h2 class="cta-title">英語レッスンを今すぐ始める</h2>
+    <a href="lessons.html" class="btn-cta">無料で学習を始める</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
 <footer>
+  <img src="assets/nexelia-logo.png" alt="NEXELIA" class="footer-logo">
   <span class="footer-copy">© 2026 NEXELIA</span>
 </footer>
 
 <script>
+/* ── SCROLL REVEAL ── */
 const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ── FAQ ── */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wrap = item.querySelector('.faq-body-wrap');
+  const icon = btn.querySelector('.faq-icon');
+  const isOpen = wrap.style.maxHeight && wrap.style.maxHeight !== '0px';
+  if (isOpen) {
+    wrap.style.maxHeight = '0px';
+    icon.textContent = '+';
+    icon.classList.remove('open');
+  } else {
+    wrap.style.maxHeight = wrap.scrollHeight + 'px';
+    icon.textContent = '−';
+    icon.classList.add('open');
+  }
+}
+
+/* ── DEMO ── */
+const CARDS = [
+  { word: 'apple',  phonetic: '/ˈæp.əl/', ja: 'りんご', ex: 'I eat an apple every day.',    options: ['りんご', '学校', 'ねこ', '本'], correct: 0 },
+  { word: 'school', phonetic: '/skuːl/',   ja: '学校',   ex: 'She goes to school by bus.',    options: ['りんご', '学校', '川', '空'], correct: 1 },
+  { word: 'friend', phonetic: '/frend/',   ja: '友達',   ex: 'He is my best friend.',          options: ['友達', '先生', '本', '空'],   correct: 0 }
+];
+let demoStep = 0;
+let demoAnswered = false;
+
+function renderDemo() {
+  const c = CARDS[demoStep];
+  document.getElementById('demo-step').textContent = demoStep + 1;
+  document.getElementById('demo-word').textContent = c.word;
+  document.getElementById('demo-phonetic').textContent = c.phonetic;
+  document.getElementById('demo-ja').textContent = c.ja;
+  document.getElementById('demo-ex').textContent = c.ex;
+  document.getElementById('demo-q').textContent = '「' + c.word + '」の意味は？';
+  document.getElementById('demo-result').textContent = '';
+  document.getElementById('demo-result').className = 'demo-result';
+  demoAnswered = false;
+
+  const opts = document.getElementById('demo-options');
+  opts.innerHTML = '';
+  c.options.forEach(function(opt, i) {
+    const btn = document.createElement('button');
+    btn.className = 'demo-opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', function() {
+      if (demoAnswered) return;
+      demoAnswered = true;
+      const resultEl = document.getElementById('demo-result');
+      opts.querySelectorAll('.demo-opt').forEach(function(b, j) {
+        if (j === c.correct) b.classList.add('correct');
+        else if (j === i) b.classList.add('wrong');
+      });
+      if (i === c.correct) {
+        resultEl.textContent = '✓ 正解！次へ…';
+        resultEl.className = 'demo-result';
+        setTimeout(function() { demoStep = (demoStep + 1) % CARDS.length; renderDemo(); }, 1100);
+      } else {
+        resultEl.textContent = '正解は「' + c.options[c.correct] + '」';
+        resultEl.className = 'demo-result miss';
+      }
+    });
+    opts.appendChild(btn);
+  });
+}
+
+renderDemo();
 </script>
 </body>
 </html>
-
