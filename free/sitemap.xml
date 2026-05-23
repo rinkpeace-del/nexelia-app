@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- メインページ -->
+  <url><loc>https://nexelia.jp/free/index.html</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://nexelia.jp/free/lessons.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://nexelia.jp/free/privacy.html</loc><priority>0.3</priority><changefreq>monthly</changefreq></url>
+
+  <!-- Unit 1 be動詞 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson3</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson6</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson87</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit01-lesson1-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit01-lesson2-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit01-lesson3-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit01-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 2 一般動詞 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson4</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson7</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson8</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson9</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson89</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit02-lesson1-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit02-lesson2-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit02-lesson3-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit02-lesson4-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit02-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 3 現在進行形 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson10</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson12</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson13</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson91</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit03-lesson1-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit03-lesson2-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit03-lesson3-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit03-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 4 過去形 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson14</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson15</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson16</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson17</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit04-lesson1-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit04-lesson2-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit04-lesson3-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit04-lesson4-exercise.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 5 助動詞 can -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson20</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson21</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson22</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit05-lesson4.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit05-lesson1-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit05-lesson2-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit05-lesson3-exercise.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit05-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 6 疑問詞 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson23</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson24</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson26</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit06-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 7 There is / There are -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson27</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson28</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson29</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit07-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 8 命令文 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson30</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson30b</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson30c</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson30d</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit08-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 9 未来形 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson31</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson32</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson34</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson35</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit09-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 10 have to / must -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson36</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson37</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson38</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit10-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 11 受動態 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson39</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson40</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson41</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit11-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 12 比較 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-study42.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-study43.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-study44.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit12-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 13 現在完了 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-study45.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson47</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson48</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson49</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson111</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit13-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 14 不定詞 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson50</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson51</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson52</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson53</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson113</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit14-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 15 動名詞 -->
+  <url><loc>https://nexelia.jp/free/learning.html?lesson=lesson54</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit15-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit15-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit15-lesson4.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit15-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 16 関係代名詞 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit16-lesson1.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit16-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit16-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit16-lesson4.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit16-lesson5.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit16-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 17 接続詞 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit17-lesson1.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit17-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit17-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit17-lesson4.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 18 間接疑問文 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit18-lesson1.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit18-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit18-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit18-lesson4.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit18-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 19 分詞の形容詞的用法 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit19-lesson1.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit19-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit19-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit19-lesson4.html</loc><priority>0.7</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit19-final.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 20 仮定法 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit20-lesson1.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit20-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit20-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit20-lesson4.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 21 感嘆文・付加疑問文 -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit21-lesson1.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit21-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit21-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit21-lesson4.html</loc><priority>0.7</priority></url>
+
+  <!-- Unit 22 中学英文法総まとめ -->
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit22-lesson1.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit22-lesson2.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit22-lesson3.html</loc><priority>0.8</priority></url>
+  <url><loc>https://nexelia.jp/free/exercises/nexelia-unit22-lesson4.html</loc><priority>0.8</priority></url>
+</urlset>
