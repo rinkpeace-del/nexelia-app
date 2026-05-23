@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBTY5DKRN5"></script>
@@ -12,7 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXELIA — 中学生向け英語学習</title>
-<meta name="description" content="中学英語をスライドで学んですぐクイズで確認。スマホ・PCのブラウザだけで使える英文法学習アプリ。Unit 1〜5 は無料で利用できます。">
+<meta name="description" content="中学英語をスライドで学んですぐクイズで確認。スマホ・PCのブラウザだけで使える無料の英文法学習アプリ。">
 <meta property="og:title" content="NEXELIA — 中学生向け英語学習">
 <meta property="og:description" content="中学英語をスライドで学んですぐクイズで確認。スマホ・PCのブラウザだけで使える英文法学習アプリ。">
 <meta property="og:type" content="website">
@@ -152,72 +153,6 @@ nav {
 
 
 
-/* ── PRICING ── */
-.pricing {
-  padding: 80px 40px;
-  border-top: 1px solid var(--border);
-  background: var(--bg);
-}
-.pricing-inner { max-width: 680px; margin: 0 auto; }
-.pricing-head { margin-bottom: 40px; }
-.pricing-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-}
-.plan-card {
-  border: 1.5px solid var(--border); border-radius: 16px;
-  padding: 36px 28px; background: #fff;
-  display: flex; flex-direction: column; gap: 20px;
-  position: relative;
-}
-.plan-card.featured { border-color: var(--red); }
-.plan-badge {
-  position: absolute; top: 16px; right: 16px;
-  background: var(--red); color: white;
-  font-size: 10px; font-weight: 700;
-  padding: 3px 10px; border-radius: 100px; letter-spacing: 1px;
-}
-.plan-label {
-  font-size: 11px; letter-spacing: 2px; color: #aaa;
-  text-transform: uppercase; margin-bottom: 8px;
-}
-.plan-price { font-size: 36px; font-weight: 800; }
-.plan-price span { font-size: 14px; font-weight: 400; color: #aaa; }
-.plan-price-wrap { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.plan-old-price {
-  font-size: 15px; font-weight: 500; color: #aaa; text-decoration: line-through;
-}
-.plan-discount {
-  display: inline-block; background: #FFF0F0; color: var(--red);
-  font-size: 11px; font-weight: 700; padding: 3px 10px;
-  border-radius: 100px; letter-spacing: 1px; margin-top: 4px;
-}
-.plan-divider { height: 1px; background: var(--border); }
-.plan-features { display: flex; flex-direction: column; gap: 10px; }
-.plan-feat {
-  display: flex; gap: 10px; font-size: 13px; color: #555; align-items: flex-start;
-}
-.plan-feat.disabled { color: #ccc; }
-.plan-check { color: var(--red); font-weight: 700; flex-shrink: 0; }
-.plan-cross { flex-shrink: 0; }
-.btn-plan-free {
-  display: block; text-align: center; padding: 13px;
-  border-radius: 8px; border: 1.5px solid var(--red);
-  color: var(--red); font-weight: 700; text-decoration: none;
-  font-size: 14px; font-family: 'Noto Sans JP', sans-serif;
-  transition: background 0.15s;
-}
-.btn-plan-free:hover { background: #FFF5F5; }
-.btn-plan-premium {
-  display: block; text-align: center; padding: 13px;
-  border-radius: 8px; background: var(--red);
-  color: white; font-weight: 700; text-decoration: none;
-  font-size: 14px; font-family: 'Noto Sans JP', sans-serif;
-  transition: background 0.15s;
-}
-.btn-plan-premium:hover { background: #b71c1c; }
-
 /* ── FAQ ── */
 .faq {
   padding: 80px 40px;
@@ -283,11 +218,12 @@ footer {
   nav { padding: 0 20px; }
   .nav-link { display: none; }
   .hero-logo { width: 280px; height: 64px; }
-  .features, .pricing, .faq, .cta-section { padding: 60px 20px; }
+  .features, .faq, .cta-section { padding: 60px 20px; }
   footer { padding: 24px 20px; }
 }
 </style>
 </head>
+
 <body>
 
 <!-- ── NAV ── -->
@@ -295,7 +231,6 @@ footer {
   <img src="assets/nexelia-logo.png" alt="NEXELIA" class="nav-logo-img">
   <div class="nav-links">
     <a href="#features" class="nav-link">特徴</a>
-    <a href="#pricing" class="nav-link">料金</a>
     <a href="#faq" class="nav-link">FAQ</a>
     <a href="lessons.html" class="btn-blue">無料で学習を始める</a>
   </div>
@@ -336,52 +271,6 @@ footer {
   </div>
 </section>
 
-<!-- ── PRICING ── -->
-<section class="pricing" id="pricing">
-  <div class="pricing-inner">
-    <div class="pricing-head reveal">
-      <div class="section-label">Pricing</div>
-      <h2 class="section-title">シンプルな料金プラン</h2>
-      <p class="section-sub">まずは無料から。いつでもアップグレードできます。</p>
-    </div>
-    <div class="pricing-cards">
-      <div class="plan-card reveal">
-        <div>
-          <div class="plan-label">Free</div>
-          <div class="plan-price">¥0<span> 無料</span></div>
-        </div>
-        <div class="plan-divider"></div>
-        <div class="plan-features">
-          <div class="plan-feat"><span class="plan-check">✓</span>Unit 1〜5 の基礎レッスン・クイズ</div>
-          <div class="plan-feat"><span class="plan-check">✓</span>ブラウザですぐ利用可能</div>
-          <div class="plan-feat"><span class="plan-check">✓</span>スマホ・PC・タブレット対応</div>
-          <div class="plan-feat disabled"><span class="plan-cross">✕</span>Unit 6 以降はロック</div>
-        </div>
-        <a href="lessons.html" class="btn-plan-free">無料で始める</a>
-      </div>
-      <div class="plan-card featured reveal" style="transition-delay:0.1s">
-        <div class="plan-badge">おすすめ</div>
-        <div>
-          <div class="plan-label">Premium</div>
-          <div class="plan-price-wrap">
-            <span class="plan-old-price">¥2,980</span>
-            <span class="plan-price">¥1,490<span> 買い切り</span></span>
-          </div>
-          <div class="plan-discount">50% OFF</div>
-        </div>
-        <div class="plan-divider"></div>
-        <div class="plan-features">
-          <div class="plan-feat"><span class="plan-check">✓</span>Unit 1〜5 の基礎レッスン・クイズ</div>
-          <div class="plan-feat"><span class="plan-check">✓</span>Unit 6 以降の全レッスン解放</div>
-          <div class="plan-feat"><span class="plan-check">✓</span>ブラウザですぐ利用可能</div>
-          <div class="plan-feat"><span class="plan-check">✓</span>スマホ・PC・タブレット対応</div>
-        </div>
-        <a href="https://nexelia.base.shop/items/142047103" target="_blank" rel="noopener" class="btn-plan-premium">プレミアムを始める</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── FAQ ── -->
 <section class="faq" id="faq">
   <div class="faq-inner">
@@ -392,20 +281,11 @@ footer {
     <div class="faq-list reveal" style="transition-delay:0.1s">
       <div class="faq-item">
         <button class="faq-btn" onclick="toggleFaq(this)">
-          <span class="faq-q">無料プランで何ができますか？</span>
+          <span class="faq-q">本当に無料ですか？</span>
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-body-wrap">
-          <div class="faq-body">Unit 1〜5 の基礎レッスンと確認クイズを無料で利用できます。</div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span class="faq-q">プレミアムプランとの違いは？</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-body-wrap">
-          <div class="faq-body">プレミアムは買い切り ¥1,490 で Unit 6 以降の全レッスンが永久に解放されます。月額料金はかかりません。</div>
+          <div class="faq-body">はい、すべてのレッスンと確認クイズを無料で利用できます。登録も不要です。</div>
         </div>
       </div>
       <div class="faq-item">
